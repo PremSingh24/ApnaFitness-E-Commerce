@@ -5,9 +5,10 @@ import SideDrawer from '../components/sideDrawer';
 import { createTheme,ThemeProvider  } from '@mui/material/styles';
 import ProductCard from '../components/productCard';
 import useProductStore from '../contexts/productListing.context';
-import Loader from '../components/loader';
-import { useEffect, useState } from 'react';
 import MobileFilters from '../components/mobileFilters';
+import { useEffect, useState } from 'react';
+import { getFilteredProducts } from '../helpers/filter.helpers';
+import useFilterStore from '../contexts/filterContext';
 
 const theme = createTheme();
 
@@ -16,50 +17,64 @@ const drawerWidth = 280
 
 
 const ProductListingPage = () =>{
-  let products = useProductStore((state)=>state.products);
+    const products = useProductStore((state)=>state.products);
+    const filterState = useFilterStore((state)=>state)
 
-  const [isSticky, setIsSticky] = useState(false);
+    const filteredProducts = getFilteredProducts(products,filterState)
 
-  let lastScrollTop = 0;
+    const ScrollTrack = ({children}:{children:JSX.Element})=>{
+      const [isSticky, setIsSticky] = useState(false);
 
-  const handleScroll = () => {
-    //const scrollY = window.scrollY || document.documentElement.scrollTop;
-    //setIsSticky(scrollY > 50);
+      let lastScrollTop = 0;
 
-    const st = window.scrollY || document.documentElement.scrollTop;
+      const handleScroll = () => {
 
-    if (st > lastScrollTop) {
-      setIsSticky(true)
-   } else if (st < lastScrollTop) {
-    setIsSticky(false)
-   } // else was horizontal scroll
+        const st = window.scrollY || document.documentElement.scrollTop;
 
-   lastScrollTop = st <= 0 ? 0 : st;
-    
-    
-  };
+        if (st > lastScrollTop) {
+            setIsSticky(true)
+        }else if (st < lastScrollTop) {
+            setIsSticky(false)
+        }
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+        lastScrollTop = st <= 0 ? 0 : st;
+        
+        
+      };
+
+      useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
+
+      return (
+        <Box 
+            sx={{display:{xs:"flex",sm:"none"},width:"100%",flexDirection:"row",position:"fixed",
+              justifyContent:"center",alignItems:"center",marginTop:isSticky ? "3.6rem" :"6.31rem",zIndex:1200
+            }}
+        >
+            {children}
+
+        </Box>
+      )
+
+    }
+
+
   
 
 
     return (
         <ThemeProvider theme={theme}>
           
-          <CssBaseline/>
-        <Box sx={{display:{xs:"flex",sm:"none"},width:"100%",flexDirection:"row",position:"fixed",
-          justifyContent:"center",alignItems:"center",marginTop:isSticky ? "3.6rem" :"6.31rem",zIndex:1200
-          }}
-        >
+        <CssBaseline/>
+        <ScrollTrack>
 
           <MobileFilters/>
           
-        </Box> 
+        </ScrollTrack>
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
           <Box
@@ -81,21 +96,19 @@ const ProductListingPage = () =>{
           </Box>
 
 
-          {products.length > 0 ?
+          
           <Box
             component="main"
             sx={{ flexGrow: 1,ml:{xs:"10px",md:0}, width: {xs:"100vw", sm: `calc(100% - ${drawerWidth}px)` },mt:{xs:"10rem",sm:"5.5rem",md:"4rem"},mb:{xs:"4rem",sm:"1rem",md:"2rem"} }}
           >
     
-            <ProductCard products={products} />
+            <ProductCard products={filteredProducts}/>
           </Box>
-          :
-          <Loader/>
-          }
+          
         </Box>
         </ThemeProvider>
       
-      );
+    );
 
 }
 
