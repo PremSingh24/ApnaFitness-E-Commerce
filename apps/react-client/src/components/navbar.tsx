@@ -22,15 +22,7 @@ import useWishlistStore from '../contexts/wishlist.context';
 import useCartStore from '../contexts/cart.context';
 
 
-// import MenuItem from '@mui/material/MenuItem';
-// import Menu from '@mui/material/Menu';
-// import LogOutButton from './logOutButton';
-// import NotificationsIcon from '@mui/icons-material/Notifications';
-
-
-
 const theme = createTheme();
-
 
 
 theme.typography.h6 = {
@@ -94,12 +86,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const NavBar = () => {
-  //const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
   const [searchInput, setSearchInput] = useState("");
   const [searchedProducts, setSearchedProducts] = useState<productType[]>([]);
-  // const timerId = useRef<ReturnType<typeof setTimeout>>();
   
-  const products = useProductStore((state)=>state.initialProducts);
+  
+  const products = useProductStore((state)=>state.allProducts);
   const navigate = useNavigate();
 
   const wishlist = useWishlistStore((state)=>state.wishlist);
@@ -108,102 +100,30 @@ const NavBar = () => {
 
 
   
-  //const isMenuOpen = Boolean(anchorEl);
   const loggedIn = useLoginStore((state)=>state.login) || localStorage.getItem("loggedIn");
   
 
-  // const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  
-
-  // const handleMenuClose = () => {
-  //   setAnchorEl(null);
-    
-  // };
 
   useEffect(() => {
     
     const result = products.length > 0 && searchInput.trim() !== ""
                     ? products.filter((product) =>
                         product.title.toLowerCase().includes(searchInput.toLowerCase()) 
-                        //|| product.description.toLowerCase().includes(searchInput.toLowerCase())
+                        
                       )
                     : [];
                   setSearchedProducts(result);
     
   }, [searchInput]);
 
-
-
-
-  const menuId = 'primary-search-account-menu';
-  // const renderMenu = (
-  //   <Menu
-  //     anchorEl={anchorEl}
-  //     anchorOrigin={{
-  //       vertical: 'top',
-  //       horizontal: 'right',
-  //     }}
-  //     id={menuId}
-  //     keepMounted
-  //     transformOrigin={{
-  //       vertical: 'top',
-  //       horizontal: 'right',
-  //     }}
-  //     open={isMenuOpen}
-  //     onClose={handleMenuClose}
-  //   >
-  //     {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
-  //     <MenuItem onClick={handleProfileMenuOpen}>
-  //           <IconButton
-  //           size="large"
-  //           aria-label="account of current user"
-  //           aria-controls="primary-search-account-menu"
-  //           aria-haspopup="true"
-  //           color="inherit"
-  //           >
-  //           <AccountCircle />
-  //           </IconButton>
-  //           <p>Profile</p>
-  //       </MenuItem>
-  //     {/* <MenuItem onClick={handleMenuClose}>Notifications</MenuItem> */}
-  //     <MenuItem>
-  //       <IconButton
-  //         size="large"
-  //         aria-label="show new notifications"
-  //         color="inherit"
-  //       >
-  //         <Badge badgeContent={17} color="error">
-  //           <NotificationsIcon />
-  //         </Badge>
-  //       </IconButton>
-  //       <p>Notifications</p>
-  //     </MenuItem>
-
-  //     <MenuItem >
-  //       <IconButton //helps in keeping the logout Button in center
-  //           size="large"
-  //           aria-label="account of current user"
-  //           aria-controls="primary-search-account-menu"
-  //           aria-haspopup="true"
-  //           color="inherit"
-  //       > 
-  //       </IconButton>
-  //       <LogOutButton/>
-  //     </MenuItem>
-      
-  //   </Menu>
-  // );
+ 
   
   const [isSticky, setIsSticky] = useState(false);
 
   let lastScrollTop = 0;
 
   const handleScroll = () => {
-    //const scrollY = window.scrollY || document.documentElement.scrollTop;
-    //setIsSticky(scrollY > 50);
+    
 
     const st = window.scrollY || document.documentElement.scrollTop;
 
@@ -211,7 +131,7 @@ const NavBar = () => {
       setIsSticky(true)
    } else if (st < lastScrollTop) {
     setIsSticky(false)
-   } // else was horizontal scroll
+   } 
 
    lastScrollTop = st <= 0 ? 0 : st;
     
@@ -323,7 +243,7 @@ const NavBar = () => {
             
             edge="start"
             aria-label="account of current user"
-            aria-controls={menuId}
+            aria-controls={"primary-search-account-menu"}
             aria-haspopup="true"
             onClick={()=>navigate("/user")}
             color="inherit"
@@ -387,11 +307,8 @@ const NavBar = () => {
           
         </Toolbar>
       </AppBar>
-      {/* {renderMenu} */}
+      
     </Box>
-    {/* search Results */}
-  
-    
     </ThemeProvider>
   );
 }
