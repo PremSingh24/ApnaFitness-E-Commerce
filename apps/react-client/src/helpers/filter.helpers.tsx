@@ -12,18 +12,18 @@ import { productType } from "common";
       return data.filter((product:any) => product.currentPrice >= priceRange[0] && product.currentPrice <= priceRange[1]);
     };
 
-    //Sort According to Price
+    //Sorting Products according to Price
     const sortData = (data:productType[], sortBy:string) => {
     
         if (sortBy === "high") {
-        return [...data].sort((a, b) => b.currentPrice - a.currentPrice);
-        }
-    
-        if (sortBy === "low") {
-        return [...data].sort((a, b) => a.currentPrice - b.currentPrice);
-        }
+          return [...data].sort((a, b) => b.currentPrice - a.currentPrice);
 
-        return data;
+        }else if (sortBy === "low") {
+          return [...data].sort((a, b) => a.currentPrice - b.currentPrice);
+
+        }else{
+          return data;
+        }
     
     };
   
@@ -71,16 +71,17 @@ import { productType } from "common";
     );
     const stockedData = getStockData(fastDeliveredData, removeOutOfStock);
   
+   
     const sortedData = sortData(stockedData, sortBy);
   
      return sortedData;
   };
   
   export { getFilteredProducts };
-  // export {
-  //   rateData,
-  //   filterProductsUptoPriceRange,
-  //   getOnlyFastDeliveryData,
-  //   getStockData,
-  //   sortData
-  // };
+  export {
+    rateData,
+    filterProductsUptoPriceRange,
+    getOnlyFastDeliveryData,
+    getStockData,
+    sortData
+  };
