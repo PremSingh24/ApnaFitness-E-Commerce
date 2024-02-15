@@ -155,7 +155,7 @@ const MobileFilters = () =>{
         return (
             <>
             <Drawer anchor="bottom" open={filterOptionsOpen} onClose={()=>setFilterOptions(false)} >
-            <Paper sx={{height:"35vh",overflow:"auto"}}>
+            <Paper sx={{height:"75vh",overflow:"auto"}}>
             
             <List sx={{display:"flex",justifyContent:"space-between",paddingLeft:"10px",paddingRight:"5px"}}>
     
