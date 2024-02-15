@@ -1,147 +1,137 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-// import Toolbar from '@mui/material/Toolbar';
 import { Button, Checkbox, FormControl, FormControlLabel, InputAdornment, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import useProductStore from '../contexts/productListing.context';
-import { getFilteredProducts } from '../helpers/filter.helpers';
+import useFilterStore from '../contexts/filterContext';
 
 
 function valuetext(value: number) {
     return `Rs${value}`;
-  }
+}
+
+
 
 const SideDrawer = () =>{
-    const [priceRange, setPriceRange] = useState<number[]>([0, 10000]);
-    const [rating, setRating] = useState(1);
-    const [sort, setSort] = useState("");
-    const [fastDelivery, setFastDelivery] = useState<boolean>(false);
 
-    const [outOfStock, setOutOfStock] = useState(false);
+    const priceRange = useFilterStore((state)=>state.priceRange);
+    const setPriceRange = useFilterStore((state)=>state.setPriceRange);
 
-    const setProducts = useProductStore((state)=>state.setProducts)
+    const rating = useFilterStore((state)=>state.rating);
+    const setRating = useFilterStore((state)=>state.setRating);
 
-    const initialProducts = useProductStore((state)=>state.initialProducts)
+    const sortBy = useFilterStore((state)=>state.sortBy);
+    const setSortBy = useFilterStore((state)=>state.setSortBy);
 
-    const filterState = {
-        sortBy:sort,
-        priceRange:priceRange,
-        rating:rating,
-        removeOutOfStock:outOfStock,
-        fastDeliveryOnly:fastDelivery,
-    }
+    const fastDelivery = useFilterStore((state)=>state.fastDeliveryOnly);
+    const setFastDelivery = useFilterStore((state)=>state.setFastDeliveryOnly);
 
+    const removeOutOfStock = useFilterStore((state)=>state.removeOutOfStock);
+    const setRemoveOutOfStock = useFilterStore((state)=>state.setRemoveOutOfStock);
+
+    
+
+
+    
     
 
     const handleSliderChange = (_event: Event, newValue: number | number[]) => {
         setPriceRange(newValue as number[]);
         
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,priceRange:newValue as number[]});
-        setProducts(filteredProducts)
     };
 
     const handlePriceFromInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        (event.target.value === '' ? setPriceRange((previous)=>{return [0,previous[1]]}) : 
+        (event.target.value === '' ? setPriceRange([0,priceRange[1]]) : 
 
-        setPriceRange((previous)=>{return [Number(event.target.value),previous[1]]}));
-
-       
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,priceRange:[Number(event.target.value),priceRange[1]]});
-        setProducts(filteredProducts)
+        setPriceRange([Number(event.target.value),priceRange[1]]));
     };
 
     const handlePriceToInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        (event.target.value === '' ? setPriceRange((previous)=>{return [previous[0],0]}) : 
+        (event.target.value === '' ? setPriceRange([priceRange[0],0]) : 
 
-        setPriceRange((previous)=>{return [previous[0],Number(event.target.value)]}));
-
-        
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,priceRange:[priceRange[0],Number(event.target.value)]});
-        setProducts(filteredProducts)
+        setPriceRange([priceRange[0],Number(event.target.value)]));
     };
 
 
     const handleRatingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRating(Number(event.target.value));
-        
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,rating:Number(event.target.value)});
-        setProducts(filteredProducts)
     };
 
     const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSort((event.target.value));
-        
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,sortBy:event.target.value});
-        setProducts(filteredProducts)
+        setSortBy((event.target.value));
     };
 
     const handleFastDeliveryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFastDelivery(event.target.checked);
-        
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,fastDeliveryOnly:event.target.checked});
-        setProducts(filteredProducts)
     };
 
     const handleOutOfStockChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setOutOfStock(event.target.checked);
+        setRemoveOutOfStock(event.target.checked);
         
-        const filteredProducts = getFilteredProducts(initialProducts,{...filterState,removeOutOfStock:event.target.checked});
-        setProducts(filteredProducts)
     };
 
     const resetFilters = () => {
         setPriceRange([0,10000]);
         setRating(1);
-        setSort("");
+        setSortBy("");
         setFastDelivery(false);
-        setOutOfStock(false);
-        setProducts(initialProducts);
+        setRemoveOutOfStock(false);
     }
 
 
-    const [isSticky, setIsSticky] = useState(false);
+    const ScrollTrack:React.FC<{ children: ReactNode }>  = (props)=>{
+        const [isSticky, setIsSticky] = useState(false);
 
-  let lastScrollTop = 0;
+        let lastScrollTop = 0;
 
-  const handleScroll = () => {
-    //const scrollY = window.scrollY || document.documentElement.scrollTop;
-    //setIsSticky(scrollY > 50);
+        const handleScroll = () => {
 
-    const st = window.scrollY || document.documentElement.scrollTop;
+            const st = window.scrollY || document.documentElement.scrollTop;
 
-    if (st > lastScrollTop) {
-      setIsSticky(true)
-   } else if (st < lastScrollTop) {
-    setIsSticky(false)
-   } // else was horizontal scroll
+            if (st > lastScrollTop) {
+                setIsSticky(true)
+            }else if (st < lastScrollTop) {
+                setIsSticky(false)
+            }
 
-   lastScrollTop = st <= 0 ? 0 : st;
-    
-    
-  };
+            lastScrollTop = st <= 0 ? 0 : st;
+            
+            
+        };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+        useEffect(() => {
+            window.addEventListener('scroll', handleScroll);
+            return () => {
+            window.removeEventListener('scroll', handleScroll);
+            };
+        }, []);
+
+        return (
+            <List sx={{display:"flex",justifyContent:"space-around",marginTop:{sm:isSticky ? "auto":"2rem",md:"0"}}}>
+                {props.children}
+                
+
+            </List>
+        )
+
+    }
 
 
     return (
         <div style={{marginTop:"4rem",padding:"1rem"}}>
-            <List sx={{display:"flex",justifyContent:"space-around",marginTop:{sm:isSticky ? "auto":"2rem",md:"0"}}}>
+            <ScrollTrack>
+                
                 <Typography variant='h5'>Filters</Typography>
                 <Button variant='text' sx={{fontSize:"1rem"}}
-                
+                    
                 onClick={()=>{resetFilters()}}
                 >
                     Clear All
                 </Button>
-            </List>
+                
+            </ScrollTrack>
             <Divider />
 
             <Typography variant='h6' fontWeight={600} paddingTop={"1rem"}>Price</Typography>
@@ -220,11 +210,11 @@ const SideDrawer = () =>{
           <FormControl>
                 <RadioGroup
                     name="controlled-radio-buttons-group"
-                    value={sort}
+                    value={sortBy}
                     onChange={handleSortChange}
                 >
-                <FormControlLabel value="low" name='Low' control={<Radio />} label="Low to High" />
-                <FormControlLabel value="high" name='High' control={<Radio />} label="High to Low" />
+                <FormControlLabel value="low" name='Low' control={<Radio />} label="Price: Low to High" />
+                <FormControlLabel value="high" name='High' control={<Radio />} label="Price: High to Low" />
                 </RadioGroup>
           </FormControl>
 
@@ -242,7 +232,7 @@ const SideDrawer = () =>{
 
                 <FormControlLabel value={true} name='Out Of Stock' 
                 control={<Checkbox onChange={handleOutOfStockChange}
-                checked={outOfStock}
+                checked={removeOutOfStock}
                 inputProps={{ 'aria-label': 'controlled' }}/>} 
                 label="Remove Out of Stock" 
                 />
