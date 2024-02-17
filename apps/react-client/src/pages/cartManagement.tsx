@@ -34,20 +34,21 @@ const CartPage = () =>  {
       {cart.length > 0 ?
 
       
-      <Grid container spacing={2}>
-        <Grid item xs={6} md={8}>
-          <CartProduct/>
-        </Grid> 
-        <Grid item xs={6} md={4}>
-          <CheckOutForm/>
+        <Grid container spacing={2} sx={{display:"flex",justifyContent:"center",}}>
+          <Grid item xs={12} md={7} lg={5} sx={{width:"50%"}}>
+            <CartProduct/>
+          </Grid> 
+          <Grid item xs={12} md={4} >
+            <CheckOutForm/>
+          </Grid>
         </Grid>
-      </Grid>
+        
 
       
       :
-      <Stack direction={"column"} gap={1} padding={"5px"} sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-        <Typography color={"black"} variant='h4' textAlign={"center"} padding={"10px"} marginTop={"60px"}>Cart is Empty</Typography>
-        <NavLink to={"/AllProducts"}><Button variant='contained' >Continue Shopping</Button></NavLink>
+        <Stack direction={"column"} gap={1} padding={"5px"} sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+          <Typography color={"black"} variant='h4' textAlign={"center"} padding={"10px"} marginTop={"60px"}>Cart is Empty</Typography>
+          <NavLink to={"/AllProducts"}><Button variant='contained' >Continue Shopping</Button></NavLink>
         </Stack>
       }
 
