@@ -22,20 +22,16 @@ const LogOutButton = ()=> {
 
     return (
         <NavLink to={"/"} style={{width:"50%"}}>
-        <Button variant="contained" color="error" 
-        startIcon={<ExitToAppIcon/>}
-        size="large"
-        onClick={()=>{logOut()}}
-        sx={{marginTop:"20px",borderRadius:"20px",width:"60%"}}
-        
-        
-         
-        >
-        LOG OUT
-        </Button>
+            <Button variant="contained" color="error" 
+                startIcon={<ExitToAppIcon/>}
+                size="large"
+                onClick={()=>{logOut()}}
+                sx={{marginTop:"20px",borderRadius:"20px",width:"60%"}}
+            >
+                LOG OUT
+            </Button>
         </NavLink>
     )
-
 
 }
 
