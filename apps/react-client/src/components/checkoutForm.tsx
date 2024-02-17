@@ -1,140 +1,72 @@
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, styled } from '@mui/material';
 import useCartStore from '../contexts/cart.context';
 
 
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    margin:"auto",
+    maxWidth:400,
+    padding: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    backgroundColor: '#fafafa',
+    borderRadius: theme.spacing(2),
+    boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.3)',
+    borderLeft: `6px solid #0066ff`,
+    textAlign: 'center',
+  
+}));
 
+const SummaryItem = styled('div')(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing(1),
+}));
 
-
-
-
+const TotalAmount = styled('div')(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: theme.spacing(1),
+    
+}));
 
 
 
 const CheckOutForm = () =>{
+    
     const cartContext = useCartStore((state)=>state.cart);
 
     let cartPrice = 0;
-    cartContext.map(obj=>obj.item.currentPrice ? cartPrice +=obj.item.currentPrice*obj.quantity :cartPrice+=0)
+    cartContext.map(obj=> cartPrice +=obj.item.currentPrice*obj.quantity )
 
 
 
     return (
-    <Paper elevation={5}
-      sx={{
-        display:{xs:"none",sm:"block"},
-        p: 4,
-        margin: 'auto',
-        maxWidth: 400,
-        flexGrow: 1,
-        marginBottom:"2rem",
-        backgroundColor: (theme) =>
-          theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-          
-      }}
-    >
-      <Grid container spacing={2} >
-        <Grid item  xs={12} md={12}>
-            <Typography variant='h5' color={"black"} 
-            sx={{display:"flex",justifyContent:"center",
-            alignItems:"center",border:"2px solid black"}}
-            >
-                Cart Summary
-            </Typography>
-        </Grid>
 
-        <Grid item sx={{display:"flex",justifyContent:"start",alignItems:"flex-start"}} xs={6} md={6}>
-            <Typography variant='h6' color={"black"} 
-            sx={{display:"flex",justifyContent:"start",
-            alignItems:"start"}}
-            >Price ({cartContext.length} Items)</Typography>
-
-            
-            
-        </Grid>
-        <Grid item sx={{display:"flex",justifyContent:"end",alignItems:"flex-end"}} xs={6} md={6}>
-        <Typography variant='h6' color={"black"} 
-            sx={{display:"flex",justifyContent:"end",
-            alignItems:"flex-end"}}
-            >
-                ₹{cartPrice}
-            </Typography>
-
-
-        </Grid>
-        
-        
-        <Grid item sx={{display:"flex",justifyContent:"start",alignItems:"flex-start"}} xs={6} md={6}>
-            <Typography variant='h6' color={"black"} 
-                sx={{display:"flex",justifyContent:"start",
-                alignItems:"start"}}
-                >
-                    Discount
-            </Typography>
-        </Grid>
-        <Grid item sx={{display:"flex",justifyContent:"end",alignItems:"flex-end"}} xs={6} md={6}>
-
-            <Typography variant='h6' color={"black"} 
-            sx={{display:"flex",justifyContent:"end",
-            alignItems:"flex-end"}}
-            >
-                ₹ 0
-            </Typography>
-            
-        </Grid>
-        <Grid item sx={{display:"flex",justifyContent:"start",alignItems:"flex-start"}} xs={6} md={6}>
-            <Typography variant='h6' color={"black"} 
-                sx={{display:"flex",justifyContent:"start",
-                alignItems:"start"}}
-                >
-                    Delivery Charge
-            </Typography>
-        </Grid>
-        <Grid item sx={{display:"flex",justifyContent:"end",alignItems:"flex-end"}} xs={6} md={6}>
-
-            <Typography variant='h6' color={"black"} 
-            sx={{display:"flex",justifyContent:"end",
-            alignItems:"flex-end"}}
-            >
-               ₹ 45
-            </Typography>
-            
-        </Grid>
-        <Divider sx={{width:"100%"}} />
-        <Grid item sx={{display:"flex",justifyContent:"start",alignItems:"flex-start"}} xs={6} md={6}>
-            <Typography variant='h6' color={"black"} 
-                sx={{display:"flex",justifyContent:"start",
-                alignItems:"start"}}
-                >
-                   Total Amount
-            </Typography>
-        </Grid>
-        
-        <Grid item sx={{display:"flex",justifyContent:"end",alignItems:"flex-end"}} xs={6} md={6}>
-        
-
-            <Typography variant='h6' color={"black"} 
-            sx={{display:"flex",justifyContent:"end",
-            alignItems:"flex-end"}}
-            >
-               ₹{cartPrice +45}
-            </Typography>
-            
-        </Grid>
-        <Divider sx={{width:"100%"}} />
-
-    
-
-        <Button variant='contained' fullWidth sx={{marginTop:"20px"}}>Proceed To Check Out</Button>
-      </Grid>
-      
-    </Paper>
-    
-    
-
-
+    <StyledPaper>
+      <Typography variant="h4" gutterBottom>Order Summary</Typography>
+      <SummaryItem>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>Price ({cartContext.length} Items):</Typography>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>₹{cartPrice}</Typography>
+      </SummaryItem>
+      <SummaryItem>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>Discount:</Typography>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>₹{0}</Typography>
+      </SummaryItem>
+      <SummaryItem>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>Delivery Charge:</Typography>
+        <Typography variant="body1" sx={{fontSize:"1.23rem"}}>₹{45}</Typography>
+      </SummaryItem>
+      <Divider sx={{width:"100%"}} />
+      <TotalAmount>
+        <Typography variant="h6" sx={{marginTop:"10px",fontWeight:"bold"}}>Total Amount:</Typography>
+        <Typography variant="h6" color="black" sx={{marginTop:"10px",fontWeight:"bold"}}>₹{cartPrice+45}</Typography>
+      </TotalAmount>
+      <Divider sx={{width:"100%"}} />
+      <Button variant='contained' fullWidth sx={{marginTop:"20px",backgroundColor:"#0066ff"}}>Proceed To Check Out</Button>
+    </StyledPaper>
 
     )
 }
