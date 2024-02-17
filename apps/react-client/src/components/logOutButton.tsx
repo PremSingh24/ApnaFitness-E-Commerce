@@ -2,6 +2,8 @@ import { Button } from "@mui/material";
 import { useLoginStore } from "../contexts";
 import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+
 
 
 
@@ -21,10 +23,12 @@ const LogOutButton = ()=> {
     return (
         <NavLink to={"/"} style={{width:"50%"}}>
         <Button variant="contained" color="error" 
+        startIcon={<ExitToAppIcon/>}
         size="large"
         onClick={()=>{logOut()}}
-        sx={{marginTop:"20px"}}
-        fullWidth
+        sx={{marginTop:"20px",borderRadius:"20px",width:"60%"}}
+        
+        
          
         >
         LOG OUT
