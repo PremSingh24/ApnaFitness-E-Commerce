@@ -1,14 +1,37 @@
-import { Typography } from "@mui/material"
-import LogOutButton from "../components/logOutButton"
+import { Typography } from "@mui/material";
+import AddressCard from "../components/addressCard";
+import useAddressStore from "../contexts/address.context";
+import { useEffect } from "react";
+import getAddressService from "../services/addressServices/getAddress.service";
 
-const AddressTab = ()=>{
+const AddressTab = () => {
+  const setAllAddress = useAddressStore((state) => state.setAddress);
 
-    return (
-        <>
-        <Typography marginTop={"7.5rem"}>Hey</Typography>
-        <LogOutButton/>
-        </>
-    )
-}
+  useEffect(() => {
+    (async () => {
+      const response = await getAddressService();
 
-export default AddressTab
+      if (response.status === 200) {
+        setAllAddress(response.data.address);
+      }
+    })();
+  }, []);
+
+  return (
+    <>
+      <Typography
+        variant="h5"
+        marginBottom={"1.5rem"}
+        alignItems={"center"}
+        display={"flex"}
+        justifyContent={"center"}
+        marginTop={"1.2rem"}
+      >
+        My Addresses
+      </Typography>
+      <AddressCard />
+    </>
+  );
+};
+
+export default AddressTab;
