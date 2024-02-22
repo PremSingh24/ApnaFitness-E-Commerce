@@ -14,7 +14,7 @@ import addAddressService from "../services/addressServices/addNewAddress.service
 import { toast } from "sonner";
 import updateAddressService from "../services/addressServices/updateAddress.service";
 import useAddressStore from "../contexts/address.context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AddressForm = ({
   addressData,
@@ -33,6 +33,7 @@ const AddressForm = ({
   const updateGlobalAddressState = useAddressStore(
     (state) => state.updateAddress
   );
+  const [manualDirty, setManualDirty] = useState(false);
 
   const addressFormState = useForm<addressType>({
     defaultValues: {
@@ -62,21 +63,6 @@ const AddressForm = ({
     }
   }, [addressData]);
 
-  const setDummyAddress = () => {
-    const dummyAddress = {
-      name: "Ramesh Kumar",
-      mobile: "9876543210",
-      street: "123 Gandhi Road",
-      city: "Mumbai",
-      state: "Maharashtra",
-      country: "India",
-      pincode: "400001",
-      _id: "",
-    };
-
-    addressFormState.reset(dummyAddress);
-  };
-
   const resetForm = () => {
     addressFormState.reset({
       name: "",
@@ -93,6 +79,22 @@ const AddressForm = ({
   const { register, handleSubmit, getValues, formState } = addressFormState;
 
   const { errors } = formState;
+
+  const setDummyAddress = async () => {
+    const dummyAddress = {
+      name: "Ramesh Kumar",
+      mobile: "9876543210",
+      street: "123 Gandhi Road",
+      city: "Mumbai",
+      state: "Maharashtra",
+      country: "India",
+      pincode: "400001",
+      _id: "",
+    };
+
+    addressFormState.reset(dummyAddress);
+    setManualDirty(true);
+  };
 
   const saveAddress = async (data: addressType) => {
     if (submitType === "add") {
@@ -160,6 +162,7 @@ const AddressForm = ({
           name="close-address-form"
           onClick={() => {
             setFormOpen(false);
+            setManualDirty(false);
             setTimeout(() => {
               if (submitType === "add") {
                 resetForm();
@@ -366,7 +369,7 @@ const AddressForm = ({
             size="medium"
             variant="contained"
             sx={{ mt: 2, mb: 1, borderRadius: 2, fontWeight: "bold" }}
-            disabled={formState.isDirty ? false : true}
+            disabled={formState.isDirty || manualDirty ? false : true}
           >
             Save
           </Button>
