@@ -184,6 +184,7 @@ const AddressCard = () => {
             margin: { xs: 2, sm: 2.3 },
             border: "1px solid black",
             overflow: "clip",
+            position: "relative",
           }}
           key={address._id}
         >
@@ -203,20 +204,29 @@ const AddressCard = () => {
             <Typography variant="body1" color="textSecondary">
               Mobile: {address.mobile}
             </Typography>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: "auto",
-                padding: "8px 0",
-              }}
-            >
-              <EditAddressButton address={address} />
-              <Divider orientation="vertical" flexItem />
-
-              <RemoveAddressButton addressId={address._id} />
-            </div>
           </CardContent>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
+            }}
+          >
+            <EditAddressButton address={address} />
+            <Divider
+              orientation="vertical"
+              sx={{
+                width: "1px",
+                backgroundColor: "black",
+                height: "3vh",
+              }}
+            />
+
+            <RemoveAddressButton addressId={address._id} />
+          </div>
         </Card>
       ))}
     </div>
