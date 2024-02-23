@@ -31,9 +31,6 @@ import { Toaster, toast } from "sonner";
 function App() {
   const setAllProducts = useProductStore((state) => state.setAllProducts);
   const setProducts = useProductStore((state) => state.setProducts);
-  const setInitialProducts = useProductStore(
-    (state) => state.setInitialProducts
-  );
 
   const setCategories = useCategoryStore((state) => state.setCategories);
 
@@ -88,7 +85,6 @@ function App() {
 
       if (productResponse.status === 200) {
         setAllProducts(productResponse.data.products);
-        setInitialProducts(productResponse.data.products);
         setProducts(productResponse.data.products);
       } else {
         toast.error(productResponse.data.message);
