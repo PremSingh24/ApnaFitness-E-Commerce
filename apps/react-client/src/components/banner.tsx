@@ -8,9 +8,6 @@ import useProductStore from "../contexts/productListing.context";
 
 export default function Banner() {
   const allProducts = useProductStore((state) => state.allProducts);
-  const setInitialProducts = useProductStore(
-    (state) => state.setInitialProducts
-  );
   const setProducts = useProductStore((state) => state.setProducts);
   const navigate = useNavigate();
 
@@ -81,7 +78,6 @@ export default function Banner() {
               color="primary"
               size="large"
               onClick={() => {
-                setInitialProducts(allProducts);
                 setProducts(allProducts);
                 navigate("/AllProducts");
               }}
