@@ -4,14 +4,14 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function PasswordField({
-  label,
+  placeholder,
   id,
   register,
   errors,
   helperText,
   message,
 }: {
-  label: string;
+  placeholder: string;
   id: string;
   register: any;
   errors: any;
@@ -37,7 +37,7 @@ function PasswordField({
 
   return (
     <TextField
-      label={label}
+      placeholder={placeholder}
       id={id}
       type={visibility ? "text" : "password"}
       fullWidth
