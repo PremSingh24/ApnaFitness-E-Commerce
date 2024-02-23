@@ -16,16 +16,13 @@ import Loader from "./loader";
 const Categories = () => {
   const categories = useCategoryStore((state) => state.categories);
   const setProducts = useProductStore((state) => state.setProducts);
-  const setInitialProducts = useProductStore(
-    (state) => state.setInitialProducts
-  );
 
   const navigate = useNavigate();
 
   const getOneCategoryProducts = async (categoryId: any) => {
     const response = await getCategoryProductService(categoryId);
     setProducts(response.products);
-    setInitialProducts(response.products);
+
     navigate("/AllProducts");
   };
 
