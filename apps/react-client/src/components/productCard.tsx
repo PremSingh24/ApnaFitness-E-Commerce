@@ -198,7 +198,10 @@ const ProductCard = ({ products }: { products: productType[] }) => {
                     padding: { xs: "0px", sm: "10px" },
                     marginBottom: "20px",
                     position: "relative",
-                    ":hover": { boxShadow: "20" },
+                    boxShadow: { xs: "0.2" },
+                    "@media (min-width:780px)": {
+                      ":hover": { boxShadow: "20" },
+                    },
                   }}
                 >
                   <NavLink
