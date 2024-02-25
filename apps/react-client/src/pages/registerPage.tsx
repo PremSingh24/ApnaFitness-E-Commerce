@@ -62,9 +62,7 @@ export function Register() {
 
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("loggedIn", "true");
-        setTimeout(() => {
-          navigate("/", { replace: true });
-        }, 2000);
+        navigate("/", { replace: true });
       } else {
         toast.error(
           response.message ? response.message : response.data.message
@@ -190,7 +188,7 @@ export function Register() {
               </Grid>
               <Grid item xs={12}>
                 <PasswordField
-                  label="Password"
+                  placeholder="Password"
                   id="password"
                   register={register}
                   errors={!!errors.password}
@@ -200,7 +198,7 @@ export function Register() {
               </Grid>
               <Grid item xs={12}>
                 <PasswordField
-                  label="Confirm Password"
+                  placeholder="Confirm Password"
                   id="confirmPassword"
                   register={register}
                   errors={!!errors.confirmPassword}
