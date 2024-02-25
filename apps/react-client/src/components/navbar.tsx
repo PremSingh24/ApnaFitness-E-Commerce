@@ -378,21 +378,6 @@ const NavBar = () => {
                     Log In
                   </Button>
                 </NavLink>
-                <NavLink to={"/register"}>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      background:
-                        "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-
-                      minWidth: "max-content",
-                      marginRight: ".7rem",
-                      fontSize: { xs: "0.7rem", md: "0.85rem" },
-                    }}
-                  >
-                    Sign up
-                  </Button>
-                </NavLink>
               </Box>
             )}
           </Toolbar>
