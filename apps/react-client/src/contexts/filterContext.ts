@@ -19,6 +19,7 @@ type filterState = {
   fastDeliveryOnly: boolean;
   setFastDeliveryOnly: (fastDeliveryOnly: boolean) => void;
   setAllFilters: (allFilterState: allFilterStateType) => void;
+  resetAllFilters: () => void;
 };
 
 const useFilterStore = create<filterState>((set) => ({
@@ -40,6 +41,14 @@ const useFilterStore = create<filterState>((set) => ({
       rating: allFilterState.rating,
       removeOutOfStock: allFilterState.removeOutOfStock,
       fastDeliveryOnly: allFilterState.fastDeliveryOnly,
+    })),
+  resetAllFilters: () =>
+    set(() => ({
+      sortBy: "",
+      priceRange: [0, 10000],
+      rating: 1,
+      removeOutOfStock: false,
+      fastDeliveryOnly: false,
     })),
 }));
 
