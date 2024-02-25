@@ -55,6 +55,13 @@ function App() {
           setLogOut();
           toast.error("Session Expired, Login Again");
         } else {
+          let user;
+          if (response.data.sendUser.email) {
+            user = response.data.sendUser;
+          } else {
+            user = { ...response.data.sendUser, email: "" };
+          }
+          setUser(user);
           const cartResponse = await getCartService();
 
           if (cartResponse.status === 200) {
@@ -66,13 +73,6 @@ function App() {
           if (wishlistResponse.status === 200) {
             setWishlistContext(wishlistResponse.data.products);
           }
-          let user;
-          if (response.data.sendUser.email) {
-            user = response.data.sendUser;
-          } else {
-            user = { ...response.data.sendUser, email: "" };
-          }
-          setUser(user);
         }
       }
     })();
