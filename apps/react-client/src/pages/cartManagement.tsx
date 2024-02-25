@@ -82,7 +82,7 @@ const CartPage = () => {
             >
               Cart is Empty
             </Typography>
-            <NavLink to={"/AllProducts"}>
+            <NavLink to={"/"} replace={true}>
               <Button variant="contained">Continue Shopping</Button>
             </NavLink>
           </Stack>
