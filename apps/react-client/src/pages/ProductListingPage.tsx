@@ -20,6 +20,16 @@ const ProductListingPage = () => {
 
   const filteredProducts = getFilteredProducts(products, filterState);
 
+  const resetFilters = useFilterStore((state) => state.resetAllFilters);
+
+  // This effect will trigger whenever the component unmounts (user navigates away)
+  useEffect(() => {
+    return () => {
+      // Reset the global filters state when the component unmounts (user navigates away)
+      resetFilters();
+    };
+  }, [resetFilters]);
+
   const ScrollTrack = ({ children }: { children: JSX.Element }) => {
     const [isSticky, setIsSticky] = useState(false);
 
