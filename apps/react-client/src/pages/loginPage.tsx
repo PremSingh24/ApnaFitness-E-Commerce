@@ -35,8 +35,6 @@ const LoginPage = () => {
   const { errors } = formState;
 
   const setLoginDetails = () => {
-    //// Add Cart Wishlist and User Context here when logging in
-
     setLogin();
     navigate("/", { replace: true });
   };
@@ -53,6 +51,15 @@ const LoginPage = () => {
     } else {
       toast.error(response.message ? response.message : response.data.message);
     }
+  };
+
+  const addGuestCredential = () => {
+    const guestCredentials = {
+      email: "GuestUser@gmail.com",
+      password: "1234@Guest",
+    };
+
+    userData.reset(guestCredentials);
   };
 
   return (
@@ -97,7 +104,7 @@ const LoginPage = () => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
-                  label="Mobile Number/Email Id"
+                  placeholder="Mobile Number/Email Id"
                   id="mobile"
                   type="phone"
                   fullWidth
@@ -120,7 +127,7 @@ const LoginPage = () => {
               </Grid>
               <Grid item xs={12}>
                 <PasswordField
-                  label="Password"
+                  placeholder="Password"
                   id="password"
                   register={register}
                   errors={!!errors.password}
@@ -134,16 +141,33 @@ const LoginPage = () => {
               fullWidth
               size="large"
               variant="contained"
-              sx={{ mt: 4, mb: 6, borderRadius: 6 }}
+              sx={{ mt: 4, mb: 2, borderRadius: 20, fontWeight: "bold" }}
             >
               Login
+            </Button>
+            <Button
+              type="button"
+              fullWidth
+              color="secondary"
+              size="large"
+              variant="contained"
+              sx={{
+                backgroundColor: "rgb(147 51 234)",
+                borderRadius: 20,
+                textTransform: "none",
+                fontWeight: "bold",
+                letterSpacing: "0.5px",
+                mb: 3,
+              }}
+              onClick={() => {
+                addGuestCredential();
+              }}
+            >
+              Use Guest Credentials
             </Button>
             <Grid container justifyContent="space-between">
               <Grid item>
                 <NavLink to="/register">New User? Sign Up</NavLink>
-              </Grid>
-              <Grid item>
-                <NavLink to="/register">Forgot Password?</NavLink>
               </Grid>
             </Grid>
           </Box>
