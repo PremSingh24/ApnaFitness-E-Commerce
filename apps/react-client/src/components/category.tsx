@@ -27,7 +27,7 @@ const Categories = () => {
   };
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ width: "100%", padding: 0 }}>
       {categories.length > 0 ? (
         <Grid container spacing={2} sx={{ marginTop: "20px" }}>
           {categories.map((category) => (
@@ -35,11 +35,13 @@ const Categories = () => {
               <Card
                 sx={{
                   maxHeight: { xs: "100px", sm: "200px", md: "200px" },
-                  maxWidth: { xs: "100px", sm: "345px" },
-                  padding: { xs: "2px", sm: "10px" },
+                  width: { xs: "85px", sm: "auto" },
+                  padding: { xs: "5px", sm: "10px" },
                   marginBottom: "20px",
                   ":hover": { boxShadow: "10" },
                   alignItems: "center",
+                  color: "black",
+                  backgroundColor: "#F0F0F0",
                 }}
               >
                 <CardActionArea
