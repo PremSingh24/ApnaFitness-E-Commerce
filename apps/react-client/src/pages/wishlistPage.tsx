@@ -66,7 +66,7 @@ const WishlistPage = () => {
             >
               Wishlist is Empty
             </Typography>
-            <NavLink to={"/AllProducts"}>
+            <NavLink to={"/"} replace={true}>
               <Button variant="contained">Explore More</Button>
             </NavLink>
           </Stack>
