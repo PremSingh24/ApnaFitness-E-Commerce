@@ -12,7 +12,7 @@ const filterProductsUptoPriceRange = (
   priceRange: number[]
 ) => {
   return data.filter(
-    (product: any) =>
+    (product: productType) =>
       product.currentPrice >= priceRange[0] &&
       product.currentPrice <= priceRange[1]
   );
