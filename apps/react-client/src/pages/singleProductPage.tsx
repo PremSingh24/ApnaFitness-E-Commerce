@@ -5,9 +5,7 @@ import {
   CardContent,
   CardMedia,
   Container,
-  Divider,
   Grid,
-  IconButton,
   Rating,
   Stack,
   Toolbar,
@@ -50,51 +48,6 @@ const SingleProductPage = () => {
 
   const setLogOut = useLoginStore((state) => state.setLogOut);
 
-  const addToWishlist = async (product: any, ProductId: any) => {
-    const response = await addToWishlistService(ProductId);
-    if (response.status === 201) {
-      addToWishlistContext(product);
-      toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Login First");
-    } else {
-      toast.error(response.data.message);
-    }
-  };
-
-  const removeFromWishlist = async (ProductId: any) => {
-    const response = await removeFromWishlistService(ProductId);
-    if (response.status === 201) {
-      removeFromWishlistContext(ProductId);
-      toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Error, Login Again");
-    } else {
-      toast.error(response.data.message);
-    }
-  };
-
-  const addToCart = async (product: any, ProductId: any) => {
-    const response = await addToCartService(ProductId);
-    if (response.status === 201) {
-      addToCartCotext(product, response.data.cartId);
-      toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Error, Login Again");
-    } else {
-      toast.error(response.data.message);
-    }
-  };
-
   useEffect(() => {
     (async () => {
       const response = await getProductService(ProductId);
@@ -107,80 +60,230 @@ const SingleProductPage = () => {
     })();
   }, [ProductId]);
 
+  const CartButton = (product: productType) => {
+    const addToCart = async (product: any, ProductId: any) => {
+      const response = await addToCartService(ProductId);
+      if (response.status === 201) {
+        addToCartCotext(product, response.data.cartId);
+        toast.success(response.data.message);
+      } else if (response.status === 403) {
+        localStorage.setItem("token", "");
+        localStorage.removeItem("loggedIn");
+        setLogOut();
+        toast.error("Error, Login Again");
+      } else {
+        toast.error(response.data.message);
+      }
+    };
+    return (
+      <div style={{ marginLeft: 0, width: "100%", marginBottom: 15 }}>
+        {product.inStock ? (
+          cart.filter((obj) => obj.item._id === product._id).length > 0 ? (
+            <Button
+              variant="outlined"
+              size="large"
+              endIcon={<ShoppingCartIcon />}
+              fullWidth
+              onClick={() =>
+                loggedIn ? navigate("/MyCart") : navigate("/login")
+              }
+            >
+              Go To Cart
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              size="large"
+              endIcon={<ShoppingCartIcon />}
+              fullWidth={true}
+              onClick={() =>
+                loggedIn ? addToCart(product, product._id) : navigate("/login")
+              }
+            >
+              Add To Cart
+            </Button>
+          )
+        ) : (
+          <Button variant="contained" size="large" fullWidth disabled>
+            Out Of Stock
+          </Button>
+        )}
+      </div>
+    );
+  };
+
+  const WishlistButton = (product: productType) => {
+    const contains = wishlist.some((item) => {
+      return JSON.stringify(product) === JSON.stringify(item);
+    });
+
+    const addToWishlist = async (product: any, ProductId: any) => {
+      const response = await addToWishlistService(ProductId);
+      if (response.status === 201) {
+        addToWishlistContext(product);
+        toast.success(response.data.message);
+      } else if (response.status === 403) {
+        localStorage.setItem("token", "");
+        localStorage.removeItem("loggedIn");
+        setLogOut();
+        toast.error("Login First");
+      } else {
+        toast.error(response.data.message);
+      }
+    };
+
+    const removeFromWishlist = async (ProductId: any) => {
+      const response = await removeFromWishlistService(ProductId);
+      if (response.status === 201) {
+        removeFromWishlistContext(ProductId);
+        toast.success(response.data.message);
+      } else if (response.status === 403) {
+        localStorage.setItem("token", "");
+        localStorage.removeItem("loggedIn");
+        setLogOut();
+        toast.error("Error, Login Again");
+      } else {
+        toast.error(response.data.message);
+      }
+    };
+
+    return (
+      <div style={{ marginLeft: 0, width: "100%" }}>
+        {contains ? (
+          <Button
+            variant="outlined"
+            size="large"
+            color="inherit"
+            fullWidth
+            endIcon={<FavoriteIcon />}
+            onClick={() =>
+              loggedIn ? removeFromWishlist(product._id) : navigate("/login")
+            }
+          >
+            Remove From Wishlist
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            size="large"
+            color="error"
+            fullWidth
+            endIcon={<FavoriteIcon />}
+            onClick={() =>
+              loggedIn
+                ? addToWishlist(product, product._id)
+                : navigate("/login")
+            }
+          >
+            Add To Wishlist
+          </Button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       {product ? (
-        <Container maxWidth="xl" sx={{ marginTop: "auto" }}>
+        <Container
+          maxWidth="xl"
+          sx={{ marginTop: "4rem", marginBottom: "4rem" }}
+        >
           <Toolbar />
           <Grid
             container
             sx={{
-              marginTop: "20px",
               display: "flex",
+              flexWrap: "wrap",
               justifyContent: "center",
-              flexDirection: "row",
+              alignItems: "center",
             }}
           >
             <Card
               sx={{
-                maxHeight: 710,
-                maxWidth: 945,
+                height: 500,
+                width: 400,
                 padding: "10px",
-                marginBottom: "20px",
                 position: "relative",
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
-                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 0,
+                boxShadow: 0,
+                "@media (min-width: 600px)": {
+                  boxShadow: 0,
+                },
+                "@media (min-width: 960px)": {
+                  boxShadow: 1,
+                },
+                "@media (min-width: 1280px)": {
+                  boxShadow: 1,
+                },
               }}
             >
               <CardMedia
                 component="img"
-                height="400"
+                height="5000"
                 image={product.image}
                 alt={product.title}
-                sx={{ objectFit: "contain", aspectRatio: "2/2" }}
+                sx={{ objectFit: "contain", aspectRatio: "1" }}
               />
 
               {product.isDeliveredFast ? (
-                <IconButton
-                  size="large"
-                  aria-label="show wishlist"
-                  color="error"
-                  sx={{ position: "absolute", top: 0, left: 0 }}
-                  disabled
+                <Typography
+                  variant="body1"
+                  color={"white"}
+                  sx={{
+                    backgroundColor: "red",
+                    position: "absolute",
+                    top: 10,
+                    left: 0,
+                    paddingLeft: 2,
+                    paddingRight: 1,
+                  }}
                 >
-                  <Typography
-                    variant="body2"
-                    color={"white"}
-                    sx={{ backgroundColor: "red" }}
-                  >
-                    Fast Delivery
-                  </Typography>
-                </IconButton>
+                  Fast Delivery
+                </Typography>
               ) : null}
             </Card>
 
             <Card
               sx={{
-                maxHeight: 710,
-                maxWidth: 945,
+                height: 500,
+                width: 400,
                 padding: "10px",
-                marginBottom: "20px",
                 display: "flex",
                 justifyContent: "start",
-                flexDirection: "row",
+                flexDirection: "column",
+                borderRadius: 0,
+                boxShadow: 0,
+                "@media (min-width: 600px)": {
+                  boxShadow: 0,
+                },
+                "@media (min-width: 960px)": {
+                  boxShadow: 1,
+                },
+                "@media (min-width: 1280px)": {
+                  boxShadow: 1,
+                },
               }}
             >
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+              <CardContent sx={{ width: "100%" }}>
+                <Typography gutterBottom variant="h5" fontWeight={"bold"}>
                   {product.title}
                 </Typography>
 
-                <Typography variant="body1" color="text.secondary">
+                <Typography
+                  variant="body1"
+                  fontSize={"1.1rem"}
+                  color="text.secondary"
+                  gutterBottom
+                >
                   {product.description}
                 </Typography>
                 <Rating name="read-only" value={product.rating} readOnly />
-                <Divider />
+
                 <div
                   style={{
                     display: "flex",
@@ -188,19 +291,39 @@ const SingleProductPage = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Stack direction={"row"} gap={1} padding={"5px"}>
+                  <Stack
+                    direction={"row"}
+                    gap={1}
+                    padding={"5px"}
+                    sx={{ alignItems: "center" }}
+                  >
                     <DoneIcon color="success" />
                     <Typography variant="h6">Durable</Typography>
                   </Stack>
-                  <Stack direction={"row"} gap={1} padding={"5px"}>
+                  <Stack
+                    direction={"row"}
+                    gap={1}
+                    padding={"5px"}
+                    sx={{ alignItems: "center" }}
+                  >
                     <DoneIcon color="success" />
                     <Typography variant="h6">Affordable</Typography>
                   </Stack>
-                  <Stack direction={"row"} gap={1} padding={"5px"}>
+                  <Stack
+                    direction={"row"}
+                    gap={1}
+                    padding={"5px"}
+                    sx={{ alignItems: "center" }}
+                  >
                     <DoneIcon color="success" />
                     <Typography variant="h6">Trusted</Typography>
                   </Stack>
-                  <Stack direction={"row"} gap={1} padding={"5px"}>
+                  <Stack
+                    direction={"row"}
+                    gap={1}
+                    padding={"5px"}
+                    sx={{ alignItems: "center" }}
+                  >
                     <DoneIcon color="success" />
                     <Typography variant="h6">Authentic</Typography>
                   </Stack>
@@ -209,120 +332,57 @@ const SingleProductPage = () => {
                 <div
                   style={{
                     display: "flex",
-                    justifyContent: "flex-start",
+                    alignItems: "center",
                     flexDirection: "row",
                     marginTop: "20px",
+                    marginLeft: 0,
                   }}
                 >
                   <Typography
                     variant="h5"
                     color="text.primary"
-                    paddingRight={1}
+                    fontWeight={"bold"}
                   >
-                    ₹{product.currentPrice}
+                    ₹{product.currentPrice} /-
                   </Typography>
                   <Typography
-                    variant="body2"
+                    variant="h5"
                     color="text.secondary"
-                    fontSize={"1.2rem"}
-                    paddingRight={1}
+                    fontSize={"1.1rem"}
+                    marginLeft={1}
                     style={{ textDecoration: "line-through" }}
                   >
                     ₹{product.initialPrice}
                   </Typography>
-                  <Typography variant="body2" color="green" fontSize={"1.2rem"}>
+                  <Typography
+                    variant="body2"
+                    color="green"
+                    fontSize={"1rem"}
+                    marginLeft={1}
+                    fontWeight={"bold"}
+                  >
                     {Math.round(
                       100 - (product.currentPrice / product.initialPrice) * 100
                     )}
                     %OFF
                   </Typography>
                 </div>
-
-                <CardActions
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    marginTop: "30px",
-                    justifyContent: "center",
-                  }}
-                >
-                  {product.inStock ? (
-                    cart.filter((obj) => obj.item === product).length > 0 ? (
-                      <Button
-                        variant="contained"
-                        size="medium"
-                        fullWidth
-                        sx={{ marginBottom: "10px" }}
-                        endIcon={<ShoppingCartIcon />}
-                        onClick={() =>
-                          loggedIn ? navigate("/cart") : navigate("/login")
-                        }
-                      >
-                        Go To Cart
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        size="medium"
-                        fullWidth
-                        sx={{ marginBottom: "10px" }}
-                        endIcon={<ShoppingCartIcon />}
-                        onClick={() =>
-                          loggedIn
-                            ? addToCart(product, product._id)
-                            : navigate("/login")
-                        }
-                      >
-                        Add To Cart
-                      </Button>
-                    )
-                  ) : (
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      color="error"
-                      fullWidth
-                      sx={{ marginBottom: "10px" }}
-                      disabled
-                    >
-                      Out Of Stock
-                    </Button>
-                  )}
-                  {wishlist.includes(product) ? (
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      color="secondary"
-                      fullWidth
-                      sx={{ marginBottom: "10px", marginRight: "6px" }}
-                      endIcon={<FavoriteIcon />}
-                      onClick={() =>
-                        loggedIn
-                          ? removeFromWishlist(product._id)
-                          : navigate("/login")
-                      }
-                    >
-                      Remove From Wishlist
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      color="secondary"
-                      fullWidth
-                      sx={{ marginBottom: "10px", marginRight: "6px" }}
-                      endIcon={<FavoriteIcon />}
-                      onClick={() =>
-                        loggedIn
-                          ? addToWishlist(product, product._id)
-                          : navigate("/login")
-                      }
-                    >
-                      Add To Wishlist
-                    </Button>
-                  )}
-                </CardActions>
               </CardContent>
+              <CardActions
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  marginTop: "30px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 0,
+                }}
+              >
+                {CartButton(product)}
+
+                {WishlistButton(product)}
+              </CardActions>
             </Card>
           </Grid>
         </Container>
