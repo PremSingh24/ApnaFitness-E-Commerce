@@ -78,7 +78,7 @@ const SingleProductPage = () => {
     return (
       <div style={{ marginLeft: 0, width: "100%", marginBottom: 15 }}>
         {product.inStock ? (
-          cart.filter((obj) => obj.item._id === product._id).length > 0 ? (
+          cart.find((obj) => obj.item._id === product._id) ? (
             <Button
               variant="outlined"
               size="large"
