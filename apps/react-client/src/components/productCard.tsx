@@ -307,21 +307,20 @@ const ProductCard = ({ products }: { products: productType[] }) => {
                   {wishlistButton(product)}
 
                   {product.isDeliveredFast ? (
-                    <IconButton
-                      size="large"
-                      aria-label="fast delivery"
-                      color="error"
-                      sx={{ position: "absolute", top: 0, left: 0 }}
-                      disabled
+                    <Typography
+                      variant="body2"
+                      color={"white"}
+                      sx={{
+                        backgroundColor: "red",
+                        paddingLeft: 2,
+                        paddingRight: 1,
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      }}
                     >
-                      <Typography
-                        variant="body2"
-                        color={"white"}
-                        sx={{ backgroundColor: "red" }}
-                      >
-                        Fast Delivery
-                      </Typography>
-                    </IconButton>
+                      Fast Delivery
+                    </Typography>
                   ) : null}
                 </Card>
               </Grid>
