@@ -235,6 +235,7 @@ const NavBar = () => {
                       borderRadius: 1,
                     }}
                   >
+                    {/* Search Results */}
                     <List
                       disablePadding
                       sx={{ width: "100%", alignItems: "center" }}
