@@ -25,13 +25,6 @@ const CartProduct = () => {
   const updateCartContext = useCartStore((state) => state.updateCart);
   const removeCartContext = useCartStore((state) => state.removeFromCart);
 
-  let cartPrice = 0;
-  cartContext.map((obj) =>
-    obj.item.currentPrice
-      ? (cartPrice += obj.item.currentPrice)
-      : (cartPrice += 0)
-  );
-
   const updateCart = async (cartId: any, quantity: number) => {
     const response = await updateCartService(cartId, quantity);
 
