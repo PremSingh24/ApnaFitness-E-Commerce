@@ -132,7 +132,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
     return (
       <>
         {product.inStock ? (
-          cart.filter((obj) => obj.item._id === product._id).length > 0 ? (
+          cart.find((obj) => obj.item._id === product._id) ? (
             <Button
               variant="outlined"
               size="medium"
