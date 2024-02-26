@@ -126,47 +126,45 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
   };
 
   const cartButton = (product: productType) => {
-    if (product.inStock) {
-      if (cart.filter((obj) => obj.item._id === product._id).length > 0) {
-        return (
-          <Button
-            variant="outlined"
-            size="medium"
-            fullWidth
-            onClick={() =>
-              loggedIn ? navigate("/MyCart") : navigate("/login")
-            }
-          >
-            Go To Cart
-          </Button>
-        );
-      } else {
-        return (
+    return (
+      <>
+        {product.inStock ? (
+          cart.find((obj) => obj.item._id === product._id) ? (
+            <Button
+              variant="outlined"
+              size="medium"
+              fullWidth
+              onClick={() =>
+                loggedIn ? navigate("/MyCart") : navigate("/login")
+              }
+            >
+              Go To Cart
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              size="medium"
+              fullWidth
+              onClick={() =>
+                loggedIn ? addToCart(product, product._id) : navigate("/login")
+              }
+            >
+              Add To Cart
+            </Button>
+          )
+        ) : (
           <Button
             variant="contained"
             size="medium"
+            color="error"
             fullWidth
-            onClick={() =>
-              loggedIn ? addToCart(product, product._id) : navigate("/login")
-            }
+            disabled
           >
-            Add To Cart
+            Out Of Stock
           </Button>
-        );
-      }
-    } else {
-      return (
-        <Button
-          variant="contained"
-          size="medium"
-          color="error"
-          fullWidth
-          disabled
-        >
-          Out Of Stock
-        </Button>
-      );
-    }
+        )}
+      </>
+    );
   };
 
   return (
