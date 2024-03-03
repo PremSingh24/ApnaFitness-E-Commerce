@@ -38,7 +38,7 @@ const CheckOutForm = () => {
   return (
     <StyledPaper>
       <Typography variant="h4" gutterBottom>
-        Order Summary
+        Cart Summary
       </Typography>
       <SummaryItem>
         <Typography variant="body1" sx={{ fontSize: "1.23rem" }}>
@@ -81,7 +81,13 @@ const CheckOutForm = () => {
       <Button
         variant="contained"
         fullWidth
-        sx={{ marginTop: "20px", backgroundColor: "#0066ff" }}
+        sx={{
+          marginTop: "20px",
+          backgroundColor: "#0066ff",
+          ":hover": {
+            backgroundColor: "#0052EB  ",
+          },
+        }}
       >
         Proceed To Check Out
       </Button>
