@@ -162,19 +162,19 @@ const NavBar = () => {
                 width: { xs: "100vw", md: "auto" },
                 bottom: { xs: 8, md: "auto" },
                 position: { xs: "relative", md: "-webkit-sticky" },
+                objectFit: "contain",
               }}
               onClick={() => navigate("/")}
             >
               <img
-                src={"/logo.png"}
+                src={"/logo.webp"}
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  maxWidth: "40px",
-                  maxHeight: "40px",
+                  maxWidth: "50px",
+                  maxHeight: "43px",
                   objectFit: "contain",
-                  aspectRatio: "8/10",
                 }}
               />
               <Typography
