@@ -3,7 +3,7 @@ import { Register } from "./pages/registerPage";
 import NavBar from "./components/navbar";
 import ErrorPage from "./pages/errorPage";
 import LoginPage from "./pages/loginPage";
-import SignUp from "./pages/homePage";
+import HomePage from "./pages/homePage";
 import SingleProductPage from "./pages/singleProductPage";
 import { Suspense, lazy, useEffect } from "react";
 import useProductStore from "./contexts/productListing.context";
@@ -21,7 +21,7 @@ import getCartService from "./services/cartServices/getCart.service";
 import useCartStore from "./contexts/cart.context";
 import getWishlistService from "./services/wishlistServices/getWishlist.service";
 import useWishlistStore from "./contexts/wishlist.context";
-import useUsertStore from "./contexts/user.context";
+import useUserStore from "./contexts/user.context";
 import PhoneBottomNavigation from "./components/phoneBottomNavigation";
 import ProfileTab from "./pages/profileTab";
 import OrdersTab from "./pages/ordersTab";
@@ -34,7 +34,7 @@ function App() {
 
   const setCategories = useCategoryStore((state) => state.setCategories);
 
-  const setUser = useUsertStore((state) => state.setUser);
+  const setUser = useUserStore((state) => state.setUser);
 
   const loggedIn =
     useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
@@ -110,7 +110,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
 
-          <Route path="/" element={<SignUp />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/products/:ProductId" element={<SingleProductPage />} />
           <Route
             path="/AllProducts"
