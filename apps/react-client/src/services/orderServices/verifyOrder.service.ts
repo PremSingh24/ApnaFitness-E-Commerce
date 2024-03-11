@@ -2,7 +2,7 @@ import axios from "axios";
 import { addressType, cartType } from "common";
 
 const verifyOrderService = async (
-  cart: cartType,
+  cart: cartType[],
   amount: number,
   deliveryAddress: addressType
 ) => {

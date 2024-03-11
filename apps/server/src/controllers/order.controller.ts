@@ -52,7 +52,7 @@ export const verifyOrderHandler = async (req: Request, res: Response) => {
       );
 
       if (validAddress.success) {
-        const userCart: cartType = req.body.cart;
+        const userCart: cartType[] = req.body.cart;
         let totalCartAmount = 0;
         for (const cartItem of user.cart) {
           const item: any = cartItem.item;

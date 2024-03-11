@@ -1,15 +1,9 @@
 import { create } from "zustand";
-import { productType } from "common";
-
-type cartType = {
-  item: productType;
-  quantity: number;
-  _id: any;
-};
+import { cartType, productType } from "common";
 
 type cartState = {
-  cart: cartType[];
-  setCart: (products: cartType[]) => void;
+  cart: cartType[] | [];
+  setCart: (products: cartType[] | []) => void;
   addToCart: (item: productType, _id: any) => void;
   updateCart: (_id: any, quantity: number) => void;
   removeFromCart: (_id: any) => void;

@@ -21,7 +21,7 @@ const OrderSummary = ({
   orderPrice,
 }: {
   setCurrentCartStep: React.Dispatch<React.SetStateAction<string>>;
-  orderItems: cartType;
+  orderItems: cartType[];
   deliveryAddress: addressType | null;
   orderPrice: number;
 }) => {
