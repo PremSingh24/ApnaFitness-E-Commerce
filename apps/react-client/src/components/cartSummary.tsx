@@ -29,11 +29,19 @@ const TotalAmount = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-const CheckOutForm = () => {
-  const cartContext = useCartStore((state) => state.cart);
+const CartSummary = ({
+  setCurrentCartStep,
+  setOrderItems,
+  setOrderPrice,
+}: {
+  setCurrentCartStep: React.Dispatch<React.SetStateAction<string>>;
+  setOrderItems: React.Dispatch<React.SetStateAction<any[]>>;
+  setOrderPrice: React.Dispatch<React.SetStateAction<number>>;
+}) => {
+  const cart = useCartStore((state) => state.cart);
 
   let cartPrice = 0;
-  cartContext.map((obj) => (cartPrice += obj.item.currentPrice * obj.quantity));
+  cart.map((obj) => (cartPrice += obj.item.currentPrice * obj.quantity));
 
   return (
     <StyledPaper>
@@ -42,7 +50,7 @@ const CheckOutForm = () => {
       </Typography>
       <SummaryItem>
         <Typography variant="body1" sx={{ fontSize: "1.23rem" }}>
-          Price ({cartContext.length} Items):
+          Price ({cart.length} Items):
         </Typography>
         <Typography variant="body1" sx={{ fontSize: "1.23rem" }}>
           ₹{cartPrice}
@@ -61,7 +69,7 @@ const CheckOutForm = () => {
           Delivery Charge:
         </Typography>
         <Typography variant="body1" sx={{ fontSize: "1.23rem" }}>
-          ₹{45}
+          ₹{45 * cart.length}
         </Typography>
       </SummaryItem>
       <Divider sx={{ width: "100%" }} />
@@ -74,7 +82,7 @@ const CheckOutForm = () => {
           color="black"
           sx={{ marginTop: "10px", fontWeight: "bold" }}
         >
-          ₹{cartPrice + 45}
+          ₹{cartPrice + 45 * cart.length}
         </Typography>
       </TotalAmount>
       <Divider sx={{ width: "100%" }} />
@@ -88,6 +96,11 @@ const CheckOutForm = () => {
             backgroundColor: "#0052EB  ",
           },
         }}
+        onClick={() => {
+          setOrderItems(cart);
+          setOrderPrice(cartPrice);
+          setCurrentCartStep("2");
+        }}
       >
         Proceed To Check Out
       </Button>
@@ -95,4 +108,4 @@ const CheckOutForm = () => {
   );
 };
 
-export default CheckOutForm;
+export default CartSummary;
