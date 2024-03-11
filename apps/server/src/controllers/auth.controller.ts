@@ -21,7 +21,7 @@ export const authenticateUserHandler = async (req: Request, res: Response) => {
 };
 
 /*
- * This handler handles user signups.
+ * This handler handles user signup.
  * send POST Request at /api/v1/auth/register
  * body contains {firstName, LastName, mobile, email(optional), password}
  */
@@ -30,8 +30,6 @@ export const registerUserHandler = async (req: Request, res: Response) => {
   const registerUser = registerUserValidation.safeParse(req.body);
 
   if (registerUser.success) {
-    console.log(registerUser);
-
     try {
       //check if Mobile Number or email already exists in DB
 
@@ -95,14 +93,12 @@ export const registerUserHandler = async (req: Request, res: Response) => {
         .status(500)
         .json({ message: "Something Went Wrong,Server Error" })
         .end();
-      console.log(error);
     }
   } else {
     res
       .status(400)
       .json({ message: fromZodError(registerUser.error).message.toString() })
       .end();
-    console.log(fromZodError(registerUser.error));
   }
 };
 
@@ -127,7 +123,6 @@ export const loginUserHandler = async (req: Request, res: Response) => {
 
       if (user) {
         // Verify the Password
-        console.log("here");
 
         const passwordMatched = await bcrypt.compare(
           loginUser.data.password,

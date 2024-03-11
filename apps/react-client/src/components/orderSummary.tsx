@@ -39,7 +39,7 @@ const OrderSummary = ({
       if (response.status === 200) {
         placeOrder(response.data.key, response.data.order);
       } else {
-        console.log(response);
+        toast.error("Something Went Wrong!");
       }
     }
   };
@@ -64,7 +64,7 @@ const OrderSummary = ({
               setCart([]);
               navigate("/user/myorders");
             } else {
-              console.log("failed verification");
+              toast.error("Something Went Wrong!");
             }
           }
         },
