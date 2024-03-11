@@ -6,12 +6,84 @@ import { NavLink } from "react-router-dom";
 import useCartStore from "../contexts/cart.context";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CartProduct from "../components/cartProduct";
-import CheckOutForm from "../components/checkoutForm";
+import CartSummary from "../components/cartSummary";
+import { useState } from "react";
+import DeliveryAddress from "../components/deliveryAddress";
+import OrderSummary from "../components/orderSummary";
+import { addressType } from "common";
 
 const theme = createTheme();
 
 const CartPage = () => {
+  const [currentCartStep, setCurrentCartStep] = useState("1");
+  const [orderItems, setOrderItems] = useState<any>([]);
+  const [orderPrice, setOrderPrice] = useState<number>(0);
+
+  const [deliveryAddress, setDeliveryAddress] = useState<addressType | null>(
+    null
+  );
   const cart = useCartStore((state) => state.cart);
+
+  const currentPageTitle = () => {
+    switch (currentCartStep) {
+      case "1":
+        if (cart.length > 0) {
+          return `My Cart (${cart.length})`;
+        } else {
+          return `My Cart `;
+        }
+
+      case "2":
+        return "Choose An Address";
+      case "3":
+        return "Order Summary";
+      default:
+        return "My Cart";
+    }
+  };
+
+  const CurrentCartStepComponent = () => {
+    switch (currentCartStep) {
+      case "1":
+        return (
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: "flex", justifyContent: "center" }}
+          >
+            <Grid item xs={12} md={7} lg={5} sx={{ width: "50%" }}>
+              <CartProduct />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <CartSummary
+                setCurrentCartStep={setCurrentCartStep}
+                setOrderItems={setOrderItems}
+                setOrderPrice={setOrderPrice}
+              />
+            </Grid>
+          </Grid>
+        );
+      case "2":
+        return (
+          <DeliveryAddress
+            setCurrentCartStep={setCurrentCartStep}
+            deliveryAddress={deliveryAddress}
+            setDeliveryAddress={setDeliveryAddress}
+          />
+        );
+      case "3":
+        return (
+          <OrderSummary
+            setCurrentCartStep={setCurrentCartStep}
+            orderItems={orderItems}
+            deliveryAddress={deliveryAddress}
+            orderPrice={orderPrice}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -36,32 +108,25 @@ const CartPage = () => {
         >
           <Typography
             color={"black"}
-            variant="h3"
+            variant="h4"
             textAlign={"center"}
             paddingTop={"10px"}
+            fontWeight={"bold"}
           >
-            My Cart
+            {currentPageTitle()}
           </Typography>
-          <ShoppingCartIcon
-            sx={{ fontSize: "2.6rem", marginTop: "10px" }}
-            color="info"
-          />
+          {currentCartStep === "1" ? (
+            <ShoppingCartIcon
+              sx={{ fontSize: "2.6rem", marginTop: "10px" }}
+              color="info"
+            />
+          ) : null}
         </Stack>
-
-        <Toolbar />
         {cart.length > 0 ? (
-          <Grid
-            container
-            spacing={2}
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <Grid item xs={12} md={7} lg={5} sx={{ width: "50%" }}>
-              <CartProduct />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <CheckOutForm />
-            </Grid>
-          </Grid>
+          <div>
+            <Toolbar />
+            <CurrentCartStepComponent />
+          </div>
         ) : (
           <Stack
             direction={"column"}
@@ -83,7 +148,15 @@ const CartPage = () => {
               Cart is Empty
             </Typography>
             <NavLink to={"/"} replace={true}>
-              <Button variant="contained">Continue Shopping</Button>
+              <Button
+                variant="contained"
+                sx={{
+                  fontWeight: "bold",
+                  background: "#0073e6",
+                }}
+              >
+                Continue Shopping
+              </Button>
             </NavLink>
           </Stack>
         )}
