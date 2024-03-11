@@ -27,6 +27,7 @@ import { useLoginStore } from "../contexts";
 import { useNavigate } from "react-router-dom";
 import useWishlistStore from "../contexts/wishlist.context";
 import useCartStore from "../contexts/cart.context";
+import logo from "../assets/logo.webp";
 
 const theme = createTheme();
 
@@ -167,7 +168,7 @@ const NavBar = () => {
               onClick={() => navigate("/")}
             >
               <img
-                src={"/logo.webp"}
+                src={logo}
                 style={{
                   display: "flex",
                   justifyContent: "center",
