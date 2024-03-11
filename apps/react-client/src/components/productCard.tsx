@@ -186,7 +186,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
                 xs={6}
                 sm={6}
                 md={4}
-                lg={3}
+                lg={4}
                 xl={3}
                 key={product._id}
                 sx={{ marginLeft: -0.6, marginRight: 0.5 }}
