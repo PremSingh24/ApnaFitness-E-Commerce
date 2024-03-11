@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { Box, Card, CardContent, styled } from "@mui/material";
-import useUsertStore from "../contexts/user.context";
+import useUserStore from "../contexts/user.context";
 import LogOutButton from "../components/logOutButton";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -12,7 +12,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     width: "480px",
   },
   margin: "auto",
-  marginTop: "4rem",
+  marginTop: "2rem",
   textAlign: "center",
   borderRadius: theme.spacing(2),
   boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.1)",
@@ -39,16 +39,23 @@ const IconWrapper = styled("span")(({ theme }) => ({
 }));
 
 const ProfileTab = () => {
-  const user = useUsertStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   return (
     <>
+      <Typography
+        marginTop={"1rem"}
+        variant="h5"
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        fontWeight={"bold"}
+      >
+        My Profile
+      </Typography>
       <StyledCard>
         <StyledCardContent>
           <PersonIcon sx={{ fontSize: 60, marginBottom: 1 }} />
-          <Typography variant="h5" gutterBottom>
-            User Profile
-          </Typography>
 
           <ProfileItem>
             <IconWrapper>

@@ -25,7 +25,8 @@ const AddressTab = () => {
         alignItems={"center"}
         display={"flex"}
         justifyContent={"center"}
-        marginTop={"1.2rem"}
+        marginTop={"1rem"}
+        fontWeight={"bold"}
       >
         My Addresses
       </Typography>
