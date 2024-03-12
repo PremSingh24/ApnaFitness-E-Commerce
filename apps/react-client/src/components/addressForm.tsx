@@ -140,7 +140,7 @@ const AddressForm = ({
       open={formOpen}
       sx={{
         margin: "auto",
-        width: { xs: "400px", sm: "560px" },
+        width: { xs: "100%", sm: "560px" },
         height: { xs: "1000px", sm: "850px" },
         display: "flex",
         justifyContent: "center",

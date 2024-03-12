@@ -138,6 +138,7 @@ const NavBar = () => {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           sx={{
+            width: "100%",
             position: "fixed",
             top: { xs: isSticky ? -43 : 0, md: 0 },
             zIndex: theme.zIndex.drawer + 1,

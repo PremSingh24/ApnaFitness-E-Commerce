@@ -121,135 +121,133 @@ const DeliveryAddress = ({
   };
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          flexDirection: "column",
-          alignItems: "center",
-          marginBottom: "6rem",
-          marginTop: "-3rem",
-        }}
-      >
-        {/* Show Address Card  */}
-        {allAddress.map((address) => (
-          <RadioGroup
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
-            value={deliveryAddress}
-            onChange={() => {
-              setDeliveryAddress(address);
-            }}
-            key={address._id}
-          >
-            <FormControlLabel
-              value={address}
-              control={<Radio />}
-              label={
-                <Card
-                  sx={{
-                    width: { xs: 320, sm: 380 },
-                    height: 200,
-                    marginBottom: { xs: 2, sm: 1 },
-                    border: "1px solid black",
-                    overflow: "clip",
-                    position: "relative",
-                    backgroundColor: "#DCDCDC",
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: "6rem",
+        marginTop: "-3rem",
+      }}
+    >
+      {/* Show Address Card  */}
+      {allAddress.map((address) => (
+        <RadioGroup
+          aria-labelledby="demo-controlled-radio-buttons-group"
+          name="controlled-radio-buttons-group"
+          value={deliveryAddress}
+          onChange={() => {
+            setDeliveryAddress(address);
+          }}
+          key={address._id}
+        >
+          <FormControlLabel
+            value={address}
+            control={<Radio />}
+            label={
+              <Card
+                sx={{
+                  width: { xs: 299, sm: 380 },
+                  height: 200,
+                  marginBottom: { xs: 2, sm: 1 },
+                  border: "1px solid black",
+                  overflow: "clip",
+                  position: "relative",
+                  backgroundColor: "#DCDCDC",
+                }}
+              >
+                <CardContent>
+                  <Typography variant="subtitle1">
+                    <strong>{address.name}</strong>
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    {address.street}
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    {address.city}, {address.state}, {address.pincode}
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    Country: {address.country}
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    Mobile: {address.mobile}
+                  </Typography>
+                </CardContent>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    position: "absolute",
+                    bottom: 5,
+                    right: 5,
+                    width: "100%",
                   }}
                 >
-                  <CardContent>
-                    <Typography variant="subtitle1">
-                      <strong>{address.name}</strong>
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      {address.street}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      {address.city}, {address.state}, {address.pincode}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      Country: {address.country}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      Mobile: {address.mobile}
-                    </Typography>
-                  </CardContent>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      position: "absolute",
-                      bottom: 5,
-                      right: 5,
-                      width: "100%",
-                    }}
-                  >
-                    <EditAddressButton address={address} />
-                  </div>
-                </Card>
-              }
-            />
-          </RadioGroup>
-        ))}
-        <Box
+                  <EditAddressButton address={address} />
+                </div>
+              </Card>
+            }
+          />
+        </RadioGroup>
+      ))}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "start",
+          marginBottom: "1.5rem",
+          width: { xs: 300, sm: 360 },
+        }}
+      >
+        <AddAddressButton />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: { xs: 320, sm: 400 },
+        }}
+      >
+        <Button
+          variant="contained"
           sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "start",
-            marginBottom: "1.5rem",
-            width: { xs: 300, sm: 360 },
+            backgroundColor: "#E5E4E2",
+            fontWeight: "bold",
+            ":hover": {
+              backgroundColor: "gray",
+            },
+            marginLeft: { xs: 1, sm: 2 },
+          }}
+          onClick={() => {
+            setCurrentCartStep("1");
           }}
         >
-          <AddAddressButton />
-        </Box>
-        <Box
+          <Typography sx={{ color: "black" }}>Back</Typography>
+        </Button>
+        <Button
+          variant="contained"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: { xs: 320, sm: 400 },
+            fontWeight: "bold",
+            backgroundColor: "#0066ff",
+            ":hover": {
+              backgroundColor: "#0052EB  ",
+            },
+          }}
+          onClick={() => {
+            if (deliveryAddress) {
+              setCurrentCartStep("3");
+            } else {
+              toast.error("Please Select Delivery Address");
+            }
           }}
         >
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "#E5E4E2",
-              fontWeight: "bold",
-              ":hover": {
-                backgroundColor: "gray",
-              },
-              marginLeft: { xs: 1, sm: 2 },
-            }}
-            onClick={() => {
-              setCurrentCartStep("1");
-            }}
-          >
-            <Typography sx={{ color: "black" }}>Back</Typography>
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              fontWeight: "bold",
-              backgroundColor: "#0066ff",
-              ":hover": {
-                backgroundColor: "#0052EB  ",
-              },
-            }}
-            onClick={() => {
-              if (deliveryAddress) {
-                setCurrentCartStep("3");
-              } else {
-                toast.error("Please Select Delivery Address");
-              }
-            }}
-          >
-            Proceed
-          </Button>
-        </Box>
-      </div>
-    </>
+          Proceed
+        </Button>
+      </Box>
+    </div>
   );
 };
 

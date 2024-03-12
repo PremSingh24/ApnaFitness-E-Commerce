@@ -65,7 +65,7 @@ const CartProduct = () => {
         <Grid item>
           <NavLink to={`/products/${cart.item._id}`}>
             <ButtonBase
-              sx={{ width: { xs: 128, sm: 150 }, height: { xs: 128, sm: 150 } }}
+              sx={{ width: { xs: 124, sm: 150 }, height: { xs: 128, sm: 150 } }}
             >
               <Img alt="complex" src={cart.item.image} />
             </ButtonBase>
