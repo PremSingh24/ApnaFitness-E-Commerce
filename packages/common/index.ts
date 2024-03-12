@@ -11,3 +11,5 @@ export { productValidation } from "./validators/productValidator";
 export type { productType } from "./schemas/productSchema";
 
 export type { cartType } from "./schemas/cartSchema";
+
+export type { orderType } from "./schemas/orderSchema";
