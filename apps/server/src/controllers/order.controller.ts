@@ -14,7 +14,7 @@ import crypto from "crypto";
 
 /*
  * This handler handles getting items from user's orders.
- * send GET Request at /api/v1/order/myorder
+ * send GET Request at /api/v1/order/myOrder
  */
 
 export const getOrderItemsHandler = async (req: Request, res: Response) => {
@@ -74,6 +74,9 @@ export const verifyOrderHandler = async (req: Request, res: Response) => {
         }
 
         if (totalCartAmount === req.body.amount) {
+          //Locking the User's Cart in user.lockedOrder for safety of order
+          user.lockedOrders = user.cart;
+          await user.save();
           const options = {
             amount: totalCartAmount * 100, // amount in the smallest currency unit
             currency: "INR",
@@ -100,7 +103,7 @@ export const verifyOrderHandler = async (req: Request, res: Response) => {
 
 /*
  * This handler handles verifying payment and adding items in user's orders.
- * send POST Request at /api/v1/order/verifypayment
+ * send POST Request at /api/v1/order/VerifyPayment
  */
 
 export const verifyPaymentHandler = async (req: Request, res: Response) => {
@@ -118,36 +121,40 @@ export const verifyPaymentHandler = async (req: Request, res: Response) => {
     const generated_signature = hmac.digest("hex");
     if (generated_signature === razorpay_signature) {
       const user = await Users.findById(req.headers["user"]).populate(
-        "cart.item"
+        "lockedOrders.item"
       );
       if (user) {
-        user.cart.map(async (cartItem: any) => {
+        user.lockedOrders.map(async (lockedOrder: any) => {
           const order = new Orders({
             orderedBy: {
               name: user.firstName + " " + user.lastName,
               mobile: user.mobile,
             },
             product: {
-              name: cartItem.item.title,
-              image: cartItem.item.image,
-              quantity: cartItem.quantity,
-              price: cartItem.item.currentPrice,
+              title: lockedOrder.item.title,
+              image: lockedOrder.item.image,
+              quantity: lockedOrder.quantity,
+              price: lockedOrder.item.currentPrice,
+              _id: lockedOrder.item._id,
             },
             deliveryAddress: req.body.deliveryAddress,
             priceDetails: {
               deliveryCharge: 45,
               discount: 0,
-              totalAmount: cartItem.item.currentPrice + 45,
+              totalAmount: lockedOrder.item.currentPrice + 45,
             },
             paymentId: razorpay_payment_id,
           });
           await order.save();
 
           await user.updateOne({ $addToSet: { orders: order } });
+          await user.updateOne({ $pull: { cart: { _id: lockedOrder._id } } });
         });
       }
 
-      res.status(201).json({ message: "Order Placed Successful" });
+      res.status(201).json({
+        message: "Order Placed Successful",
+      });
     } else {
       res.status(400).json({ message: "Transaction failed" });
     }

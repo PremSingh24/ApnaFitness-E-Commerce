@@ -80,6 +80,8 @@ const UserSchema = new mongoose.Schema({
     },
   ],
 
+  lockedOrders: [cartItemSchema],
+
   orders: [
     {
       type: mongoose.Schema.Types.ObjectId,

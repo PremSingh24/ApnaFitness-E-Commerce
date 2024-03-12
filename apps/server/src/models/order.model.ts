@@ -13,7 +13,7 @@ const OrderSchema = new mongoose.Schema(
       mobile: String,
     },
     product: {
-      name: {
+      title: {
         type: String,
         required: true,
       },
@@ -27,6 +27,10 @@ const OrderSchema = new mongoose.Schema(
       },
       price: {
         type: Number,
+        required: true,
+      },
+      _id: {
+        type: String,
         required: true,
       },
     },
