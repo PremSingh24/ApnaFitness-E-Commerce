@@ -1,53 +1,43 @@
-import { Products } from '../models/product.model';
-import { Category } from '../models/category.model';
-import {Request,Response} from "express"
-
-
+import { Products } from "../models/product.model";
+import { Category } from "../models/category.model";
+import { Request, Response } from "express";
 
 /*
-    * All the routes related to Category are present here.
-    * These are Publicly accessible routes.
-*/
-
-
-/*
-    * This handler handles gets all categories in the db.
-    * send GET Request at /api/v1/category/all
-*/
-
-export const getCategoryHandler = async(req:Request, res:Response) =>{
-    try{
-        const category = await Category.find({});
-
-        res.status(200).json({category});
-
-    }catch(error){
-        res.status(406).json({message:"Something Went Wrong"});
-    }
-
-}
-
+ * All the routes related to Category are present here.
+ * These are Publicly accessible routes.
+ */
 
 /*
-    * This handler handles gets all products of a Specific categories in the db.
-    * send GET Request at /api/v1/category/:CategoryId
-*/
+ * This handler handles gets all categories in the db.
+ * send GET Request at /api/v1/category/all
+ */
 
-export const getCategoryItemsHandler = async(req:Request, res:Response) =>{
+export const getCategoryHandler = async (req: Request, res: Response) => {
+  try {
+    const category = await Category.find({});
 
-    const category = req.params.CategoryId;
+    res.status(200).json({ category });
+  } catch (error) {
+    res.status(406).json({ message: "Something Went Wrong" });
+  }
+};
 
-    try{
-        const products = await Products.find({category});
+/*
+ * This handler handles gets all products of a Specific categories in the db.
+ * send GET Request at /api/v1/category/:CategoryId
+ */
 
-        res.status(200).json({products});
+export const getCategoryItemsHandler = async (req: Request, res: Response) => {
+  const category = req.params.CategoryId;
 
-    }catch(error){
-        res.status(406).json({message:"Something Went Wrong"});
-    }
+  try {
+    const products = await Products.find({ category });
 
-}
-
+    res.status(200).json({ products });
+  } catch (error) {
+    res.status(406).json({ message: "Something Went Wrong" });
+  }
+};
 
 //Below route is for adding items in category db (DEV TIME)
 
@@ -63,10 +53,10 @@ export const getCategoryItemsHandler = async(req:Request, res:Response) =>{
             res.status(200).json({mssage:"category added"});
     
         }catch(error){
-            res.status(401).json({mssage:"not added"});
+            res.status(400).json({mssage:"not added"});
         }
 
     }else{
-        res.status(401).json({mssage:"already added"});
+        res.status(400).json({mssage:"already added"});
     }
 }*/

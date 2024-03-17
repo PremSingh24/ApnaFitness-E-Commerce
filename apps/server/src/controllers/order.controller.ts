@@ -24,7 +24,7 @@ export const getOrderItemsHandler = async (req: Request, res: Response) => {
     if (user) {
       res.status(200).json({ orders: user.orders || [] });
     } else {
-      res.status(401).json({ message: "User Not Found, Try to Login Again" });
+      res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
   } catch (error) {
     res.status(406).json({ message: "Something Went Wrong" });

@@ -20,7 +20,7 @@ export const getCartItemsHandler = async (req: Request, res: Response) => {
     if (user) {
       res.json({ products: user.cart || [] }).end();
     } else {
-      res.status(401).json({ message: "User Not Found, Try to Login Again" });
+      res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
   } catch (error) {
     res.status(406).json({ message: "Something Went Wrong", error });
@@ -57,10 +57,10 @@ export const addItemToCartHandler = async (req: Request, res: Response) => {
           res.status(200).json({ message: "Item Already in Cart" });
         }
       } else {
-        res.status(401).json({ message: "User Not Found, Try to Login Again" });
+        res.status(404).json({ message: "User Not Found, Try to Login Again" });
       }
     } else {
-      res.status(401).json({ message: "Invalid Product" });
+      res.status(404).json({ message: "Invalid Product" });
     }
   } catch (error) {
     res.status(406).json({ message: "Something Went Wrong", error });
@@ -87,10 +87,10 @@ export const removeItemFromCartHandler = async (
 
         res.status(200).json({ message: "Product Removed from Cart" });
       } else {
-        res.status(401).json({ message: "Invalid Product" });
+        res.status(404).json({ message: "Invalid Product" });
       }
     } else {
-      res.status(401).json({ message: "User Not Found, Try to Login Again" });
+      res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
   } catch (error) {
     res.status(406).json({ message: "Something Went Wrong", error });
@@ -117,12 +117,12 @@ export const updateCartItemHandler = async (req: Request, res: Response) => {
 
         res.status(201).json({ message: "Product Quantity Updated" });
       } else {
-        res.status(401).json({ message: "Invalid Product" });
+        res.status(404).json({ message: "Invalid Product" });
       }
     } else {
       res.status(406).json({ message: "User Not Found, Try to Login Again" });
     }
   } catch (error) {
-    res.status(401).json({ message: "Something Went Wrong" });
+    res.status(404).json({ message: "Something Went Wrong" });
   }
 };

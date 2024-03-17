@@ -22,7 +22,7 @@ export const getAddressHandler = async (req: Request, res: Response) => {
       res.json({ address: user.address || [] });
     } else {
       res
-        .status(401)
+        .status(404)
         .json({ message: "Something Went Wrong!, Try to Login Again" });
     }
   } catch (error) {
@@ -59,7 +59,7 @@ export const addAddressHandler = async (req: Request, res: Response) => {
         }
       } else {
         res
-          .status(401)
+          .status(404)
           .json({ message: "Something Went Wrong!, Try to Login Again" });
       }
     } catch (error) {
@@ -103,7 +103,7 @@ export const updateAddressHandler = async (req: Request, res: Response) => {
 
         res.status(200).json({ message: "Address Updated Successfully" });
       } else {
-        res.status(401).json({ message: "User Not Found, Try to Login Again" });
+        res.status(404).json({ message: "User Not Found, Try to Login Again" });
       }
     } catch (error) {
       res.status(409).json({ message: "Could not Update Address! ", error });
@@ -132,7 +132,7 @@ export const removeAddressHandler = async (req: Request, res: Response) => {
         res.status(200).json({ message: "Address not Found" });
       }
     } else {
-      res.status(401).json({ message: "User Not Found, Try to Login Again" });
+      res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
   } catch (error) {
     res.status(409).json({ message: "Could not Remove Address! ", error });
