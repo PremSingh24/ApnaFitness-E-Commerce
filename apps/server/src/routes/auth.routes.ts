@@ -4,6 +4,7 @@ import {
   authenticateUserHandler,
   logOutHandler,
   loginUserHandler,
+  refreshAccessTokenHandler,
   registerUserHandler,
 } from "../controllers/auth.controller";
 
@@ -13,6 +14,7 @@ router.route("/register").post(registerUserHandler);
 router.route("/login").post(loginUserHandler);
 router.route("/authenticate").get(authenticateJwt, authenticateUserHandler);
 router.route("/logout").post(authenticateJwt, logOutHandler);
-router.route("/refreshToken").post(authenticateUserHandler);
+router.route("/refreshToken").post(refreshAccessTokenHandler);
+router.route("/logOut").delete(logOutHandler);
 
 export default router;
