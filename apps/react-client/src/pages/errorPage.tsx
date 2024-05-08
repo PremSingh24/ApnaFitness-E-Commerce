@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, Typography, styled } from "@mui/material";
-import errorImage from "../../public/errorImage.webp";
+import errorImage from "../../src/assets/errorImage.webp";
 const Image = styled("img")`
   width: 380px;
   object-fit: contain;
