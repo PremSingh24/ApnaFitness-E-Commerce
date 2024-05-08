@@ -5,114 +5,24 @@ import ErrorPage from "./pages/errorPage";
 import LoginPage from "./pages/loginPage";
 import HomePage from "./pages/homePage";
 import SingleProductPage from "./pages/singleProductPage";
-import { Suspense, lazy, useEffect } from "react";
-import useProductStore from "./store/productListing.store";
-import useLoginStore from "./store/login.store";
-const ProductListingPage = lazy(() => import("./pages/ProductListingPage"));
-import useCategoryStore from "./store/category.store";
-import getAllProductService from "./services/productServices/getAllProducts.service";
-import getAllCategoriesService from "./services/categoryServices/getAllCategories.service";
-import authenticateService from "./services/authServices/authenticate.service";
+import { Suspense, lazy } from "react";
 import WishlistPage from "./pages/wishlistPage";
 import CartPage from "./pages/cartManagement";
 import { RequiresAuth } from "./components/requiresAuth";
 import UserTabs from "./pages/userTabs";
-import getCartService from "./services/cartServices/getCart.service";
-import useCartStore from "./store/cart.store";
-import getWishlistService from "./services/wishlistServices/getWishlist.service";
-import useWishlistStore from "./store/wishlist.store";
-import useUserStore from "./store/user.store";
 import PhoneBottomNavigation from "./components/phoneBottomNavigation";
 import ProfileTab from "./pages/profileTab";
 import OrdersTab from "./pages/ordersTab";
 import AddressTab from "./pages/addressTab";
-import { Toaster, toast } from "sonner";
-import useLogOut from "./hooks/useLogOut";
+import { Toaster } from "sonner";
+import useFetchAllProducts from "./hooks/useProductFetch";
+import useFetchUserCartAndWishlist from "./hooks/useUserDataFetch";
+
+const ProductListingPage = lazy(() => import("./pages/ProductListingPage"));
 
 function App() {
-  const setAllProducts = useProductStore((state) => state.setAllProducts);
-  const setProducts = useProductStore((state) => state.setProducts);
-
-  const setCategories = useCategoryStore((state) => state.setCategories);
-
-  const setUser = useUserStore((state) => state.setUser);
-
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
-  const setLogin = useLoginStore((state) => state.setLogin);
-
-  const setCartContext = useCartStore((state) => state.setCart);
-  const setWishlistContext = useWishlistStore((state) => state.setWishlist);
-
-  const logOut = useLogOut();
-
-  useEffect(() => {
-    (async () => {
-      // Getting the Cart, Address, and Wishlist of the user
-      if (loggedIn) {
-        const response = await authenticateService();
-
-        if (response.status !== 200) {
-          await logOut();
-          toast.error("Session Expired, Login Again");
-        } else {
-          setLogin();
-          let user;
-          if (response.data.sendUser.email) {
-            user = response.data.sendUser;
-          } else {
-            user = { ...response.data.sendUser, email: "" };
-          }
-          setUser(user);
-          const cartResponse = await getCartService();
-
-          if (cartResponse.status === 200) {
-            setCartContext(cartResponse.data.products);
-          } else if (cartResponse.status === 401) {
-            await logOut();
-            toast.error("Session Expired, Login Again!");
-          } else {
-            toast.error(
-              response?.message ? response.message : response.data.message
-            );
-          }
-
-          const wishlistResponse = await getWishlistService();
-
-          if (wishlistResponse.status === 200) {
-            setWishlistContext(wishlistResponse.data.products);
-          } else if (response.status === 401) {
-            await logOut();
-            toast.error("Session Expired, Login Again!");
-          }
-        }
-      }
-    })();
-  }, [loggedIn]);
-
-  useEffect(() => {
-    (async () => {
-      //Getting All Products
-      const productResponse = await getAllProductService();
-
-      if (productResponse.status === 200) {
-        setAllProducts(productResponse.data.products);
-        setProducts(productResponse.data.products);
-      } else {
-        toast.error(productResponse.data.message);
-      }
-
-      //Getting ALl Categories
-      const categoryResponse = await getAllCategoriesService();
-
-      if (categoryResponse.status === 200) {
-        setCategories(categoryResponse.data.category);
-      } else {
-        toast.error("Something Went Wrong");
-      }
-    })();
-  }, []);
+  useFetchAllProducts();
+  useFetchUserCartAndWishlist();
 
   return (
     <>
@@ -164,7 +74,7 @@ function App() {
             <Route index element={<ProfileTab />} />
             <Route path="profile" element={<ProfileTab />} />
             <Route path="address" element={<AddressTab />} />
-            <Route path="myorders" element={<OrdersTab />} />
+            <Route path="myOrders" element={<OrdersTab />} />
           </Route>
 
           <Route path="/*" element={<ErrorPage />} />
