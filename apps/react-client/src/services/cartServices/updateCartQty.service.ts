@@ -1,26 +1,32 @@
 import axios from "axios";
+import refreshAccessTokenService from "../authServices/refreshAccessToken.service";
 
+const updateCartService = async (
+  CartId: any,
+  quantity: number
+): Promise<any> => {
+  try {
+    return await axios.put(`/api/v1/cart/${CartId}`, { quantity });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 401) {
+        // Token expired, try refreshing tokens
+        const accessTokenRefreshed = await refreshAccessTokenService();
+        if (accessTokenRefreshed.success) {
+          // Retry with new access token
 
-const updateCartService = async(CartId:any,quantity:number)=>{
-
-
-    try{
-        return await axios.put(`/api/v1/cart/${CartId}`,{quantity},
-        {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
-        );
-
-
-    }catch(error){
-        if (axios.isAxiosError(error)) {
-            if (error && error.response) {
-              return error.response.data;
-            }
+          return await updateCartService(CartId, quantity);
+        } else {
+          // Handle case where refresh token also expired
+          return accessTokenRefreshed.response;
         }
-
-        return {message:"Something Went Wrong"};
+      } else if (error.response) {
+        return error.response.data;
+      }
     }
-    
 
-}
+    return { message: "Something Went Wrong" };
+  }
+};
 
 export default updateCartService;

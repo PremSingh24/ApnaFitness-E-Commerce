@@ -1,26 +1,30 @@
 import axios from "axios";
+import refreshAccessTokenService from "../authServices/refreshAccessToken.service";
 
+const getAddressService = async (): Promise<any> => {
+  try {
+    return await axios.get("/api/v1/address/myaddress", {});
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 401) {
+        // Token expired, try refreshing tokens
 
-const getAddressService = async()=>{
+        const accessTokenRefreshed = await refreshAccessTokenService();
+        if (accessTokenRefreshed.success) {
+          // Retry with new access token
 
-
-    try{
-        return await axios.get("/api/v1/address/myaddress",
-        {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
-        );
-
-
-    }catch(error){
-        if (axios.isAxiosError(error)) {
-            if (error && error.response) {
-              return error.response.data;
-            }
+          return await getAddressService();
+        } else {
+          // Handle case where refresh token also expired
+          return accessTokenRefreshed.response;
         }
-
-        return {message:"Something Went Wrong"};
+      } else if (error.response) {
+        return error.response.data;
+      }
     }
-    
 
-}
+    return { message: "Something Went Wrong" };
+  }
+};
 
 export default getAddressService;

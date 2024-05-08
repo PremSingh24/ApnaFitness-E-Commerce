@@ -1,14 +1,24 @@
 import axios from "axios";
+import refreshAccessTokenService from "../authServices/refreshAccessToken.service";
 
-const getOrdersService = async () => {
+const getOrdersService = async (): Promise<any> => {
   try {
-    return await axios.get(`/api/v1/order/myorders`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
+    return await axios.get(`/api/v1/order/myOrders`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error && error.response) {
-        return error.response.data;
+      if (error.response && error.response.status === 401) {
+        // Token expired, try refreshing tokens
+        const accessTokenRefreshed = await refreshAccessTokenService();
+        if (accessTokenRefreshed.success) {
+          // Retry with new access token
+
+          return await getOrdersService();
+        } else {
+          // Handle case where refresh token also expired
+          return accessTokenRefreshed.response;
+        }
+      } else if (error.response) {
+        return error.response;
       }
     }
 
