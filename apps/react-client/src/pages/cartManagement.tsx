@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Grid, Stack, Toolbar } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import useCartStore from "../contexts/cart.context";
+import useCartStore from "../store/cart.store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CartProduct from "../components/cartProduct";
 import CartSummary from "../components/cartSummary";

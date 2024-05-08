@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import AddressCard from "../components/addressCard";
-import useAddressStore from "../contexts/address.context";
+import useAddressStore from "../store/address.store";
 import { useEffect } from "react";
 import getAddressService from "../services/addressServices/getAddress.service";
 import { toast } from "sonner";

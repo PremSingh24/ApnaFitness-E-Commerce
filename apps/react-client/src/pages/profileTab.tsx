@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { Box, Card, CardContent, styled } from "@mui/material";
-import useUserStore from "../contexts/user.context";
+import useUserStore from "../store/user.store";
 import LogOutButton from "../components/logOutButton";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";

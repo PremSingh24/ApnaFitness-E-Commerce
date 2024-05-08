@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import useFilterStore from "../contexts/filterContext";
+import useFilterStore from "../store/filter.store";
 
 function valuetext(value: number) {
   return `Rs${value}`;

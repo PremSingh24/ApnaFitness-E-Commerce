@@ -7,10 +7,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import useCategoryStore from "../contexts/category.context";
+import useCategoryStore from "../store/category.store";
 import getCategoryProductService from "../services/categoryServices/getCategoryProduct.service";
 import { useNavigate } from "react-router-dom";
-import useProductStore from "../contexts/productListing.context";
+import useProductStore from "../store/productListing.store";
 import Loader from "./loader";
 
 const Categories = () => {

@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useLoginStore } from "../contexts";
+import useLoginStore from "../store/login.store";
 
 export function RequiresAuth({ children }: { children: JSX.Element }) {
   const loggedIn =

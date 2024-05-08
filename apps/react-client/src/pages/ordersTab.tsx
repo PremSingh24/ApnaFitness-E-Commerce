@@ -2,7 +2,7 @@ import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { useEffect } from "react";
 import getOrdersService from "../services/orderServices/getOrders.service";
 import { toast } from "sonner";
-import useOrderStore from "../contexts/order.context";
+import useOrderStore from "../store/order.store";
 import { NavLink } from "react-router-dom";
 import useLogOut from "../hooks/useLogOut";
 

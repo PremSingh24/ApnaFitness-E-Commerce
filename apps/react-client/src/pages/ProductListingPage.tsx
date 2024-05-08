@@ -4,11 +4,11 @@ import Drawer from "@mui/material/Drawer";
 import SideDrawer from "../components/sideDrawer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProductCard from "../components/productCard";
-import useProductStore from "../contexts/productListing.context";
+import useProductStore from "../store/productListing.store";
 import MobileFilters from "../components/mobileFilters";
 import { useEffect, useState } from "react";
 import { getFilteredProducts } from "../helpers/filter.helpers";
-import useFilterStore from "../contexts/filterContext";
+import useFilterStore from "../store/filter.store";
 
 const theme = createTheme();
 

@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Button, Divider, styled } from "@mui/material";
-import useCartStore from "../contexts/cart.context";
+import useCartStore from "../store/cart.store";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   margin: "auto",

@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Stack } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ProductCard from "../components/productCard";
-import useWishlistStore from "../contexts/wishlist.context";
+import useWishlistStore from "../store/wishlist.store";
 import { NavLink } from "react-router-dom";
 
 const theme = createTheme();

@@ -13,7 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import addAddressService from "../services/addressServices/addNewAddress.service";
 import { toast } from "sonner";
 import updateAddressService from "../services/addressServices/updateAddress.service";
-import useAddressStore from "../contexts/address.context";
+import useAddressStore from "../store/address.store";
 import { useEffect, useState } from "react";
 import useLogOut from "../hooks/useLogOut";
 

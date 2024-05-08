@@ -21,12 +21,12 @@ import {
   ListItem,
   Paper,
 } from "@mui/material";
-import useProductStore from "../contexts/productListing.context";
+import useProductStore from "../store/productListing.store";
 import { productType } from "common";
-import { useLoginStore } from "../contexts";
+import useLoginStore from "../store/login.store";
 import { useNavigate } from "react-router-dom";
-import useWishlistStore from "../contexts/wishlist.context";
-import useCartStore from "../contexts/cart.context";
+import useWishlistStore from "../store/wishlist.store";
+import useCartStore from "../store/cart.store";
 import logo from "../assets/logo.webp";
 
 const theme = createTheme();

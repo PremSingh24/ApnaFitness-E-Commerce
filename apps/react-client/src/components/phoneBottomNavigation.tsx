@@ -4,7 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useWishlistStore from "../contexts/wishlist.context";
+import useWishlistStore from "../store/wishlist.store";
 
 const PhoneBottomNavigation = () => {
   const [value, setValue] = useState(window.location.pathname);

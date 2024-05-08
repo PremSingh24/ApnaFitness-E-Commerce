@@ -7,7 +7,7 @@ import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import useCartStore from "../contexts/cart.context";
+import useCartStore from "../store/cart.store";
 import updateCartService from "../services/cartServices/updateCartQty.service";
 import removeFromCartService from "../services/cartServices/removeFromCart.service";
 import { NavLink } from "react-router-dom";

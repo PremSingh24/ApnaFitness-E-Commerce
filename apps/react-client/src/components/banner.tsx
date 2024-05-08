@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useProductStore from "../contexts/productListing.context";
+import useProductStore from "../store/productListing.store";
 
 export default function Banner() {
   const allProducts = useProductStore((state) => state.allProducts);

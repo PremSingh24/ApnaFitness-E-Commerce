@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import PasswordField from "../components/passwordField";
 import Paper from "@mui/material/Paper";
 import { registerUserService } from "../services/authServices/register.service";
-import { useLoginStore } from "../contexts";
+import useLoginStore from "../store/login.store";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer";
 import { toast } from "sonner";

@@ -13,9 +13,9 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-import { useLoginStore } from "../contexts";
 import Footer from "../components/footer";
 import { toast } from "sonner";
+import useLoginStore from "../store/login.store";
 
 const defaultTheme = createTheme();
 

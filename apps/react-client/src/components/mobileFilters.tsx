@@ -20,7 +20,7 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import CloseIcon from "@mui/icons-material/Close";
-import useFilterStore from "../contexts/filterContext";
+import useFilterStore from "../store/filter.store";
 
 function valuetext(value: number) {
   return `Rs${value}`;

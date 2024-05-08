@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Container, Toolbar } from "@mui/material";
 import Categories from "../components/category";
 import Banner from "../components/banner";
-import useProductStore from "../contexts/productListing.context";
+import useProductStore from "../store/productListing.store";
 import Footer from "../components/footer";
 import HomeProductCard from "../components/homeProductCard";
 

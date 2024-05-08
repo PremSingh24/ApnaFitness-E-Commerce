@@ -12,7 +12,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import useAddressStore from "../contexts/address.context";
+import useAddressStore from "../store/address.store";
 import { useRef, useState } from "react";
 import AddressForm from "./addressForm";
 import removeAddressService from "../services/addressServices/removeAddress.service";
