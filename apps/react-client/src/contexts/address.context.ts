@@ -4,7 +4,7 @@ import { addressType } from "common";
 type addressState = {
   address: addressType[];
   setAddress: (allAddress: addressType[]) => void;
-  addAdress: (newAddress: addressType) => void;
+  addAddress: (newAddress: addressType) => void;
   updateAddress: (_id: any, updatedAddress: addressType) => void;
   removeAddress: (_id: any) => void;
 };
@@ -12,7 +12,7 @@ type addressState = {
 const useAddressStore = create<addressState>((set) => ({
   address: [],
   setAddress: (allAddress) => set(() => ({ address: allAddress })),
-  addAdress: (newAddress) =>
+  addAddress: (newAddress) =>
     set((state) => ({ address: [...state.address, newAddress] })),
   updateAddress: (_id, updatedAddress) =>
     set((state) => ({
