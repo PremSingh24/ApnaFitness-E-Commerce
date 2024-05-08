@@ -19,6 +19,7 @@ export default function Banner() {
       "https://t3.ftcdn.net/jpg/03/69/84/22/240_F_369842290_c1dQNWM8wnt3YD2uQTqupbda0XuksDXK.jpg",
     imageText: "Apna Fitness Banner Image",
   };
+  //#TODO:Make a transistion effect of banner
 
   return (
     <Paper
