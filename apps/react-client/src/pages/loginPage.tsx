@@ -34,19 +34,18 @@ const LoginPage = () => {
 
   const { errors } = formState;
 
-  const setLoginDetails = () => {
-    setLogin();
-    navigate("/", { replace: true });
-  };
-
   const loginUser = async (data: loginUserType) => {
     const response = await loginUserService(data);
 
     if (response.status === 200) {
-      setLoginDetails();
+      setLogin();
+      let expiresDate = new Date();
+      expiresDate.setDate(expiresDate.getDate() + 1);
+      document.cookie =
+        "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("loggedIn", "true");
+      navigate("/", { replace: true });
+
       toast.success(response.data.message);
     } else {
       toast.error(response.message ? response.message : response.data.message);

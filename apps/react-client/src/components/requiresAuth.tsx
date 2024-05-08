@@ -3,7 +3,8 @@ import { useLoginStore } from "../contexts";
 
 export function RequiresAuth({ children }: { children: JSX.Element }) {
   const loggedIn =
-    useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
+    useLoginStore((state) => state.login) ||
+    document.cookie === "loggedIn=true";
 
   return <>{loggedIn ? children : <Navigate to="/login" />}</>;
 }

@@ -98,7 +98,8 @@ const NavBar = () => {
   const cart = useCartStore((state) => state.cart);
 
   const loggedIn =
-    useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
+    useLoginStore((state) => state.login) ||
+    document.cookie === "loggedIn=true";
 
   useEffect(() => {
     const result =

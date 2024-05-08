@@ -57,12 +57,13 @@ export function Register() {
 
       if (response.status === 201) {
         setLogin();
+        let expiresDate = new Date();
+        expiresDate.setDate(expiresDate.getDate() + 1);
+        document.cookie =
+          "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";
 
-        toast.success(response.data.message);
-
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("loggedIn", "true");
         navigate("/", { replace: true });
+        toast.success(response.data.message);
       } else {
         toast.error(
           response.message ? response.message : response.data.message
