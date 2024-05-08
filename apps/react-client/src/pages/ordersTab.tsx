@@ -4,18 +4,26 @@ import getOrdersService from "../services/orderServices/getOrders.service";
 import { toast } from "sonner";
 import useOrderStore from "../contexts/order.context";
 import { NavLink } from "react-router-dom";
+import useLogOut from "../hooks/useLogOut";
 
 const OrdersTab = () => {
   const orders = useOrderStore((state) => state.orders);
   const setOrders = useOrderStore((state) => state.setOrders);
+
+  const logOut = useLogOut();
 
   useEffect(() => {
     (async () => {
       const response = await getOrdersService();
       if (response.status === 200) {
         setOrders(response.data.orders);
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error("Something Went Wrong!");
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     })();
   }, []);

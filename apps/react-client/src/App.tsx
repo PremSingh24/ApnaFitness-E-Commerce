@@ -27,6 +27,7 @@ import ProfileTab from "./pages/profileTab";
 import OrdersTab from "./pages/ordersTab";
 import AddressTab from "./pages/addressTab";
 import { Toaster, toast } from "sonner";
+import useLogOut from "./hooks/useLogOut";
 
 function App() {
   const setAllProducts = useProductStore((state) => state.setAllProducts);
@@ -37,12 +38,14 @@ function App() {
   const setUser = useUserStore((state) => state.setUser);
 
   const loggedIn =
-    useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
+    useLoginStore((state) => state.login) ||
+    document.cookie === "loggedIn=true";
+  const setLogin = useLoginStore((state) => state.setLogin);
 
   const setCartContext = useCartStore((state) => state.setCart);
   const setWishlistContext = useWishlistStore((state) => state.setWishlist);
 
-  const setLogOut = useLoginStore((state) => state.setLogOut);
+  const logOut = useLogOut();
 
   useEffect(() => {
     (async () => {
@@ -51,10 +54,10 @@ function App() {
         const response = await authenticateService();
 
         if (response.status !== 200) {
-          localStorage.removeItem("loggedIn");
-          setLogOut();
+          await logOut();
           toast.error("Session Expired, Login Again");
         } else {
+          setLogin();
           let user;
           if (response.data.sendUser.email) {
             user = response.data.sendUser;
@@ -66,12 +69,22 @@ function App() {
 
           if (cartResponse.status === 200) {
             setCartContext(cartResponse.data.products);
+          } else if (cartResponse.status === 401) {
+            await logOut();
+            toast.error("Session Expired, Login Again!");
+          } else {
+            toast.error(
+              response?.message ? response.message : response.data.message
+            );
           }
 
           const wishlistResponse = await getWishlistService();
 
           if (wishlistResponse.status === 200) {
             setWishlistContext(wishlistResponse.data.products);
+          } else if (response.status === 401) {
+            await logOut();
+            toast.error("Session Expired, Login Again!");
           }
         }
       }

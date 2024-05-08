@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import updateAddressService from "../services/addressServices/updateAddress.service";
 import useAddressStore from "../contexts/address.context";
 import { useEffect, useState } from "react";
+import useLogOut from "../hooks/useLogOut";
 
 const AddressForm = ({
   addressData,
@@ -29,11 +30,13 @@ const AddressForm = ({
   formTitle: string;
   submitType: string;
 }) => {
-  const addToGlobalAddressState = useAddressStore((state) => state.addAdress);
+  const addToGlobalAddressState = useAddressStore((state) => state.addAddress);
   const updateGlobalAddressState = useAddressStore(
     (state) => state.updateAddress
   );
   const [manualDirty, setManualDirty] = useState(false);
+
+  const logOut = useLogOut();
 
   const addressFormState = useForm<addressType>({
     defaultValues: {
@@ -117,8 +120,13 @@ const AddressForm = ({
         setFormOpen(false);
       } else if (response.status === 400) {
         toast.error("Invalid Address Format");
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error(response.message);
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     } else {
       const response = await updateAddressService(addressData?._id, data);
@@ -129,8 +137,13 @@ const AddressForm = ({
         setFormOpen(false);
       } else if (response.status === 400) {
         toast.error("Invalid Address Format");
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error(response.message);
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     }
   };

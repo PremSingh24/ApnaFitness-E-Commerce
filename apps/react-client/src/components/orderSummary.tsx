@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import verifyPaymentService from "../services/orderServices/verifyPayment.service";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../contexts/cart.context";
+import useLogOut from "../hooks/useLogOut";
 
 declare global {
   interface Window {
@@ -28,6 +29,9 @@ const OrderSummary = ({
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const setCart = useCartStore((state) => state.setCart);
+
+  const logOut = useLogOut();
+
   const verifyOrder = async (amount: number) => {
     if (deliveryAddress) {
       const response = await verifyOrderService(
@@ -38,8 +42,13 @@ const OrderSummary = ({
 
       if (response.status === 200) {
         placeOrder(response.data.key, response.data.order);
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error("Something Went Wrong!");
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     }
   };
@@ -62,9 +71,14 @@ const OrderSummary = ({
 
             if (res.status === 201) {
               setCart([]);
-              navigate("/user/myorders");
+              navigate("/user/myOrders");
+            } else if (response.status === 401) {
+              await logOut();
+              toast.error("Session Expired, Login Again!");
             } else {
-              toast.error("Something Went Wrong!");
+              toast.error(
+                response?.message ? response.message : response.data.message
+              );
             }
           }
         },

@@ -27,6 +27,7 @@ import addToWishlistService from "../services/wishlistServices/addToWishlist.ser
 import removeFromWishlistService from "../services/wishlistServices/removeFromWishlist.service";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "sonner";
+import useLogOut from "../hooks/useLogOut";
 
 const defaultTheme = createTheme();
 
@@ -34,11 +35,12 @@ const SingleProductPage = () => {
   const { ProductId } = useParams();
   const [product, setProduct] = useState<productType>();
   const loggedIn =
-    useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
+    useLoginStore((state) => state.login) ||
+    document.cookie === "loggedIn=true";
   const navigate = useNavigate();
 
   const cart = useCartStore((state) => state.cart);
-  const addToCartCotext = useCartStore((state) => state.addToCart);
+  const addToCartContext = useCartStore((state) => state.addToCart);
 
   const wishlist = useWishlistStore((state) => state.wishlist);
   const addToWishlistContext = useWishlistStore((state) => state.addToWishlist);
@@ -46,7 +48,7 @@ const SingleProductPage = () => {
     (state) => state.removeFromWishlist
   );
 
-  const setLogOut = useLoginStore((state) => state.setLogOut);
+  const logOut = useLogOut();
 
   useEffect(() => {
     (async () => {
@@ -64,15 +66,15 @@ const SingleProductPage = () => {
     const addToCart = async (product: any, ProductId: any) => {
       const response = await addToCartService(ProductId);
       if (response.status === 201) {
-        addToCartCotext(product, response.data.cartId);
+        addToCartContext(product, response.data.cartId);
         toast.success(response.data.message);
-      } else if (response.status === 403) {
-        localStorage.setItem("token", "");
-        localStorage.removeItem("loggedIn");
-        setLogOut();
-        toast.error("Error, Login Again");
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error(response.data.message);
+        toast.error(
+          response.message ? response.message : response.data.message
+        );
       }
     };
     return (
@@ -122,13 +124,13 @@ const SingleProductPage = () => {
       if (response.status === 201) {
         addToWishlistContext(product);
         toast.success(response.data.message);
-      } else if (response.status === 403) {
-        localStorage.setItem("token", "");
-        localStorage.removeItem("loggedIn");
-        setLogOut();
-        toast.error("Login First");
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error(response.data.message);
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     };
 
@@ -137,13 +139,13 @@ const SingleProductPage = () => {
       if (response.status === 201) {
         removeFromWishlistContext(ProductId);
         toast.success(response.data.message);
-      } else if (response.status === 403) {
-        localStorage.setItem("token", "");
-        localStorage.removeItem("loggedIn");
-        setLogOut();
-        toast.error("Error, Login Again");
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
-        toast.error(response.data.message);
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     };
 

@@ -3,9 +3,13 @@ import AddressCard from "../components/addressCard";
 import useAddressStore from "../contexts/address.context";
 import { useEffect } from "react";
 import getAddressService from "../services/addressServices/getAddress.service";
+import { toast } from "sonner";
+import useLogOut from "../hooks/useLogOut";
 
 const AddressTab = () => {
   const setAllAddress = useAddressStore((state) => state.setAddress);
+
+  const logOut = useLogOut();
 
   useEffect(() => {
     (async () => {
@@ -13,6 +17,13 @@ const AddressTab = () => {
 
       if (response.status === 200) {
         setAllAddress(response.data.address);
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
+      } else {
+        toast.error(
+          response?.message ? response.message : response.data.message
+        );
       }
     })();
   }, []);

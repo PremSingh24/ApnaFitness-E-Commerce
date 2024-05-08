@@ -16,6 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AddressForm from "./addressForm";
 import { addressType } from "common";
 import { toast } from "sonner";
+import useLogOut from "../hooks/useLogOut";
 
 const AddAddressButton = () => {
   const [openAddAddressForm, setOpenAddAddressForm] = useState(false);
@@ -81,6 +82,8 @@ const DeliveryAddress = ({
   const addressData = useRef<addressType | null>(null);
   const setAllAddress = useAddressStore((state) => state.setAddress);
 
+  const logOut = useLogOut();
+
   useEffect(() => {
     if (allAddress.length < 1) {
       (async () => {
@@ -88,6 +91,13 @@ const DeliveryAddress = ({
 
         if (response.status === 200) {
           setAllAddress(response.data.address);
+        } else if (response.status === 401) {
+          await logOut();
+          toast.error("Session Expired, Login Again!");
+        } else {
+          toast.error(
+            response?.message ? response.message : response.data.message
+          );
         }
       })();
     }

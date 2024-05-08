@@ -18,6 +18,7 @@ import AddressForm from "./addressForm";
 import removeAddressService from "../services/addressServices/removeAddress.service";
 import { toast } from "sonner";
 import { addressType } from "common";
+import useLogOut from "../hooks/useLogOut";
 
 const AddAddressCard = () => {
   const [openAddAddressForm, setOpenAddAddressForm] = useState(false);
@@ -75,6 +76,8 @@ const AddressCard = () => {
   const addressData = useRef<addressType | null>(null);
   const allAddress = useAddressStore((state) => state.address);
 
+  const logOut = useLogOut();
+
   const RemoveAddressButton = ({ addressId }: any) => {
     const [removeAddressDialogOpen, setRemoveAddressDialog] = useState(false);
     const removeAddressContext = useAddressStore(
@@ -85,6 +88,9 @@ const AddressCard = () => {
       if (response.status === 200) {
         toast.success(response.data.message);
         removeAddressContext(addressIdToDelete.current);
+      } else if (response.status === 401) {
+        await logOut();
+        toast.error("Session Expired, Login Again!");
       } else {
         toast.error(
           response.message ? response.message : response.data.message

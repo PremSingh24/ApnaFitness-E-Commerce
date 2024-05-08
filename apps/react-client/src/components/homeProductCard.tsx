@@ -26,13 +26,15 @@ import removeFromWishlistService from "../services/wishlistServices/removeFromWi
 import useCartStore from "../contexts/cart.context";
 import addToCartService from "../services/cartServices/addToCart.service";
 import { toast } from "sonner";
+import useLogOut from "../hooks/useLogOut";
 
 const theme = createTheme();
 
 const HomeProductCard = ({ products }: { products: productType[] }) => {
   const loggedIn =
-    useLoginStore((state) => state.login) || localStorage.getItem("loggedIn");
-  const setLogOut = useLoginStore((state) => state.setLogOut);
+    useLoginStore((state) => state.login) ||
+    document.cookie === "loggedIn=true";
+  const logOut = useLogOut();
   const navigate = useNavigate();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
@@ -42,20 +44,18 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
   );
 
   const cart = useCartStore((state) => state.cart);
-  const addToCartCotext = useCartStore((state) => state.addToCart);
+  const addToCartContext = useCartStore((state) => state.addToCart);
 
   const addToWishlist = async (product: any, ProductId: any) => {
     const response = await addToWishlistService(ProductId);
     if (response.status === 201) {
       addToWishlistContext(product);
       toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Login First");
+    } else if (response.status === 401) {
+      await logOut();
+      toast.error("Session Expired, Login Again!");
     } else {
-      toast.error(response.data.message);
+      toast.error(response?.message ? response.message : response.data.message);
     }
   };
 
@@ -64,28 +64,24 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
     if (response.status === 201) {
       removeFromWishlistContext(ProductId);
       toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Login First");
+    } else if (response.status === 401) {
+      await logOut();
+      toast.error("Session Expired, Login Again!");
     } else {
-      toast.error(response.data.message);
+      toast.error(response?.message ? response.message : response.data.message);
     }
   };
 
   const addToCart = async (product: any, ProductId: any) => {
     const response = await addToCartService(ProductId);
     if (response.status === 201) {
-      addToCartCotext(product, response.data.cartId);
+      addToCartContext(product, response.data.cartId);
       toast.success(response.data.message);
-    } else if (response.status === 403) {
-      localStorage.setItem("token", "");
-      localStorage.removeItem("loggedIn");
-      setLogOut();
-      toast.error("Please Login First");
+    } else if (response.status === 401) {
+      await logOut();
+      toast.error("Session Expired, Login Again!");
     } else {
-      toast.error(response.data.message);
+      toast.error(response.message ? response.message : response.data.message);
     }
   };
 

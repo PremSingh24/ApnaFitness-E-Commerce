@@ -12,6 +12,7 @@ import updateCartService from "../services/cartServices/updateCartQty.service";
 import removeFromCartService from "../services/cartServices/removeFromCart.service";
 import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
+import useLogOut from "../hooks/useLogOut";
 
 const Img = styled("img")({
   margin: "auto",
@@ -25,14 +26,19 @@ const CartProduct = () => {
   const updateCartContext = useCartStore((state) => state.updateCart);
   const removeCartContext = useCartStore((state) => state.removeFromCart);
 
+  const logOut = useLogOut();
+
   const updateCart = async (cartId: any, quantity: number) => {
     const response = await updateCartService(cartId, quantity);
 
     if (response.status === 201) {
       updateCartContext(cartId, quantity);
       toast.success(response.data.message);
+    } else if (response.status === 401) {
+      await logOut();
+      toast.error("Session Expired, Login Again!");
     } else {
-      toast.error(response.data.message);
+      toast.error(response?.message ? response.message : response.data.message);
     }
   };
 
@@ -42,8 +48,11 @@ const CartProduct = () => {
     if (response.status === 200) {
       removeCartContext(cartId);
       toast.success(response.data.message);
+    } else if (response.status === 401) {
+      await logOut();
+      toast.error("Session Expired, Login Again!");
     } else {
-      toast.error(response.data.message);
+      toast.error(response?.message ? response.message : response.data.message);
     }
   };
 
