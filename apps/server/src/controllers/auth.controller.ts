@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import { registerUserValidation, loginUserValidation } from "common";
 import { fromZodError } from "zod-validation-error";
+import mongoose from "mongoose";
 
 /*
  *** All the routes related to Authentication are present here ***
@@ -12,14 +13,50 @@ import { fromZodError } from "zod-validation-error";
 // This handler verifies the user's session on its arrival .
 
 export const authenticateUserHandler = async (req: Request, res: Response) => {
-  const user = await Users.findById(req.headers["user"]);
-  if (user) {
-    const { firstName, lastName, mobile, email } = user;
-    const sendUser = { firstName, lastName, mobile, email };
-    res.status(200).json({ sendUser }).end();
+  try {
+    const user = await Users.findById(req.headers["user"]);
+    if (user) {
+      const { firstName, lastName, mobile, email } = user;
+      const sendUser = { firstName, lastName, mobile, email };
+      res.status(200).json({ sendUser }).end();
+    }
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
+// This function generates Access And Refresh Token for the user during Register and login .
+
+const generateRefreshAndAccessToken = async (id: mongoose.Types.ObjectId) => {
+  try {
+    const user = await Users.findById(id);
+    if (user) {
+      const accessToken = jwt.sign(
+        { id },
+        String(process.env.ACCESS_TOKEN_SECRET),
+        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+      );
+      const refreshToken = jwt.sign(
+        { id },
+        String(process.env.REFRESH_TOKEN_SECRET),
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+      );
+
+      user.refreshToken = refreshToken;
+      await user.save();
+
+      return { accessToken, refreshToken };
+    } else {
+      throw new Error("User Not Found!");
+    }
+  } catch (error) {
+    throw new Error("Something Went Wrong!");
+  }
+};
 /*
  * This handler handles user signup.
  * send POST Request at /api/v1/auth/register
@@ -57,16 +94,19 @@ export const registerUserHandler = async (req: Request, res: Response) => {
 
           const newUser = new Users(registerUser.data);
           await newUser.save();
-          const token = jwt.sign(
-            { id: newUser?._id },
-            String(process.env.ACCESS_TOKEN_SECRET),
-            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-          );
+          const { accessToken, refreshToken } =
+            await generateRefreshAndAccessToken(newUser?._id);
+
+          const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+          };
 
           res
             .status(201)
-            .json({ message: "User Created successfully", token })
-            .end();
+            .cookie("accessToken", accessToken, cookieOptions)
+            .cookie("refreshToken", refreshToken, cookieOptions)
+            .json({ message: "User Created successfully" });
         }
       } else {
         //Add the User In DB
@@ -77,22 +117,26 @@ export const registerUserHandler = async (req: Request, res: Response) => {
 
         const newUser = new Users(registerUser.data);
         await newUser.save();
-        const token = jwt.sign(
-          { id: newUser?._id },
-          String(process.env.ACCESS_TOKEN_SECRET),
-          { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-        );
+        const { accessToken, refreshToken } =
+          await generateRefreshAndAccessToken(newUser?._id);
+
+        const cookieOptions = {
+          httpOnly: true,
+          secure: true,
+        };
 
         res
           .status(201)
-          .json({ message: "User Created successfully", token })
-          .end();
+          .cookie("accessToken", accessToken, cookieOptions)
+          .cookie("refreshToken", refreshToken, cookieOptions)
+          .json({ message: "User Created successfully" });
       }
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Something Went Wrong,Server Error" })
-        .end();
+    } catch (error: any) {
+      if (error.message) {
+        res.status(406).json({ message: error.message }).end();
+      } else {
+        res.status(500).json({ message: "Something Went Wrong" });
+      }
     }
   } else {
     res
@@ -130,23 +174,102 @@ export const loginUserHandler = async (req: Request, res: Response) => {
         );
 
         if (passwordMatched) {
-          const token = jwt.sign(
-            { id: user._id },
-            String(process.env.ACCESS_TOKEN_SECRET),
-            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-          );
+          const { accessToken, refreshToken } =
+            await generateRefreshAndAccessToken(user._id);
 
-          res.status(200).json({ message: "Logged in successfully", token });
+          const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+          };
+
+          res
+            .status(200)
+            .cookie("accessToken", accessToken, cookieOptions)
+            .cookie("refreshToken", refreshToken, cookieOptions)
+            .json({ message: "Logged in successfully" });
         } else {
           res.status(401).json({ message: "Incorrect Password" });
         }
       } else {
         res.status(401).json({ message: "Invalid Mobile Number or Email Id" });
       }
-    } catch (error) {
-      res.status(500).json({ message: "Something Went Wrong", error });
+    } catch (error: any) {
+      if (error.message) {
+        res.status(406).json({ message: error.message }).end();
+      } else {
+        res.status(500).json({ message: "Something Went Wrong" });
+      }
     }
   } else {
     res.status(411).json(fromZodError(loginUser.error));
+  }
+};
+
+/*
+ * This handler handles user logOuts.
+ * send POST Request at /api/v1/user/logOut
+ */
+
+export const logOutHandler = async (req: Request, res: Response) => {
+  const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+  };
+  res
+    .status(200)
+    .clearCookie("accessToken", cookieOptions)
+    .clearCookie("refreshToken", cookieOptions)
+    .json({ message: "logged Out Successfully" });
+};
+
+/*
+ * This handler handles refresh user's accessToken.
+ * send POST Request at /api/v1/user/refreshToken
+ */
+
+export const refreshAccessTokenHandler = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const incomingRefreshToken = req.cookies.refreshToken;
+    const decodedToken = jwt.verify(
+      incomingRefreshToken,
+      String(process.env.REFRESH_TOKEN_SECRET)
+    );
+    if (typeof decodedToken === "string") {
+      throw new Error("Unauthorized Token");
+    }
+
+    const user = await Users.findById(decodedToken?.id);
+
+    if (!user) {
+      throw new Error("Invalid Refresh Token!");
+    }
+
+    if (incomingRefreshToken !== user?.refreshToken) {
+      res.status(401).json("Refresh Token has Expired!").end();
+    }
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    const { accessToken, refreshToken } = await generateRefreshAndAccessToken(
+      user?._id
+    );
+
+    res
+      .status(200)
+      .cookie("accessToken", accessToken, cookieOptions)
+      .cookie("refreshToken", refreshToken, cookieOptions)
+      .json({ message: "Logged in successfully" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };

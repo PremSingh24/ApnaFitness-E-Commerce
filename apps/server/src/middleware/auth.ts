@@ -1,27 +1,38 @@
 import jwt from "jsonwebtoken";
-import {Request,Response,NextFunction} from "express"
+import { Request, Response, NextFunction } from "express";
+import { Users } from "../models/user.model";
 
+export const authenticateJwt = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.cookies.accessToken;
 
-export const authenticateJwt = (req:Request, res:Response, next:NextFunction) => {
-    const authHeader = req.headers.authorization;
+    if (token) {
+      const decodedToken = jwt.verify(
+        token,
+        String(process.env.ACCESS_TOKEN_SECRET)
+      );
+      if (decodedToken && typeof decodedToken !== "string") {
+        const user = await Users.findById(decodedToken?.id);
 
-    if (authHeader) {
-      
-      const token = authHeader.split(' ')[1];
-      jwt.verify(token,String(process.env.ACCESS_TOKEN_SECRET), (err, user) => {
-        if (err) {
-          return res.status(403).end()
+        if (!user) {
+          res.status(401).json({ message: "Invalid Access Token" }).end();
         }
 
-        if(!user || typeof user === "string"){
-          return res.status(403).end()
-        }
-
-        req.headers["user"] = user.id 
+        req.headers["user"] = decodedToken.id;
         next();
-      });
-    }else {
-      res.sendStatus(401).json({message:"failed to authenticate"}).end();
+      }
+    } else {
+      res.status(401).json({ message: "failed to authenticate" }).end();
     }
-}
-
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
+  }
+};

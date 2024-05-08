@@ -88,6 +88,10 @@ const UserSchema = new mongoose.Schema({
       ref: "Orders",
     },
   ],
+  refreshToken: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Users = mongoose.model("Users", UserSchema);
