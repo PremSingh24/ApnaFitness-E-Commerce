@@ -22,8 +22,12 @@ export const getWishlistItemsHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "Invalid User, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -53,8 +57,12 @@ export const addItemsToWishlistHandler = async (
     } else {
       res.status(404).json({ message: "Invalid Product" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -84,7 +92,11 @@ export const removeItemsFromWishlistHandler = async (
     } else {
       res.status(404).json({ message: "Invalid Product" });
     }
-  } catch (error) {
-    res.status(404).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };

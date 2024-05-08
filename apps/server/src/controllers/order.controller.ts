@@ -26,8 +26,12 @@ export const getOrderItemsHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -96,8 +100,12 @@ export const verifyOrderHandler = async (req: Request, res: Response) => {
         res.status(400).json({ message: "Invalid Address Format" });
       }
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -158,7 +166,11 @@ export const verifyPaymentHandler = async (req: Request, res: Response) => {
     } else {
       res.status(400).json({ message: "Transaction failed" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };

@@ -17,8 +17,12 @@ export const getCategoryHandler = async (req: Request, res: Response) => {
     const category = await Category.find({});
 
     res.status(200).json({ category });
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -34,8 +38,12 @@ export const getCategoryItemsHandler = async (req: Request, res: Response) => {
     const products = await Products.find({ category });
 
     res.status(200).json({ products });
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 

@@ -25,10 +25,12 @@ export const getAddressHandler = async (req: Request, res: Response) => {
         .status(404)
         .json({ message: "Something Went Wrong!, Try to Login Again" });
     }
-  } catch (error) {
-    res
-      .status(409)
-      .json({ message: "Can not Get Address!, Try Again Later ", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -62,8 +64,12 @@ export const addAddressHandler = async (req: Request, res: Response) => {
           .status(404)
           .json({ message: "Something Went Wrong!, Try to Login Again" });
       }
-    } catch (error) {
-      res.status(406).json({ message: "Address Not Saved!", error });
+    } catch (error: any) {
+      if (error.message) {
+        res.status(406).json({ message: error.message }).end();
+      } else {
+        res.status(500).json({ message: "Something Went Wrong" });
+      }
     }
   } else {
     res.status(400).json(fromZodError(validAddress.error));
@@ -105,8 +111,12 @@ export const updateAddressHandler = async (req: Request, res: Response) => {
       } else {
         res.status(404).json({ message: "User Not Found, Try to Login Again" });
       }
-    } catch (error) {
-      res.status(409).json({ message: "Could not Update Address! ", error });
+    } catch (error: any) {
+      if (error.message) {
+        res.status(406).json({ message: error.message }).end();
+      } else {
+        res.status(500).json({ message: "Something Went Wrong" });
+      }
     }
   } else {
     res.status(400).json(fromZodError(validAddress.error));
@@ -134,7 +144,11 @@ export const removeAddressHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(409).json({ message: "Could not Remove Address! ", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };

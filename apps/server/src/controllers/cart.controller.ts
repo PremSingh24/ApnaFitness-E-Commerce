@@ -22,8 +22,12 @@ export const getCartItemsHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -62,8 +66,12 @@ export const addItemToCartHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "Invalid Product" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -92,8 +100,12 @@ export const removeItemFromCartHandler = async (
     } else {
       res.status(404).json({ message: "User Not Found, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong", error });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -122,7 +134,11 @@ export const updateCartItemHandler = async (req: Request, res: Response) => {
     } else {
       res.status(406).json({ message: "User Not Found, Try to Login Again" });
     }
-  } catch (error) {
-    res.status(404).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };

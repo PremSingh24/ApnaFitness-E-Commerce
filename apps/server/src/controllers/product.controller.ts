@@ -35,8 +35,12 @@ export const getProductHandler = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: "Product Not Found" });
     }
-  } catch (error) {
-    res.status(406).json({ message: "Something Went Wrong" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
