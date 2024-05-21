@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Loader from "./loader";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { productType } from "common";
 import { useNavigate } from "react-router-dom";
@@ -197,8 +197,8 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
                     ":hover": { boxShadow: "20" },
                   }}
                 >
-                  <NavLink
-                    to={`/products/${product._id}`}
+                  <Link
+                    href={`/products/${product._id}`}
                     style={{ textDecoration: "none" }}
                   >
                     <CardActionArea>
@@ -303,7 +303,7 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
                         />
                       </CardContent>
                     </CardActionArea>
-                  </NavLink>
+                  </Link>
                   <CardActions
                     sx={{
                       position: "absolute",

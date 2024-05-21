@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Grid, Stack, Toolbar } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import useCartStore from "../store/cart.store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CartProduct from "../components/cartProduct";
@@ -147,7 +147,7 @@ const CartPage = () => {
             >
               Cart is Empty
             </Typography>
-            <NavLink to={"/"} replace={true}>
+            <Link href={"/"} replace={true}>
               <Button
                 variant="contained"
                 sx={{
@@ -157,7 +157,7 @@ const CartPage = () => {
               >
                 Continue Shopping
               </Button>
-            </NavLink>
+            </Link>
           </Stack>
         )}
       </Container>

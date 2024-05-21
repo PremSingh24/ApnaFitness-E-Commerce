@@ -12,7 +12,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import {
   Button,
   Container,
@@ -170,7 +170,7 @@ const NavBar = () => {
               onClick={() => navigate("/")}
             >
               <img
-                src={logo}
+                src={logo.src}
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -366,7 +366,7 @@ const NavBar = () => {
                   marginLeft: { md: "1rem" },
                 }}
               >
-                <NavLink to={"/login"}>
+                <Link href="/login">
                   <Button
                     variant="contained"
                     color="error"
@@ -381,7 +381,7 @@ const NavBar = () => {
                   >
                     Log In
                   </Button>
-                </NavLink>
+                </Link>
               </Box>
             )}
           </Toolbar>

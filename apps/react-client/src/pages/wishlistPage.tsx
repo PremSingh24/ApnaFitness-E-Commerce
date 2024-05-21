@@ -5,7 +5,7 @@ import { Button, Container, Stack } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ProductCard from "../components/productCard";
 import useWishlistStore from "../store/wishlist.store";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 
 const theme = createTheme();
 
@@ -66,9 +66,9 @@ const WishlistPage = () => {
             >
               Wishlist is Empty
             </Typography>
-            <NavLink to={"/"} replace={true}>
+            <Link href={"/"} replace={true}>
               <Button variant="contained">Explore More</Button>
-            </NavLink>
+            </Link>
           </Stack>
         )}
       </Container>

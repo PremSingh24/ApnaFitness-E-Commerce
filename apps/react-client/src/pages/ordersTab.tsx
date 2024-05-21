@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import getOrdersService from "../services/orderServices/getOrders.service";
 import { toast } from "sonner";
 import useOrderStore from "../store/order.store";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import useLogOut from "../hooks/useLogOut";
 
 const OrdersTab = () => {
@@ -84,8 +84,8 @@ const OrdersTab = () => {
                 </Typography>
 
                 <div style={{ display: "flex" }}>
-                  <NavLink
-                    to={`/products/${order.product._id}`}
+                  <Link
+                    href={`/products/${order.product._id}`}
                     style={{
                       textDecoration: "none",
                     }}
@@ -95,7 +95,7 @@ const OrdersTab = () => {
                       alt="Order Item"
                       style={{ width: 90, height: 90, marginRight: 16 }}
                     />
-                  </NavLink>
+                  </Link>
                   <div>
                     <Typography variant="body1" fontWeight={"bold"}>
                       {order.product.title}

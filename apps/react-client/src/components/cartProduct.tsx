@@ -10,7 +10,7 @@ import AddIcon from "@mui/icons-material/Add";
 import useCartStore from "../store/cart.store";
 import updateCartService from "../services/cartServices/updateCartQty.service";
 import removeFromCartService from "../services/cartServices/removeFromCart.service";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { toast } from "sonner";
 import useLogOut from "../hooks/useLogOut";
 
@@ -72,19 +72,19 @@ const CartProduct = () => {
     >
       <Grid container spacing={1} sx={{ position: "relative" }}>
         <Grid item>
-          <NavLink to={`/products/${cart.item._id}`}>
+          <Link href={`/products/${cart.item._id}`}>
             <ButtonBase
               sx={{ width: { xs: 124, sm: 150 }, height: { xs: 128, sm: 150 } }}
             >
               <Img alt="complex" src={cart.item.image} />
             </ButtonBase>
-          </NavLink>
+          </Link>
         </Grid>
         <Grid item xs={7} sm container>
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
-              <NavLink
-                to={`/products/${cart.item._id}`}
+              <Link
+                href={`/products/${cart.item._id}`}
                 style={{ textDecoration: "none" }}
               >
                 <Typography
@@ -96,7 +96,7 @@ const CartProduct = () => {
                 >
                   {cart.item.title}
                 </Typography>
-              </NavLink>
+              </Link>
 
               <Typography
                 variant="subtitle1"

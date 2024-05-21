@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { toast } from "sonner";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import useLogOut from "../hooks/useLogOut";
@@ -8,7 +8,7 @@ const LogOutButton = () => {
   const logOut = useLogOut();
 
   return (
-    <NavLink to={"/"} style={{ width: "50%" }}>
+    <Link href={"/"} style={{ width: "50%" }}>
       <Button
         variant="contained"
         color="error"
@@ -22,7 +22,7 @@ const LogOutButton = () => {
       >
         LOG OUT
       </Button>
-    </NavLink>
+    </Link>
   );
 };
 

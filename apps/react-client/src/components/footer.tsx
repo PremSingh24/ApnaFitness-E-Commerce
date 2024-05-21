@@ -1,5 +1,5 @@
 import { Box, Container, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -24,7 +24,7 @@ const Footer = () => {
       >
         <Typography variant="body2" color="text.secondary">
           {"Copyright © "}
-          <Link color="inherit" to="/">
+          <Link color="inherit" href="/">
             ApnaFitness
           </Link>{" "}
           {new Date().getFullYear()}

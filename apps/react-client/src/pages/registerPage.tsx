@@ -7,7 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import PasswordField from "../components/passwordField";
 import Paper from "@mui/material/Paper";
@@ -219,7 +219,7 @@ export function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <NavLink to="/login">Already a User? Log in</NavLink>
+                <Link href="/login">Already a User? Log in</Link>
               </Grid>
             </Grid>
           </Box>

@@ -1,7 +1,7 @@
 import { loginUserType } from "common";
 import loginUserService from "../services/authServices/login.service";
 import { TextField, Button, Typography, Toolbar } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import PasswordField from "../components/passwordField";
 import Grid from "@mui/material/Grid";
@@ -166,7 +166,7 @@ const LoginPage = () => {
             </Button>
             <Grid container justifyContent="space-between">
               <Grid item>
-                <NavLink to="/register">New User? Sign Up</NavLink>
+                <Link href="/register">New User? Sign Up</Link>
               </Grid>
             </Grid>
           </Box>
