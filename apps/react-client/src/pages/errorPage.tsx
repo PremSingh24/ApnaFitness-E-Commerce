@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+"use client";
 import { Box, Button, Container, Typography, styled } from "@mui/material";
 import errorImage from "../../src/assets/errorImage.webp";
+import { useRouter } from "next/navigation";
 const Image = styled("img")`
   width: 380px;
   object-fit: contain;
@@ -17,7 +18,7 @@ const Image = styled("img")`
 `;
 
 const ErrorPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <Container
       maxWidth="xs"
@@ -56,7 +57,7 @@ const ErrorPage = () => {
         </Typography>
       </Box>
 
-      <Image src={errorImage} alt="Error" />
+      <Image src={errorImage.src} alt="Error" />
 
       <Box sx={{ marginTop: { xs: "0", sm: "6rem" } }}>
         <Typography
@@ -89,7 +90,7 @@ const ErrorPage = () => {
               borderRadius: 5,
             }}
             onClick={() => {
-              navigate("/");
+              router.push("/");
             }}
           >
             Go back to Home

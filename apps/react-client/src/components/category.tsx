@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardActionArea,
@@ -9,21 +10,21 @@ import {
 } from "@mui/material";
 import useCategoryStore from "../store/category.store";
 import getCategoryProductService from "../services/categoryServices/getCategoryProduct.service";
-import { useNavigate } from "react-router-dom";
 import useProductStore from "../store/productListing.store";
 import Loader from "./loader";
+import { useRouter } from "next/navigation";
 
 const Categories = () => {
   const categories = useCategoryStore((state) => state.categories);
   const setProducts = useProductStore((state) => state.setProducts);
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const getOneCategoryProducts = async (categoryId: any) => {
     const response = await getCategoryProductService(categoryId);
     setProducts(response.products);
 
-    navigate("/AllProducts");
+    router.push("/AllProducts");
   };
 
   return (

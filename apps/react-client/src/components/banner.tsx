@@ -1,15 +1,16 @@
+"use client";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import useProductStore from "../store/productListing.store";
+import { useRouter } from "next/navigation";
 
 export default function Banner() {
   const allProducts = useProductStore((state) => state.allProducts);
   const setProducts = useProductStore((state) => state.setProducts);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const post = {
     title: "Apna Fitness, Cause Your Fitness is in Your Hands",
@@ -80,7 +81,7 @@ export default function Banner() {
               size="large"
               onClick={() => {
                 setProducts(allProducts);
-                navigate("/AllProducts");
+                router.push("/AllProducts");
               }}
             >
               SHOP NOW

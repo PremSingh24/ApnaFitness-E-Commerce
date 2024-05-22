@@ -1,12 +1,14 @@
+"use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const UserTabs = () => {
   const [_value, setValue] = React.useState(window.location.pathname);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,7 +39,7 @@ const UserTabs = () => {
           <Tab
             label="Profile"
             onClick={() => {
-              navigate("profile");
+              router.push("profile");
             }}
             sx={{ fontSize: "1rem" }}
             value={"/user/profile"}
@@ -45,7 +47,7 @@ const UserTabs = () => {
           <Tab
             label="Address"
             onClick={() => {
-              navigate("address");
+              router.push("address");
             }}
             sx={{ fontSize: "1rem" }}
             value={"/user/address"}
@@ -53,10 +55,10 @@ const UserTabs = () => {
           <Tab
             label="Orders"
             onClick={() => {
-              navigate("myorders");
+              router.push("myOrders");
             }}
             sx={{ fontSize: "1rem" }}
-            value={"/user/myorders"}
+            value={"/user/myOrders"}
           />
         </Tabs>
       </Box>

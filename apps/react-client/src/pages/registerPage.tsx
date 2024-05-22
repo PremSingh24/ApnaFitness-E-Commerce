@@ -1,3 +1,4 @@
+"use client";
 import { registerUserType } from "common";
 import Avatar from "@mui/material/Avatar";
 import { TextField, Button, Typography } from "@mui/material";
@@ -13,14 +14,14 @@ import PasswordField from "../components/passwordField";
 import Paper from "@mui/material/Paper";
 import { registerUserService } from "../services/authServices/register.service";
 import useLoginStore from "../store/login.store";
-import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
 export function Register() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const setLogin = useLoginStore((state) => state.setLogin);
 
   const userData = useForm<registerUserType>({
@@ -62,7 +63,7 @@ export function Register() {
         document.cookie =
           "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";
 
-        navigate("/", { replace: true });
+        router.replace("/");
         toast.success(response.data.message);
       } else {
         toast.error(

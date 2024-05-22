@@ -1,3 +1,4 @@
+"use client";
 import { addressType, cartType } from "common";
 import verifyOrderService from "../services/orderServices/verifyOrder.service";
 import { Button, Card, CardContent, Divider, Typography } from "@mui/material";
@@ -5,9 +6,9 @@ import useUserStore from "../store/user.store";
 import logo from "../assets/logo.webp";
 import { toast } from "sonner";
 import verifyPaymentService from "../services/orderServices/verifyPayment.service";
-import { useNavigate } from "react-router-dom";
 import useCartStore from "../store/cart.store";
 import useLogOut from "../hooks/useLogOut";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -26,7 +27,7 @@ const OrderSummary = ({
   deliveryAddress: addressType | null;
   orderPrice: number;
 }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const user = useUserStore((state) => state.user);
   const setCart = useCartStore((state) => state.setCart);
 
@@ -71,7 +72,7 @@ const OrderSummary = ({
 
             if (res.status === 201) {
               setCart([]);
-              navigate("/user/myOrders");
+              router.push("/user/myOrders");
             } else if (response.status === 401) {
               await logOut();
               toast.error("Session Expired, Login Again!");

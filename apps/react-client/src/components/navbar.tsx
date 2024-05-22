@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -24,10 +25,10 @@ import {
 import useProductStore from "../store/productListing.store";
 import { productType } from "common";
 import useLoginStore from "../store/login.store";
-import { useNavigate } from "react-router-dom";
 import useWishlistStore from "../store/wishlist.store";
 import useCartStore from "../store/cart.store";
 import logo from "../assets/logo.webp";
+import { useRouter } from "next/navigation";
 
 const theme = createTheme();
 
@@ -91,7 +92,7 @@ const NavBar = () => {
   const [searchedProducts, setSearchedProducts] = useState<productType[]>([]);
 
   const products = useProductStore((state) => state.allProducts);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
 
@@ -167,7 +168,7 @@ const NavBar = () => {
                 position: { xs: "relative", md: "-webkit-sticky" },
                 objectFit: "contain",
               }}
-              onClick={() => navigate("/")}
+              onClick={() => router.push("/")}
             >
               <img
                 src={logo.src}
@@ -249,7 +250,7 @@ const NavBar = () => {
                             <ListItem
                               sx={{ ":hover": { backgroundColor: "gray" } }}
                               onClick={() => {
-                                navigate(`/products/${product._id}`);
+                                router.push(`/products/${product._id}`);
                                 setSearchInput("");
                               }}
                             >
@@ -297,7 +298,7 @@ const NavBar = () => {
                   aria-label="account of current user"
                   aria-controls={"primary-search-account-menu"}
                   aria-haspopup="true"
-                  onClick={() => navigate("/user")}
+                  onClick={() => router.push("/user")}
                   color="inherit"
                   sx={{
                     display: { xs: "none", sm: "flex", md: "flex" },
@@ -319,7 +320,7 @@ const NavBar = () => {
                     display: { xs: "none", sm: "flex", md: "flex" },
                     marginLeft: { xl: "1rem" },
                   }}
-                  onClick={() => navigate("/MyWishlist")}
+                  onClick={() => router.push("/MyWishlist")}
                 >
                   <Badge
                     badgeContent={wishlist.length > 0 ? wishlist.length : null}
@@ -340,7 +341,7 @@ const NavBar = () => {
                     display: { xs: "flex", sm: "flex", md: "flex" },
                     marginLeft: { xl: "1rem" },
                   }}
-                  onClick={() => navigate("/MyCart")}
+                  onClick={() => router.push("/MyCart")}
                 >
                   <Badge
                     badgeContent={cart.length > 0 ? cart.length : null}

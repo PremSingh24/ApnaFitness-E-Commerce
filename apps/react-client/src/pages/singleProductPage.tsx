@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   Card,
@@ -19,7 +20,6 @@ import DoneIcon from "@mui/icons-material/Done";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import useLoginStore from "../store/login.store";
-import { useNavigate } from "react-router-dom";
 import useCartStore from "../store/cart.store";
 import addToCartService from "../services/cartServices/addToCart.service";
 import useWishlistStore from "../store/wishlist.store";
@@ -28,6 +28,7 @@ import removeFromWishlistService from "../services/wishlistServices/removeFromWi
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "sonner";
 import useLogOut from "../hooks/useLogOut";
+import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
@@ -37,7 +38,7 @@ const SingleProductPage = () => {
   const loggedIn =
     useLoginStore((state) => state.login) ||
     document.cookie === "loggedIn=true";
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const cart = useCartStore((state) => state.cart);
   const addToCartContext = useCartStore((state) => state.addToCart);
@@ -87,7 +88,7 @@ const SingleProductPage = () => {
               endIcon={<ShoppingCartIcon />}
               fullWidth
               onClick={() =>
-                loggedIn ? navigate("/MyCart") : navigate("/login")
+                loggedIn ? router.push("/MyCart") : router.push("/login")
               }
             >
               Go To Cart
@@ -99,7 +100,9 @@ const SingleProductPage = () => {
               endIcon={<ShoppingCartIcon />}
               fullWidth={true}
               onClick={() =>
-                loggedIn ? addToCart(product, product._id) : navigate("/login")
+                loggedIn
+                  ? addToCart(product, product._id)
+                  : router.push("/login")
               }
             >
               Add To Cart
@@ -159,7 +162,7 @@ const SingleProductPage = () => {
             fullWidth
             endIcon={<FavoriteIcon />}
             onClick={() =>
-              loggedIn ? removeFromWishlist(product._id) : navigate("/login")
+              loggedIn ? removeFromWishlist(product._id) : router.push("/login")
             }
           >
             Remove From Wishlist
@@ -174,7 +177,7 @@ const SingleProductPage = () => {
             onClick={() =>
               loggedIn
                 ? addToWishlist(product, product._id)
-                : navigate("/login")
+                : router.push("/login")
             }
           >
             Add To Wishlist

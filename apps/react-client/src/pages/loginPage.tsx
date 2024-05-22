@@ -1,3 +1,4 @@
+"use client";
 import { loginUserType } from "common";
 import loginUserService from "../services/authServices/login.service";
 import { TextField, Button, Typography, Toolbar } from "@mui/material";
@@ -12,15 +13,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
-import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer";
 import { toast } from "sonner";
 import useLoginStore from "../store/login.store";
+import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const setLogin = useLoginStore((state) => state.setLogin);
 
   const userData = useForm<loginUserType>({
@@ -44,7 +45,7 @@ const LoginPage = () => {
       document.cookie =
         "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";
 
-      navigate("/", { replace: true });
+      router.replace("/");
 
       toast.success(response.data.message);
     } else {

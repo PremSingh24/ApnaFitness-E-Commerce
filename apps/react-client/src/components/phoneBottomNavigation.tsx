@@ -1,14 +1,15 @@
+"use client";
 import { Badge, BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useWishlistStore from "../store/wishlist.store";
+import { useRouter } from "next/navigation";
 
 const PhoneBottomNavigation = () => {
   const [value, setValue] = useState(window.location.pathname);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
 
@@ -34,7 +35,7 @@ const PhoneBottomNavigation = () => {
         label="home"
         icon={<HomeIcon />}
         onClick={() => {
-          navigate("/");
+          router.push("/");
         }}
         value={"/"}
       />
@@ -51,7 +52,7 @@ const PhoneBottomNavigation = () => {
           </Badge>
         }
         onClick={() => {
-          navigate("/mywishlist");
+          router.push("/mywishlist");
         }}
         value={"/mywishlist"}
       />
@@ -60,7 +61,7 @@ const PhoneBottomNavigation = () => {
         label="profile"
         icon={<PersonIcon />}
         onClick={() => {
-          navigate("/user");
+          router.push("/user");
         }}
         value={"/user"}
       />

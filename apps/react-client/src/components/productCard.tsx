@@ -1,3 +1,4 @@
+"use client";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -18,7 +19,6 @@ import Loader from "./loader";
 import Link from "next/link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { productType } from "common";
-import { useNavigate } from "react-router-dom";
 import useLoginStore from "../store/login.store";
 import useWishlistStore from "../store/wishlist.store";
 import addToWishlistService from "../services/wishlistServices/addToWishlist.service";
@@ -28,6 +28,7 @@ import useCartStore from "../store/cart.store";
 import addToCartService from "../services/cartServices/addToCart.service";
 import { toast } from "sonner";
 import useLogOut from "../hooks/useLogOut";
+import { useRouter } from "next/navigation";
 
 const theme = createTheme();
 
@@ -36,7 +37,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
     useLoginStore((state) => state.login) ||
     document.cookie === "loggedIn=true";
   const logOut = useLogOut();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
   const addToWishlistContext = useWishlistStore((state) => state.addToWishlist);
@@ -100,7 +101,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
             color="inherit"
             sx={{ position: "absolute", top: 0, right: 0 }}
             onClick={() =>
-              loggedIn ? removeFromWishlist(product._id) : navigate("/login")
+              loggedIn ? removeFromWishlist(product._id) : router.push("/login")
             }
           >
             <FavoriteIcon color="error" />
@@ -114,7 +115,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
             onClick={() =>
               loggedIn
                 ? addToWishlist(product, product._id)
-                : navigate("/login")
+                : router.push("/login")
             }
           >
             <FavoriteBorderIcon />
@@ -134,7 +135,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
               size="medium"
               fullWidth
               onClick={() =>
-                loggedIn ? navigate("/MyCart") : navigate("/login")
+                loggedIn ? router.push("/MyCart") : router.push("/login")
               }
             >
               Go To Cart
@@ -145,7 +146,9 @@ const ProductCard = ({ products }: { products: productType[] }) => {
               size="medium"
               fullWidth
               onClick={() =>
-                loggedIn ? addToCart(product, product._id) : navigate("/login")
+                loggedIn
+                  ? addToCart(product, product._id)
+                  : router.push("/login")
               }
             >
               Add To Cart
