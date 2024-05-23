@@ -8,10 +8,14 @@ import Banner from "../components/banner";
 import useProductStore from "../store/productListing.store";
 import Footer from "../components/footer";
 import HomeProductCard from "../components/homeProductCard";
+import useFetchAllProducts from "../hooks/useProductFetch";
+import useFetchUserCartAndWishlist from "../hooks/useUserDataFetch";
 
 const theme = createTheme();
 
 const HomePage = () => {
+  useFetchAllProducts();
+  useFetchUserCartAndWishlist();
   const allProducts = useProductStore((state) => state.allProducts) || [];
 
   const products = allProducts.filter((product) => product.isTrending);
