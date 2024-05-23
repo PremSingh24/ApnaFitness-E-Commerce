@@ -13,18 +13,23 @@ import getCategoryProductService from "../services/categoryServices/getCategoryP
 import useProductStore from "../store/productListing.store";
 import Loader from "./loader";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Categories = () => {
-  const categories = useCategoryStore((state) => state.categories);
+  const categories = useCategoryStore((state) => state.categories) || [];
   const setProducts = useProductStore((state) => state.setProducts);
 
   const router = useRouter();
 
   const getOneCategoryProducts = async (categoryId: any) => {
     const response = await getCategoryProductService(categoryId);
-    setProducts(response.products);
+    if (response.status == 200) {
+      setProducts(response.products);
 
-    router.push("/AllProducts");
+      router.push("/AllProducts");
+    } else {
+      toast.error(response.message ? response.message : response.data.message);
+    }
   };
 
   return (
