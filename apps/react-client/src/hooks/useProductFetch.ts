@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import useProductStore from "../store/productListing.store";
 import useCategoryStore from "../store/category.store";
@@ -20,7 +21,11 @@ const useFetchAllProducts = () => {
         setAllProducts(productResponse.data.products);
         setProducts(productResponse.data.products);
       } else {
-        toast.error(productResponse.data.message);
+        toast.error(
+          productResponse?.message
+            ? productResponse.message
+            : productResponse.data.message
+        );
       }
 
       //Getting ALl Categories

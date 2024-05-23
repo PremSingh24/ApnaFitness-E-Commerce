@@ -1,3 +1,4 @@
+"use client";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -11,7 +12,7 @@ import HomeProductCard from "../components/homeProductCard";
 const theme = createTheme();
 
 const HomePage = () => {
-  const allProducts = useProductStore((state) => state.allProducts);
+  const allProducts = useProductStore((state) => state.allProducts) || [];
 
   const products = allProducts.filter((product) => product.isTrending);
 
