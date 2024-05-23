@@ -27,3 +27,8 @@ dist-ssr
 .env
 .env.test
 .env.production
+
+# ...
+.next
+next-env.d.ts
+dist
