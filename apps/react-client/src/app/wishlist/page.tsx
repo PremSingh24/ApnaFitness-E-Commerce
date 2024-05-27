@@ -1,11 +1,12 @@
+"use client";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Stack } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ProductCard from "../components/productCard";
-import useWishlistStore from "../store/wishlist.store";
 import Link from "next/link";
+import useWishlistStore from "../../store/wishlist.store";
+import ProductCard from "../../components/productCard";
 
 const theme = createTheme();
 

@@ -12,28 +12,27 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import getProductService from "../services/productServices/getProduct.service";
+import getProductService from "../../../services/productServices/getProduct.service";
 import { productType } from "common";
 import DoneIcon from "@mui/icons-material/Done";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import useLoginStore from "../store/login.store";
-import useCartStore from "../store/cart.store";
-import addToCartService from "../services/cartServices/addToCart.service";
-import useWishlistStore from "../store/wishlist.store";
-import addToWishlistService from "../services/wishlistServices/addToWishlist.service";
-import removeFromWishlistService from "../services/wishlistServices/removeFromWishlist.service";
+import useLoginStore from "../../../store/login.store";
+import useCartStore from "../../../store/cart.store";
+import addToCartService from "../../../services/cartServices/addToCart.service";
+import useWishlistStore from "../../../store/wishlist.store";
+import addToWishlistService from "../../../services/wishlistServices/addToWishlist.service";
+import removeFromWishlistService from "../../../services/wishlistServices/removeFromWishlist.service";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "sonner";
-import useLogOut from "../hooks/useLogOut";
+import useLogOut from "../../../hooks/useLogOut";
 import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
-const SingleProductPage = () => {
-  const { ProductId } = useParams();
+const SingleProductPage = ({ params }: { params: { productId: string } }) => {
+  console.log("type is ", typeof params.productId);
   const [product, setProduct] = useState<productType>();
   const loggedIn =
     useLoginStore((state) => state.login) ||
@@ -53,7 +52,7 @@ const SingleProductPage = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await getProductService(ProductId);
+      const response = await getProductService(params.productId);
 
       if (response.status === 200) {
         setProduct(response.data.product);
@@ -61,7 +60,7 @@ const SingleProductPage = () => {
         toast.error(response.data.message);
       }
     })();
-  }, [ProductId]);
+  }, [params.productId]);
 
   const CartButton = (product: productType) => {
     const addToCart = async (product: any, ProductId: any) => {
@@ -88,7 +87,7 @@ const SingleProductPage = () => {
               endIcon={<ShoppingCartIcon />}
               fullWidth
               onClick={() =>
-                loggedIn ? router.push("/MyCart") : router.push("/login")
+                loggedIn ? router.push("/cart") : router.push("/login")
               }
             >
               Go To Cart

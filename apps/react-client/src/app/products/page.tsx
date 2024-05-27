@@ -1,14 +1,15 @@
+"use client";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
-import SideDrawer from "../components/sideDrawer";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ProductCard from "../components/productCard";
-import useProductStore from "../store/productListing.store";
-import MobileFilters from "../components/mobileFilters";
 import { useEffect, useState } from "react";
-import { getFilteredProducts } from "../helpers/filter.helpers";
-import useFilterStore from "../store/filter.store";
+import useProductStore from "../../store/productListing.store";
+import useFilterStore from "../../store/filter.store";
+import { getFilteredProducts } from "../../helpers/filter.helpers";
+import MobileFilters from "../../components/mobileFilters";
+import SideDrawer from "../../components/sideDrawer";
+import ProductCard from "../../components/productCard";
 
 const theme = createTheme();
 
@@ -17,6 +18,8 @@ const drawerWidth = 280;
 const ProductListingPage = () => {
   const products = useProductStore((state) => state.products);
   const filterState = useFilterStore((state) => state);
+
+  // console.log(products);
 
   const filteredProducts = getFilteredProducts(products, filterState);
 

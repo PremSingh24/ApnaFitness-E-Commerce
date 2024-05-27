@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Container, Toolbar } from "@mui/material";
 import Categories from "../components/category";
 import Banner from "../components/banner";
-import useProductStore from "../store/productListing.store";
 import Footer from "../components/footer";
 import HomeProductCard from "../components/homeProductCard";
 import useFetchAllProducts from "../hooks/useProductFetch";
@@ -16,9 +15,6 @@ const theme = createTheme();
 const HomePage = () => {
   useFetchAllProducts();
   useFetchUserCartAndWishlist();
-  const allProducts = useProductStore((state) => state.allProducts) || [];
-
-  const products = allProducts.filter((product) => product.isTrending);
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,7 +49,7 @@ const HomePage = () => {
           Our Products
         </Typography>
 
-        <HomeProductCard products={products} />
+        <HomeProductCard />
       </Container>
       <Footer />
     </ThemeProvider>

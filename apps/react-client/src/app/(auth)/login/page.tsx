@@ -1,10 +1,8 @@
 "use client";
 import { loginUserType } from "common";
-import loginUserService from "../services/authServices/login.service";
 import { TextField, Button, Typography, Toolbar } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import PasswordField from "../components/passwordField";
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,10 +11,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
-import Footer from "../components/footer";
 import { toast } from "sonner";
-import useLoginStore from "../store/login.store";
 import { useRouter } from "next/navigation";
+import useLoginStore from "../../../store/login.store";
+import PasswordField from "../../../components/passwordField";
+import Footer from "../../../components/footer";
+import loginUserService from "../../../services/authServices/login.service";
 
 const defaultTheme = createTheme();
 
@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     if (response.status === 200) {
       setLogin();
-      let expiresDate = new Date();
+      const expiresDate = new Date();
       expiresDate.setDate(expiresDate.getDate() + 1);
       document.cookie =
         "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";

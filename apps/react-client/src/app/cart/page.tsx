@@ -1,16 +1,17 @@
+"use client";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Grid, Stack, Toolbar } from "@mui/material";
 import Link from "next/link";
-import useCartStore from "../store/cart.store";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CartProduct from "../components/cartProduct";
-import CartSummary from "../components/cartSummary";
 import { useState } from "react";
-import DeliveryAddress from "../components/deliveryAddress";
-import OrderSummary from "../components/orderSummary";
 import { addressType } from "common";
+import useCartStore from "../../store/cart.store";
+import CartProduct from "../../components/cartProduct";
+import CartSummary from "../../components/cartSummary";
+import DeliveryAddress from "../../components/deliveryAddress";
+import OrderSummary from "../../components/orderSummary";
 
 const theme = createTheme();
 

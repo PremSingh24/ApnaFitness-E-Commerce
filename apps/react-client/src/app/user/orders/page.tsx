@@ -1,10 +1,12 @@
+"use client";
 import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { useEffect } from "react";
-import getOrdersService from "../services/orderServices/getOrders.service";
 import { toast } from "sonner";
-import useOrderStore from "../store/order.store";
 import Link from "next/link";
-import useLogOut from "../hooks/useLogOut";
+import useOrderStore from "../../../store/order.store";
+import useLogOut from "../../../hooks/useLogOut";
+import getOrdersService from "../../../services/orderServices/getOrders.service";
+import Image from "next/image";
 
 const OrdersTab = () => {
   const orders = useOrderStore((state) => state.orders);
@@ -90,7 +92,7 @@ const OrdersTab = () => {
                       textDecoration: "none",
                     }}
                   >
-                    <img
+                    <Image
                       src={order.product.image}
                       alt="Order Item"
                       style={{ width: 90, height: 90, marginRight: 16 }}

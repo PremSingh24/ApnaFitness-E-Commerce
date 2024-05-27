@@ -10,17 +10,17 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import PasswordField from "../components/passwordField";
 import Paper from "@mui/material/Paper";
-import { registerUserService } from "../services/authServices/register.service";
-import useLoginStore from "../store/login.store";
-import Footer from "../components/footer";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import useLoginStore from "../../../store/login.store";
+import { registerUserService } from "../../../services/authServices/register.service";
+import PasswordField from "../../../components/passwordField";
+import Footer from "../../../components/footer";
 
 const defaultTheme = createTheme();
 
-export function Register() {
+const RegisterPage = () => {
   const router = useRouter();
   const setLogin = useLoginStore((state) => state.setLogin);
 
@@ -58,7 +58,7 @@ export function Register() {
 
       if (response.status === 201) {
         setLogin();
-        let expiresDate = new Date();
+        const expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 1);
         document.cookie =
           "loggedIn=true; expires=" + expiresDate.toUTCString() + "; path=/";
@@ -116,7 +116,7 @@ export function Register() {
                   required
                   {...register("firstName", {
                     required: "First Name is Required",
-                    minLength: { value: 2, message: "Minumum 2 Characters" },
+                    minLength: { value: 2, message: "Minimum 2 Characters" },
                     pattern: {
                       value: /^\S*$/,
                       message: "Space Detected",
@@ -136,7 +136,7 @@ export function Register() {
                   required
                   {...register("lastName", {
                     required: "Last Name is Required",
-                    minLength: { value: 2, message: "Minumum 2 Characters" },
+                    minLength: { value: 2, message: "Minimum 2 Characters" },
                     pattern: {
                       value: /^\S*$/,
                       message: "Space Detected",
@@ -230,4 +230,6 @@ export function Register() {
       <Footer />
     </ThemeProvider>
   );
-}
+};
+
+export default RegisterPage;

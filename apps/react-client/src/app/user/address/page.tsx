@@ -1,10 +1,11 @@
+"use client";
 import { Typography } from "@mui/material";
-import AddressCard from "../components/addressCard";
-import useAddressStore from "../store/address.store";
 import { useEffect } from "react";
-import getAddressService from "../services/addressServices/getAddress.service";
 import { toast } from "sonner";
-import useLogOut from "../hooks/useLogOut";
+import useAddressStore from "../../../store/address.store";
+import useLogOut from "../../../hooks/useLogOut";
+import getAddressService from "../../../services/addressServices/getAddress.service";
+import AddressCard from "../../../components/addressCard";
 
 const AddressTab = () => {
   const setAllAddress = useAddressStore((state) => state.setAddress);
