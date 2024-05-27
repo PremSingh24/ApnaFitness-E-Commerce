@@ -1,4 +1,3 @@
-import { productType } from "../schemas/productSchema";
 import { addressType } from "./addressSchema";
 
 export type orderType = {
