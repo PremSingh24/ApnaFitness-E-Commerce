@@ -29,6 +29,7 @@ import useWishlistStore from "../store/wishlist.store";
 import useCartStore from "../store/cart.store";
 import logo from "../assets/logo.webp";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const theme = createTheme();
 
@@ -170,8 +171,9 @@ const NavBar = () => {
               }}
               onClick={() => router.push("/")}
             >
-              <img
+              <Image
                 src={logo.src}
+                alt="ApnaFitness logo"
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -254,14 +256,15 @@ const NavBar = () => {
                                 setSearchInput("");
                               }}
                             >
-                              <img
+                              <Image
                                 src={product.image}
+                                alt={product.description}
                                 style={{
                                   objectFit: "contain",
                                   height: "40px",
                                   width: "40px",
                                 }}
-                              ></img>
+                              />
                               <Typography
                                 variant="body1"
                                 color={"black"}
@@ -320,7 +323,7 @@ const NavBar = () => {
                     display: { xs: "none", sm: "flex", md: "flex" },
                     marginLeft: { xl: "1rem" },
                   }}
-                  onClick={() => router.push("/MyWishlist")}
+                  onClick={() => router.push("/wishlist")}
                 >
                   <Badge
                     badgeContent={wishlist.length > 0 ? wishlist.length : null}
@@ -341,7 +344,7 @@ const NavBar = () => {
                     display: { xs: "flex", sm: "flex", md: "flex" },
                     marginLeft: { xl: "1rem" },
                   }}
-                  onClick={() => router.push("/MyCart")}
+                  onClick={() => router.push("/cart")}
                 >
                   <Badge
                     badgeContent={cart.length > 0 ? cart.length : null}

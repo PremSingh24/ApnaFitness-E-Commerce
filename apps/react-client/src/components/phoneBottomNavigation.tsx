@@ -5,10 +5,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
 import { useState } from "react";
 import useWishlistStore from "../store/wishlist.store";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const PhoneBottomNavigation = () => {
-  const [value, setValue] = useState(window.location.pathname);
+  const [_currentPath, setCurrentPath] = useState(usePathname());
   const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
@@ -21,13 +21,9 @@ const PhoneBottomNavigation = () => {
         bottom: 0,
         display: { xs: "flex", sm: "none" },
       }}
-      value={
-        window.location.pathname.includes("/user")
-          ? value
-          : window.location.pathname
-      }
+      value={usePathname()}
       onChange={(_event, newValue) => {
-        setValue(newValue);
+        setCurrentPath(newValue);
       }}
       showLabels
     >
@@ -52,9 +48,9 @@ const PhoneBottomNavigation = () => {
           </Badge>
         }
         onClick={() => {
-          router.push("/mywishlist");
+          router.push("/wishlist");
         }}
-        value={"/mywishlist"}
+        value={"/wishlist"}
       />
 
       <BottomNavigationAction

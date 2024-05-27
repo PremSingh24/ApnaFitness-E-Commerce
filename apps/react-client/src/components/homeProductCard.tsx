@@ -28,10 +28,14 @@ import addToCartService from "../services/cartServices/addToCart.service";
 import { toast } from "sonner";
 import useLogOut from "../hooks/useLogOut";
 import { useRouter } from "next/navigation";
+import useProductStore from "../store/productListing.store";
 
 const theme = createTheme();
 
-const HomeProductCard = ({ products }: { products: productType[] }) => {
+const HomeProductCard = () => {
+  const allProducts = useProductStore((state) => state.allProducts);
+
+  const products = allProducts.filter((product) => product.isTrending);
   const loggedIn =
     useLoginStore((state) => state.login) ||
     document.cookie === "loggedIn=true";
@@ -134,7 +138,7 @@ const HomeProductCard = ({ products }: { products: productType[] }) => {
               size="medium"
               fullWidth
               onClick={() =>
-                loggedIn ? router.push("/MyCart") : router.push("/login")
+                loggedIn ? router.push("/cart") : router.push("/login")
               }
             >
               Go To Cart

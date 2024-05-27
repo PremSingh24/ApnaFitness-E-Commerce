@@ -1,3 +1,4 @@
+"use client";
 import useLoginStore from "../store/login.store";
 import Link from "next/link";
 

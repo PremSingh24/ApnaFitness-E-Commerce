@@ -1,3 +1,4 @@
+"use client";
 import { ReactNode, useEffect, useState } from "react";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";

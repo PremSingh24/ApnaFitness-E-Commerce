@@ -9,6 +9,7 @@ import verifyPaymentService from "../services/orderServices/verifyPayment.servic
 import useCartStore from "../store/cart.store";
 import useLogOut from "../hooks/useLogOut";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 declare global {
   interface Window {
@@ -145,7 +146,7 @@ const OrderSummary = ({
                 }}
                 key={order._id}
               >
-                <img
+                <Image
                   src={order.item.image}
                   alt="Order Item"
                   style={{ width: 90, height: 90, marginRight: 16 }}

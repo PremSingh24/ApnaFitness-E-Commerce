@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const Categories = () => {
-  const categories = useCategoryStore((state) => state.categories) || [];
+  const categories = useCategoryStore((state) => state.categories);
   const setProducts = useProductStore((state) => state.setProducts);
 
   const router = useRouter();
@@ -24,9 +24,9 @@ const Categories = () => {
   const getOneCategoryProducts = async (categoryId: any) => {
     const response = await getCategoryProductService(categoryId);
     if (response.status == 200) {
-      setProducts(response.products);
+      setProducts(response.data.products);
 
-      router.push("/AllProducts");
+      router.push("/allProducts");
     } else {
       toast.error(response.message ? response.message : response.data.message);
     }

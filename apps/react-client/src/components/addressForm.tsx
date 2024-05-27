@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -209,10 +210,10 @@ const AddressForm = ({
               autoComplete="name"
               {...register("name", {
                 required: "Name is Required",
-                minLength: { value: 2, message: "Minumum 2 Characters" },
+                minLength: { value: 2, message: "Minimum 2 Characters" },
                 pattern: {
                   value: /^[A-Za-z\s]+$/,
-                  message: "Spcial Characters Detected",
+                  message: "Special Characters Detected",
                 },
               })}
               error={!!errors.name}
@@ -260,10 +261,10 @@ const AddressForm = ({
               autoComplete="street-address"
               {...register("street", {
                 required: "Street Name is Required",
-                minLength: { value: 5, message: "Minumum 5 Characters" },
+                minLength: { value: 5, message: "Minimum 5 Characters" },
                 pattern: {
                   value: /^[^`!@#$%^*,]+$/,
-                  message: "Spcial Characters Detected",
+                  message: "Special Characters Detected",
                 },
               })}
               error={!!errors.street}
@@ -282,10 +283,10 @@ const AddressForm = ({
               required
               {...register("city", {
                 required: "City Name is Required",
-                minLength: { value: 2, message: "Minumum 2 Characters" },
+                minLength: { value: 2, message: "Minimum 2 Characters" },
                 pattern: {
                   value: /^[^`!@#$%^*,]+$/,
-                  message: "Spcial Characters Detected",
+                  message: "Special Characters Detected",
                 },
               })}
               error={!!errors.city}
@@ -305,10 +306,10 @@ const AddressForm = ({
               required
               {...register("state", {
                 required: "State Name is Required",
-                minLength: { value: 3, message: "Minumum 3 Characters" },
+                minLength: { value: 3, message: "Minimum 3 Characters" },
                 pattern: {
                   value: /^[A-Za-z\s]+$/,
-                  message: "Spcial Characters Detected",
+                  message: "Special Characters Detected",
                 },
               })}
               error={!!errors.state}
@@ -338,7 +339,7 @@ const AddressForm = ({
               autoComplete="postal-code"
               {...register("pincode", {
                 required: "Pincode is Required",
-                minLength: { value: 6, message: "Minumum 6 Characters" },
+                minLength: { value: 6, message: "Minimum 6 Characters" },
                 pattern: {
                   value: /^[0-9]{6}$/,
                   message: "Please Enter a Valid PinCode",

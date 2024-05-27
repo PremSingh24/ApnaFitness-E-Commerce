@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import useProductStore from "../store/productListing.store";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Banner() {
   const allProducts = useProductStore((state) => state.allProducts);
@@ -20,7 +21,7 @@ export default function Banner() {
       "https://t3.ftcdn.net/jpg/03/69/84/22/240_F_369842290_c1dQNWM8wnt3YD2uQTqupbda0XuksDXK.jpg",
     imageText: "Apna Fitness Banner Image",
   };
-  //#TODO:Make a transistion effect of banner
+  //#TODO:Make a transition effect of banner
 
   return (
     <Paper
@@ -38,7 +39,7 @@ export default function Banner() {
     >
       {/* Increase the priority of the hero background image */}
       {
-        <img
+        <Image
           style={{ display: "none" }}
           src={post.image}
           alt={post.imageText}
@@ -79,7 +80,7 @@ export default function Banner() {
               variant="contained"
               color="primary"
               size="large"
-              onClick={() => {
+              onClick={async () => {
                 setProducts(allProducts);
                 router.push("/AllProducts");
               }}

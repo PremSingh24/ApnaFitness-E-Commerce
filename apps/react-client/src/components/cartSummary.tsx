@@ -1,3 +1,4 @@
+"use client";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Button, Divider, styled } from "@mui/material";

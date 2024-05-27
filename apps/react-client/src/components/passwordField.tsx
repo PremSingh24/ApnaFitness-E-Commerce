@@ -1,3 +1,4 @@
+"use client";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";

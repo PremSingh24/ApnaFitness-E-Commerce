@@ -135,7 +135,7 @@ const ProductCard = ({ products }: { products: productType[] }) => {
               size="medium"
               fullWidth
               onClick={() =>
-                loggedIn ? router.push("/MyCart") : router.push("/login")
+                loggedIn ? router.push("/cart") : router.push("/login")
               }
             >
               Go To Cart

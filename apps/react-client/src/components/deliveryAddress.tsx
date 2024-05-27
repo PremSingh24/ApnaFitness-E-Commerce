@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from "react";
 import useAddressStore from "../store/address.store";
 import getAddressService from "../services/addressServices/getAddress.service";
