@@ -1,7 +1,7 @@
 import axios from "axios";
 import { loginUserType } from "common";
 
-const loginService = async (loginUser: loginUserType) => {
+const loginUserService = async (loginUser: loginUserType) => {
   try {
     return await axios.post("/api/v1/auth/login", loginUser);
   } catch (error) {
@@ -15,4 +15,4 @@ const loginService = async (loginUser: loginUserType) => {
   }
 };
 
-export default loginService;
+export default loginUserService;
