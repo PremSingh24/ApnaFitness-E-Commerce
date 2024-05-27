@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import NavBar from "../components/navbar";
+import PhoneBottomNavigation from "../components/phoneBottomNavigation";
+import { Toaster } from "sonner";
 
-export const metadata: Metadata = {
-  title: "ApnaFitness",
-  description: "fitness and gym products website and platform",
+const metadata: Metadata = {
+  title: "ApnaFitness Online Store",
+  description: "fitness and gym products platform",
 };
 
 export default function RootLayout({
@@ -18,7 +20,11 @@ export default function RootLayout({
           <NavBar />
         </header>
         {children}
+        <PhoneBottomNavigation />
+        <Toaster richColors closeButton />
       </body>
     </html>
   );
 }
+
+export { metadata };
