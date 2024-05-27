@@ -7,6 +7,24 @@ import { Request, Response } from "express";
  */
 
 /*
+ * This handler handles gets all trending products in the db.
+ * send GET Request at /api/v1/products/trending
+ */
+
+export const getTrendingProductsHandler = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const products = await Products.find({ isTrending: true });
+
+    res.status(200).json({ products }).end();
+  } catch (error) {
+    res.status(406).json({ message: "Something Went Wrong" }).end();
+  }
+};
+
+/*
  * This handler handles gets all products in the db.
  * send GET Request at /api/v1/products/all
  */
