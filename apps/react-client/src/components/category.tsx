@@ -8,92 +8,82 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import useCategoryStore from "../store/category.store";
-import getCategoryProductService from "../services/categoryServices/getCategoryProduct.service";
-import useProductStore from "../store/productListing.store";
-import Loader from "./loader";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
+import { useRouter } from "next/navigation";
+import useCategoryStore from "../store/category.store";
+import CategorySkeleton from "./categorySkeleton";
+
+const skeletonArray = [0, 1, 2, 3];
 const Categories = () => {
   const categories = useCategoryStore((state) => state.categories);
-  const setProducts = useProductStore((state) => state.setProducts);
 
   const router = useRouter();
 
-  const getOneCategoryProducts = async (categoryId: any) => {
-    const response = await getCategoryProductService(categoryId);
-    if (response.status == 200) {
-      setProducts(response.data.products);
-
-      router.push("/allProducts");
-    } else {
-      toast.error(response.message ? response.message : response.data.message);
-    }
-  };
-
   return (
     <Container maxWidth="xl" sx={{ width: "100%", padding: 0 }}>
-      {categories.length > 0 ? (
-        <Grid container spacing={2} sx={{ marginTop: "20px" }}>
-          {categories.map((category) => (
-            <Grid item xs={3} sm={3} md={3} lg={3} xl={3} key={category._id}>
-              <Card
-                sx={{
-                  maxHeight: { xs: "100px", sm: "200px", md: "200px" },
-                  width: { xs: "85px", sm: "auto" },
-                  padding: { xs: "5px", sm: "10px" },
-                  marginBottom: "20px",
-                  ":hover": { boxShadow: "10" },
-                  alignItems: "center",
-                  color: "black",
-                  backgroundColor: "#F0F0F0",
-                }}
-              >
-                <CardActionArea
+      <Grid container spacing={2} sx={{ marginTop: "20px" }}>
+        {categories.length > 0
+          ? categories.map((category) => (
+              <Grid item xs={3} sm={3} md={3} lg={3} xl={3} key={category._id}>
+                <Card
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                  }}
-                  onClick={() => {
-                    getOneCategoryProducts(category._id);
+                    maxHeight: { xs: "100px", sm: "200px", md: "200px" },
+                    width: { xs: "85px", sm: "auto" },
+                    padding: { xs: "5px", sm: "10px" },
+                    marginBottom: "20px",
+                    ":hover": { boxShadow: "10" },
+                    alignItems: "center",
+                    color: "black",
+                    backgroundColor: "#F0F0F0",
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    // height={"100"}
-                    width={"100"}
-                    image={category.image}
-                    alt={category.name}
+                  <CardActionArea
                     sx={{
-                      objectFit: "contain",
-                      aspectRatio: "3/2",
-                      height: { xs: "50px", sm: "100px" },
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-around",
                     }}
-                  />
-
-                  <CardContent>
-                    <Typography
-                      gutterBottom
+                    onClick={() => {
+                      router.push(
+                        `/products/category/${category.name}/${category._id}`
+                      );
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      width={"100"}
+                      image={category.image}
+                      alt={category.name}
                       sx={{
                         objectFit: "contain",
-                        fontSize: { xs: "0.8rem", sm: "1.2rem", md: "1.6rem" },
-                        display: "flex",
-                        justifyContent: "center",
+                        aspectRatio: "3/2",
+                        height: { xs: "50px", sm: "100px" },
                       }}
-                    >
-                      {category.name}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Loader />
-      )}
+                    />
+
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        sx={{
+                          objectFit: "contain",
+                          fontSize: {
+                            xs: "0.8rem",
+                            sm: "1.2rem",
+                            md: "1.6rem",
+                          },
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {category.name}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))
+          : skeletonArray.map((i) => <CategorySkeleton key={i.toString()} />)}
+      </Grid>
     </Container>
   );
 };
