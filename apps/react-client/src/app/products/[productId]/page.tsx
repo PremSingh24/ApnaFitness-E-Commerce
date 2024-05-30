@@ -32,11 +32,15 @@ import { useRouter } from "next/navigation";
 const defaultTheme = createTheme();
 
 const SingleProductPage = ({ params }: { params: { productId: string } }) => {
-  console.log("type is ", typeof params.productId);
   const [product, setProduct] = useState<productType>();
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
+  let loggedIn = useLoginStore((state) => state.login);
+
+  useEffect(() => {
+    if (!loggedIn) {
+      loggedIn = document.cookie === "loggedIn=true";
+    }
+  }, []);
+
   const router = useRouter();
 
   const cart = useCartStore((state) => state.cart);
