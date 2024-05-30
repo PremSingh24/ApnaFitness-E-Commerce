@@ -148,8 +148,10 @@ const OrderSummary = ({
               >
                 <Image
                   src={order.item.image}
+                  width={90}
+                  height={90}
                   alt="Order Item"
-                  style={{ width: 90, height: 90, marginRight: 16 }}
+                  style={{ marginRight: 16 }}
                 />
                 <div>
                   <Typography variant="body1" fontWeight={"bold"}>
