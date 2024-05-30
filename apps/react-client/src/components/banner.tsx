@@ -4,13 +4,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
-import useProductStore from "../store/productListing.store";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Banner() {
-  const allProducts = useProductStore((state) => state.allProducts);
-  const setProducts = useProductStore((state) => state.setProducts);
   const router = useRouter();
 
   const post = {
@@ -18,10 +15,9 @@ export default function Banner() {
     description:
       "Your One Stop Solution to All the Equipments, Supplements and Accessories At Best Price",
     image:
-      "https://t3.ftcdn.net/jpg/03/69/84/22/240_F_369842290_c1dQNWM8wnt3YD2uQTqupbda0XuksDXK.jpg",
+      "https://res.cloudinary.com/dd3tuqnig/image/upload/v1717092964/banner_vhkeuw.webp",
     imageText: "Apna Fitness Banner Image",
   };
-  //#TODO:Make a transition effect of banner
 
   return (
     <Paper
@@ -40,6 +36,8 @@ export default function Banner() {
       {/* Increase the priority of the hero background image */}
       {
         <Image
+          width={100}
+          height={100}
           style={{ display: "none" }}
           src={post.image}
           alt={post.imageText}
@@ -81,7 +79,6 @@ export default function Banner() {
               color="primary"
               size="large"
               onClick={async () => {
-                setProducts(allProducts);
                 router.push("/AllProducts");
               }}
             >
