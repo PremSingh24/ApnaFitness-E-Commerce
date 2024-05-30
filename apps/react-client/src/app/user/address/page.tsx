@@ -5,7 +5,11 @@ import { toast } from "sonner";
 import useAddressStore from "../../../store/address.store";
 import useLogOut from "../../../hooks/useLogOut";
 import getAddressService from "../../../services/addressServices/getAddress.service";
-import AddressCard from "../../../components/addressCard";
+import dynamic from "next/dynamic";
+
+const AddressCard = dynamic(() => import("../../../components/addressCard"), {
+  ssr: false,
+});
 
 const AddressTab = () => {
   const setAllAddress = useAddressStore((state) => state.setAddress);
