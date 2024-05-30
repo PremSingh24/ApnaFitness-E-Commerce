@@ -20,7 +20,6 @@ import { useEffect, useState } from "react";
 import getTrendingProductService from "../services/productServices/getTrendingProducts.service";
 import getAllCategoriesService from "../services/categoryServices/getAllCategories.service";
 import useCategoryStore from "../store/category.store";
-import useFetchUserCartAndWishlist from "../hooks/useUserDataFetch";
 import ProductSkeleton from "./homeProductSkeleton";
 import CartButton from "./cartButton";
 import WishlistButton from "./wishlistButton";
@@ -57,8 +56,6 @@ const HomeProductCard = () => {
       }
     })();
   }, []);
-
-  useFetchUserCartAndWishlist();
 
   return (
     <ThemeProvider theme={theme}>
