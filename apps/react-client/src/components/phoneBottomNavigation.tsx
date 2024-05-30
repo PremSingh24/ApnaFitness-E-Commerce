@@ -8,7 +8,7 @@ import useWishlistStore from "../store/wishlist.store";
 import { usePathname, useRouter } from "next/navigation";
 
 const PhoneBottomNavigation = () => {
-  const [_currentPath, setCurrentPath] = useState(usePathname());
+  const [currentPath, setCurrentPath] = useState(usePathname());
   const router = useRouter();
 
   const wishlist = useWishlistStore((state) => state.wishlist);
@@ -21,7 +21,7 @@ const PhoneBottomNavigation = () => {
         bottom: 0,
         display: { xs: "flex", sm: "none" },
       }}
-      value={usePathname()}
+      value={usePathname().includes("/user") ? currentPath : usePathname()}
       onChange={(_event, newValue) => {
         setCurrentPath(newValue);
       }}
