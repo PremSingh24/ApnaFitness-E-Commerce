@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import useCartStore from "../store/cart.store";
 import useLoginStore from "../store/login.store";
