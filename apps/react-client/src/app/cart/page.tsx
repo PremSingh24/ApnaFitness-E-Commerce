@@ -8,10 +8,26 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { addressType } from "common";
 import useCartStore from "../../store/cart.store";
-import CartProduct from "../../components/cartProduct";
-import CartSummary from "../../components/cartSummary";
-import DeliveryAddress from "../../components/deliveryAddress";
-import OrderSummary from "../../components/orderSummary";
+import dynamic from "next/dynamic";
+
+const CartProduct = dynamic(() => import("../../components/cartProduct"), {
+  ssr: false,
+});
+
+const CartSummary = dynamic(() => import("../../components/cartSummary"), {
+  ssr: false,
+});
+
+const DeliveryAddress = dynamic(
+  () => import("../../components/deliveryAddress"),
+  {
+    ssr: false,
+  }
+);
+
+const OrderSummary = dynamic(() => import("../../components/orderSummary"), {
+  ssr: false,
+});
 
 const theme = createTheme();
 
