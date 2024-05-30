@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ApnaFitness All Fitness Product Page",
+  title: "ApnaFitness All Products Page",
 };
 
 export default function RootLayout({
