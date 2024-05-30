@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import useLoginStore from "../../../store/login.store";
 import { registerUserService } from "../../../services/authServices/register.service";
 import PasswordField from "../../../components/passwordField";
-import Footer from "../../../components/footer";
 
 const defaultTheme = createTheme();
 
@@ -226,8 +225,6 @@ const RegisterPage = () => {
           </Box>
         </Paper>
       </Container>
-
-      <Footer />
     </ThemeProvider>
   );
 };
