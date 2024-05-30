@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import NavBar from "../components/navbar";
 import PhoneBottomNavigation from "../components/phoneBottomNavigation";
 import { Toaster } from "sonner";
+import Footer from "../components/footer";
+import NavBar from "../components/navbar";
 
 const metadata: Metadata = {
   title: "ApnaFitness Online Store",
@@ -22,6 +23,9 @@ export default function RootLayout({
         {children}
         <PhoneBottomNavigation />
         <Toaster richColors closeButton />
+        <footer>
+          <Footer />
+        </footer>
       </body>
     </html>
   );
