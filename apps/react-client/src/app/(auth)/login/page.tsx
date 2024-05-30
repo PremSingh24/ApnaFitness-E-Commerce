@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import useLoginStore from "../../../store/login.store";
 import PasswordField from "../../../components/passwordField";
-import Footer from "../../../components/footer";
 import loginUserService from "../../../services/authServices/login.service";
 
 const defaultTheme = createTheme();
@@ -173,7 +172,6 @@ const LoginPage = () => {
           </Box>
         </Paper>
       </Container>
-      <Footer />
     </ThemeProvider>
   );
 };
