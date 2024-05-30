@@ -1,3 +1,4 @@
+"use client";
 import useLoginStore from "../store/login.store";
 import useCartStore from "../store/cart.store";
 import useWishlistStore from "../store/wishlist.store";
