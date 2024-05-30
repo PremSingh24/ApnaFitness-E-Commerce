@@ -9,19 +9,24 @@ import useFilterStore from "../../store/filter.store";
 import { getFilteredProducts } from "../../helpers/filter.helpers";
 import MobileFilters from "../../components/mobileFilters";
 import SideDrawer from "../../components/sideDrawer";
-import ProductCard from "../../components/productCard";
+import dynamic from "next/dynamic";
+import useFetchAllProducts from "../../hooks/useProductFetch";
+
+const ProductCard = dynamic(() => import("../../components/productCard"), {
+  ssr: false,
+});
 
 const theme = createTheme();
 
 const drawerWidth = 280;
 
 const ProductListingPage = () => {
-  const products = useProductStore((state) => state.products);
+  useFetchAllProducts();
+  const allProducts = useProductStore((state) => state.allProducts);
+
   const filterState = useFilterStore((state) => state);
 
-  // console.log(products);
-
-  const filteredProducts = getFilteredProducts(products, filterState);
+  const filteredProducts = getFilteredProducts(allProducts, filterState);
 
   const resetFilters = useFilterStore((state) => state.resetAllFilters);
 

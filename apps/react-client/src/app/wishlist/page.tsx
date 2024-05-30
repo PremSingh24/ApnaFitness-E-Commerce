@@ -6,7 +6,11 @@ import { Button, Container, Stack } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import useWishlistStore from "../../store/wishlist.store";
-import ProductCard from "../../components/productCard";
+import dynamic from "next/dynamic";
+
+const ProductCard = dynamic(() => import("../../components/productCard"), {
+  ssr: false,
+});
 
 const theme = createTheme();
 
