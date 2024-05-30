@@ -136,6 +136,74 @@ const NavBar = () => {
     };
   }, []);
 
+  const SearchResults = () => {
+    return (
+      <>
+        {searchInput.trim() !== "" && searchedProducts ? (
+          <Container component="main" sx={{ position: "fixed", zIndex: 1202 }}>
+            <Paper
+              variant="elevation"
+              elevation={16}
+              sx={{
+                width: { xs: "100vw", md: "565px" },
+                maxWidth: "auto",
+                bgcolor: "background.paper",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                maxHeight: "300px",
+                overflowY: "scroll",
+                scrollbarWidth: "thin",
+                marginLeft: { xs: -3, sm: -5, md: -3 },
+                marginTop: { xs: 0.5, md: "auto" },
+                borderRadius: 1,
+              }}
+            >
+              {/* Search Results */}
+              <List disablePadding sx={{ width: "100%", alignItems: "center" }}>
+                {searchedProducts.length > 0 ? (
+                  searchedProducts.map((product) => (
+                    <div key={product._id}>
+                      <ListItem
+                        sx={{ ":hover": { backgroundColor: "gray" } }}
+                        onClick={() => {
+                          router.push(`/products/${product._id}`);
+                          setSearchInput("");
+                        }}
+                      >
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          height={40}
+                          width={40}
+                          style={{
+                            objectFit: "contain",
+                          }}
+                        />
+                        <Typography
+                          variant="body1"
+                          color={"black"}
+                          sx={{ marginLeft: 2 }}
+                        >
+                          {product.title}
+                        </Typography>
+                      </ListItem>
+                      <Divider sx={{ width: "100%" }} />
+                    </div>
+                  ))
+                ) : (
+                  <Typography variant="h5" padding={"40px"}>
+                    No Products Found
+                  </Typography>
+                )}
+              </List>
+            </Paper>
+          </Container>
+        ) : null}
+      </>
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ flexGrow: 1 }}>
@@ -173,6 +241,8 @@ const NavBar = () => {
             >
               <Image
                 src={logo.src}
+                width={50}
+                height={43}
                 alt="ApnaFitness logo"
                 style={{
                   display: "flex",
@@ -217,74 +287,7 @@ const NavBar = () => {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
               />
-
-              {searchInput.trim() !== "" && searchedProducts ? (
-                <Container
-                  component="main"
-                  sx={{ position: "fixed", zIndex: 1202 }}
-                >
-                  <Paper
-                    variant="elevation"
-                    elevation={16}
-                    sx={{
-                      width: { xs: "100vw", md: "565px" },
-                      maxWidth: "auto",
-                      bgcolor: "background.paper",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      maxHeight: "300px",
-                      overflowY: "scroll",
-                      scrollbarWidth: "thin",
-                      marginLeft: { xs: -3, sm: -5, md: -3 },
-                      marginTop: { xs: 0.5, md: "auto" },
-                      borderRadius: 1,
-                    }}
-                  >
-                    {/* Search Results */}
-                    <List
-                      disablePadding
-                      sx={{ width: "100%", alignItems: "center" }}
-                    >
-                      {searchedProducts.length > 0 ? (
-                        searchedProducts.map((product) => (
-                          <div key={product._id}>
-                            <ListItem
-                              sx={{ ":hover": { backgroundColor: "gray" } }}
-                              onClick={() => {
-                                router.push(`/products/${product._id}`);
-                                setSearchInput("");
-                              }}
-                            >
-                              <Image
-                                src={product.image}
-                                alt={product.description}
-                                style={{
-                                  objectFit: "contain",
-                                  height: "40px",
-                                  width: "40px",
-                                }}
-                              />
-                              <Typography
-                                variant="body1"
-                                color={"black"}
-                                sx={{ marginLeft: 2 }}
-                              >
-                                {product.title}
-                              </Typography>
-                            </ListItem>
-                            <Divider sx={{ width: "100%" }} />
-                          </div>
-                        ))
-                      ) : (
-                        <Typography variant="h5" padding={"40px"}>
-                          No Products Found
-                        </Typography>
-                      )}
-                    </List>
-                  </Paper>
-                </Container>
-              ) : null}
+              <SearchResults />
             </Search>
 
             {loggedIn ? (
