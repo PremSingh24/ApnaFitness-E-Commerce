@@ -95,7 +95,9 @@ const OrdersTab = () => {
                     <Image
                       src={order.product.image}
                       alt="Order Item"
-                      style={{ width: 90, height: 90, marginRight: 16 }}
+                      width={90}
+                      height={90}
+                      style={{ marginRight: 16 }}
                     />
                   </Link>
                   <div>
