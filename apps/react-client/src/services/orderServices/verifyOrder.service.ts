@@ -8,11 +8,14 @@ const verifyOrderService = async (
   deliveryAddress: addressType
 ): Promise<any> => {
   try {
-    return await axios.post(`/api/v1/order/verifyOrder`, {
-      cart,
-      amount,
-      deliveryAddress,
-    });
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/order/verifyOrder`,
+      {
+        cart,
+        amount,
+        deliveryAddress,
+      }
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {

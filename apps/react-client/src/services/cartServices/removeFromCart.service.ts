@@ -3,7 +3,9 @@ import refreshAccessTokenService from "../authServices/refreshAccessToken.servic
 
 const removeFromCartService = async (CartId: any): Promise<any> => {
   try {
-    return await axios.delete(`/api/v1/cart/${CartId}`);
+    return await axios.delete(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/cart/${CartId}`
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {

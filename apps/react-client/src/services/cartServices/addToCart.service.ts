@@ -3,7 +3,9 @@ import refreshAccessTokenService from "../authServices/refreshAccessToken.servic
 
 const addToCartService = async (ProductId: any): Promise<any> => {
   try {
-    return await axios.post(`/api/v1/cart/${ProductId}`);
+    return await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/cart/${ProductId}`
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {

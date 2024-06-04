@@ -3,7 +3,9 @@ import refreshAccessTokenService from "../authServices/refreshAccessToken.servic
 
 const getOrdersService = async (): Promise<any> => {
   try {
-    return await axios.get(`/api/v1/order/myOrders`);
+    return await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/order/myOrders`
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {

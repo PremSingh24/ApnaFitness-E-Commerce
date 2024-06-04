@@ -3,7 +3,10 @@ import refreshAccessTokenService from "../authServices/refreshAccessToken.servic
 
 const getAddressService = async (): Promise<any> => {
   try {
-    return await axios.get("/api/v1/address/myaddress", {});
+    return await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/address/myAddress`,
+      {}
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {

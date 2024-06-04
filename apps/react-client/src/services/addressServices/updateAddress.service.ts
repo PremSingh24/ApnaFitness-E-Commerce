@@ -7,7 +7,10 @@ const updateAddressService = async (
   address: addressType
 ): Promise<any> => {
   try {
-    return await axios.put(`/api/v1/address/${AddressId}`, address);
+    return await axios.put(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/address/${AddressId}`,
+      address
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response && error.response.status === 401) {
