@@ -26,7 +26,7 @@ import WishlistButton from "./wishlistButton";
 
 const theme = createTheme();
 
-const skeletonArray: Number[] = [0, 1, 2, 3];
+const skeletonArray: number[] = [0, 1, 2, 3];
 const HomeProductCard = () => {
   const [products, setProducts] = useState<productType[]>([]);
   const setCategories = useCategoryStore((state) => state.setCategories);
@@ -36,14 +36,10 @@ const HomeProductCard = () => {
       //Getting All Trending Products
       const productResponse = await getTrendingProductService();
 
-      if (productResponse.status === 200) {
-        setProducts(productResponse.data.products);
+      if (productResponse.products) {
+        setProducts(productResponse.products);
       } else {
-        toast.error(
-          productResponse?.message
-            ? productResponse.message
-            : productResponse.data.message
-        );
+        toast.error("Could Not Fetch Trending Products!!");
       }
 
       //Getting ALl Categories
@@ -52,7 +48,7 @@ const HomeProductCard = () => {
       if (categoryResponse.status === 200) {
         setCategories(categoryResponse.data.category);
       } else {
-        toast.error("Something Went Wrong");
+        toast.error("Categories not fetching!!");
       }
     })();
   }, []);

@@ -58,10 +58,10 @@ const SingleProductPage = ({ params }: { params: { productId: string } }) => {
     (async () => {
       const response = await getProductService(params.productId);
 
-      if (response.status === 200) {
-        setProduct(response.data.product);
+      if (response.product) {
+        setProduct(response.product);
       } else {
-        toast.error(response.data.message);
+        router.replace("/not-found");
       }
     })();
   }, [params.productId]);
