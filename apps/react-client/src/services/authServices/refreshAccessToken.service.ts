@@ -1,8 +1,11 @@
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const refreshAccessTokenService = async () => {
   try {
-    await axios.post("/api/v1/auth/refreshToken");
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/refreshToken`
+    );
 
     return { success: true };
   } catch (error) {
