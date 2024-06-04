@@ -57,7 +57,7 @@ const ErrorPage = () => {
         </Typography>
       </Box>
 
-      <Image src={errorImage.src} alt="Error" />
+      <Image src={errorImage.src} height={100} width={100} alt="Error" />
 
       <Box sx={{ marginTop: { xs: "0", sm: "6rem" } }}>
         <Typography
