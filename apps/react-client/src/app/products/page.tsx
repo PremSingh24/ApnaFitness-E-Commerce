@@ -10,7 +10,6 @@ import { getFilteredProducts } from "../../helpers/filter.helpers";
 import MobileFilters from "../../components/mobileFilters";
 import SideDrawer from "../../components/sideDrawer";
 import dynamic from "next/dynamic";
-import useFetchAllProducts from "../../hooks/useProductFetch";
 
 const ProductCard = dynamic(() => import("../../components/productCard"), {
   ssr: false,
@@ -21,7 +20,6 @@ const theme = createTheme();
 const drawerWidth = 280;
 
 const ProductListingPage = () => {
-  useFetchAllProducts();
   const allProducts = useProductStore((state) => state.allProducts);
 
   const filterState = useFilterStore((state) => state);
