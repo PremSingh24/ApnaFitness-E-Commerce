@@ -5,15 +5,13 @@ import useWishlistStore from "../store/wishlist.store";
 import addToWishlistService from "../services/wishlistServices/addToWishlist.service";
 import removeFromWishlistService from "../services/wishlistServices/removeFromWishlist.service";
 import { toast } from "sonner";
-import useLoginStore from "../store/login.store";
 import { productType } from "common";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import useAuth from "../utils/auth";
 
 const WishlistButton = ({ product }: { product: productType }) => {
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
+  const loggedIn = useAuth();
   const logOut = useLogOut();
   const router = useRouter();
 

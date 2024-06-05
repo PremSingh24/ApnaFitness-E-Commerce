@@ -3,18 +3,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import useCartStore from "../store/cart.store";
 import addToCartService from "../services/cartServices/addToCart.service";
-import useLoginStore from "../store/login.store";
 import useLogOut from "../hooks/useLogOut";
 import { productType } from "common";
+import useAuth from "../utils/auth";
 
 const CartButton = ({ product }: { product: productType }) => {
   const cart = useCartStore((state) => state.cart);
   const addToCartContext = useCartStore((state) => state.addToCart);
   const router = useRouter();
 
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
+  const loggedIn = useAuth();
 
   const logOut = useLogOut();
 
