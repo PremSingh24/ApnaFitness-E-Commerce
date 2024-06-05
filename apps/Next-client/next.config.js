@@ -1,17 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // output: "export", // Outputs a Single-Page Application (SPA).
+
   // distDir: "./dist", // Changes the build output directory to `./dist/`.
-  images: {
-    domains: ["t3.ftcdn.net"],
-  },
+  trailingSlash: true,
 
   async rewrites() {
     return [
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:3000/api/:path*", // Proxy to Backend
-      },
       {
         source: "/home",
         destination: "/",
@@ -34,11 +29,22 @@ const nextConfig = {
         destination: "/user/profile",
         permanent: true,
       },
+      {
+        source: "/user/myOrders/",
+        destination: "/user/orders",
+        permanent: true,
+      },
     ];
   },
 
   images: {
-    domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "**",
+      },
+    ],
   },
 };
 
