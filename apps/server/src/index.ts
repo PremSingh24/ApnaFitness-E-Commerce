@@ -15,6 +15,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN, // Allowing Requests from Specific Hosts
+    credentials: true,
   })
 );
 
