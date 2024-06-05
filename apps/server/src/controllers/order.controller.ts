@@ -149,7 +149,8 @@ export const verifyPaymentHandler = async (req: Request, res: Response) => {
             priceDetails: {
               deliveryCharge: 45,
               discount: 0,
-              totalAmount: lockedOrder.item.currentPrice + 45,
+              totalAmount:
+                lockedOrder.item.currentPrice * lockedOrder.quantity + 45,
             },
             paymentId: razorpay_payment_id,
           });
