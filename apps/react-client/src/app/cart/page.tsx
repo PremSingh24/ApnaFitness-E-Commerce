@@ -5,10 +5,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, Container, Grid, Stack, Toolbar } from "@mui/material";
 import Link from "next/link";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addressType } from "common";
 import useCartStore from "../../store/cart.store";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const CartProduct = dynamic(() => import("../../components/cartProduct"), {
   ssr: false,
@@ -32,6 +33,16 @@ const OrderSummary = dynamic(() => import("../../components/orderSummary"), {
 const theme = createTheme();
 
 const CartPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
+
   const [currentCartStep, setCurrentCartStep] = useState("1");
   const [orderItems, setOrderItems] = useState<any>([]);
   const [orderPrice, setOrderPrice] = useState<number>(0);
