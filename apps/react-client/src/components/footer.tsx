@@ -14,18 +14,20 @@ const Footer = () => {
         mt: "auto",
         mb: { xs: "3.5rem", sm: "auto" },
         backgroundColor: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[200]
-            : theme.palette.grey[800],
+          theme.palette.mode === "light" ? "#28282B" : theme.palette.grey[200],
       }}
     >
       <Container
         maxWidth="sm"
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
       >
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="white" fontSize={"1rem"}>
           {"Copyright © "}
-          <Link color="inherit" href="/">
+          <Link href="/" style={{ textDecoration: "none", color: "#FFFFFF" }}>
             ApnaFitness
           </Link>{" "}
           {new Date().getFullYear()}
