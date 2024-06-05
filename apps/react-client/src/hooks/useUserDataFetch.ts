@@ -9,13 +9,12 @@ import authenticateService from "../services/authServices/authenticate.service";
 import { toast } from "sonner";
 import getCartService from "../services/cartServices/getCart.service";
 import getWishlistService from "../services/wishlistServices/getWishlist.service";
+import useAuth from "../utils/auth";
 
 const useFetchUserCartAndWishlist = () => {
   const setUser = useUserStore((state) => state.setUser);
 
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
+  const loggedIn = useAuth();
   const setLogin = useLoginStore((state) => state.setLogin);
 
   const setCartContext = useCartStore((state) => state.setCart);
