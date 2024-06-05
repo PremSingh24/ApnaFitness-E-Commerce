@@ -91,11 +91,16 @@ export const registerUserHandler = async (req: Request, res: Response) => {
             registerUser.data.password,
             10
           );
+          Object.assign(registerUser.data, { refreshToken: "empty" });
 
           const newUser = new Users(registerUser.data);
           await newUser.save();
+
           const { accessToken, refreshToken } =
             await generateRefreshAndAccessToken(newUser?._id);
+
+          newUser.refreshToken = refreshToken;
+          await newUser.save();
 
           const cookieOptions = {
             httpOnly: true,
@@ -115,16 +120,21 @@ export const registerUserHandler = async (req: Request, res: Response) => {
           10
         );
 
+        Object.assign(registerUser.data, { refreshToken: "empty" });
+
         const newUser = new Users(registerUser.data);
         await newUser.save();
+
         const { accessToken, refreshToken } =
           await generateRefreshAndAccessToken(newUser?._id);
+
+        newUser.refreshToken = refreshToken;
+        await newUser.save();
 
         const cookieOptions = {
           httpOnly: true,
           secure: true,
         };
-
         res
           .status(201)
           .cookie("accessToken", accessToken, cookieOptions)
