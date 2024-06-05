@@ -10,6 +10,7 @@ import useCartStore from "../store/cart.store";
 import useLogOut from "../hooks/useLogOut";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState } from "react";
 
 declare global {
   interface Window {
@@ -33,6 +34,8 @@ const OrderSummary = ({
   const setCart = useCartStore((state) => state.setCart);
 
   const logOut = useLogOut();
+
+  const [placeOrderClicked, setPlaceOrderClicked] = useState(false);
 
   const verifyOrder = async (amount: number) => {
     if (deliveryAddress) {
@@ -73,7 +76,7 @@ const OrderSummary = ({
 
             if (res.status === 201) {
               setCart([]);
-              router.push("/user/myOrders");
+              router.push("/user/orders");
             } else if (response.status === 401) {
               await logOut();
               toast.error("Session Expired, Login Again!");
@@ -100,6 +103,7 @@ const OrderSummary = ({
       const razor = new window.Razorpay(options);
       razor.open();
     } else {
+      setPlaceOrderClicked(false);
       toast.error("Something Went Wrong");
     }
   };
@@ -112,6 +116,7 @@ const OrderSummary = ({
         resolve(true);
       };
       script.onerror = () => {
+        setPlaceOrderClicked(false);
         resolve(false);
       };
       document.body.appendChild(script);
@@ -276,7 +281,9 @@ const OrderSummary = ({
                   backgroundColor: "#0052EB  ",
                 },
               }}
+              disabled={placeOrderClicked}
               onClick={() => {
+                setPlaceOrderClicked(true);
                 verifyOrder(orderPrice + orderItems.length * 45);
               }}
             >
