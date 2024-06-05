@@ -3,11 +3,21 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UserTabs = ({ children }: { children: React.ReactNode }) => {
-  const [_currentPath, setCurrentPath] = useState(usePathname());
   const router = useRouter();
+
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
+
+  const [_currentPath, setCurrentPath] = useState(usePathname());
 
   const handleRouteChange = (
     _event: React.SyntheticEvent,
@@ -41,7 +51,7 @@ const UserTabs = ({ children }: { children: React.ReactNode }) => {
                 router.push("/user/profile");
               }}
               sx={{ fontSize: "1rem" }}
-              value={"/user/profile"}
+              value={"/user/profile/"}
             />
             <Tab
               label="Address"
@@ -49,7 +59,7 @@ const UserTabs = ({ children }: { children: React.ReactNode }) => {
                 router.push("/user/address");
               }}
               sx={{ fontSize: "1rem" }}
-              value={"/user/address"}
+              value={"/user/address/"}
             />
             <Tab
               label="Orders"
@@ -57,7 +67,7 @@ const UserTabs = ({ children }: { children: React.ReactNode }) => {
                 router.push("/user/orders");
               }}
               sx={{ fontSize: "1rem" }}
-              value={"/user/orders"}
+              value={"/user/orders/"}
             />
           </Tabs>
         </Box>

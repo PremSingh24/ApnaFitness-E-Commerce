@@ -7,8 +7,19 @@ import useOrderStore from "../../../store/order.store";
 import useLogOut from "../../../hooks/useLogOut";
 import getOrdersService from "../../../services/orderServices/getOrders.service";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const OrdersTab = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
+
   const orders = useOrderStore((state) => state.orders);
   const setOrders = useOrderStore((state) => state.setOrders);
 

@@ -6,12 +6,23 @@ import useAddressStore from "../../../store/address.store";
 import useLogOut from "../../../hooks/useLogOut";
 import getAddressService from "../../../services/addressServices/getAddress.service";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const AddressCard = dynamic(() => import("../../../components/addressCard"), {
   ssr: false,
 });
 
 const AddressTab = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
+
   const setAllAddress = useAddressStore((state) => state.setAddress);
 
   const logOut = useLogOut();

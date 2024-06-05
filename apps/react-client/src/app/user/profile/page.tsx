@@ -6,6 +6,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import useUserStore from "../../../store/user.store";
 import LogOutButton from "../../../components/logOutButton";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "350px",
@@ -40,6 +42,15 @@ const IconWrapper = styled("span")(({ theme }) => ({
 }));
 
 const ProfileTab = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
   const user = useUserStore((state) => state.user);
 
   return (

@@ -7,6 +7,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import useWishlistStore from "../../store/wishlist.store";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const ProductCard = dynamic(() => import("../../components/productCard"), {
   ssr: false,
@@ -15,6 +17,16 @@ const ProductCard = dynamic(() => import("../../components/productCard"), {
 const theme = createTheme();
 
 const WishlistPage = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (!loggedIn) {
+      router.replace("/login");
+      return;
+    }
+  }, []);
+
   const wishlist = useWishlistStore((state) => state.wishlist);
 
   return (
