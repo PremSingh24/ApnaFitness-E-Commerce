@@ -18,7 +18,6 @@ import { productType } from "common";
 import DoneIcon from "@mui/icons-material/Done";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import useLoginStore from "../../../store/login.store";
 import useCartStore from "../../../store/cart.store";
 import addToCartService from "../../../services/cartServices/addToCart.service";
 import useWishlistStore from "../../../store/wishlist.store";
@@ -28,18 +27,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast } from "sonner";
 import useLogOut from "../../../hooks/useLogOut";
 import { useRouter } from "next/navigation";
+import useAuth from "../../../utils/auth";
 
 const defaultTheme = createTheme();
 
 const SingleProductPage = ({ params }: { params: { productId: string } }) => {
   const [product, setProduct] = useState<productType>();
-  let loggedIn = useLoginStore((state) => state.login);
-
-  useEffect(() => {
-    if (!loggedIn) {
-      loggedIn = document.cookie === "loggedIn=true";
-    }
-  }, []);
+  let loggedIn = useAuth();
 
   const router = useRouter();
 
