@@ -16,12 +16,21 @@ import { useRouter } from "next/navigation";
 import useLoginStore from "../../../store/login.store";
 import { registerUserService } from "../../../services/authServices/register.service";
 import PasswordField from "../../../components/passwordField";
+import { useEffect } from "react";
 
 const defaultTheme = createTheme();
 
 const RegisterPage = () => {
   const router = useRouter();
   const setLogin = useLoginStore((state) => state.setLogin);
+  useEffect(() => {
+    const loggedIn = document.cookie === "loggedIn=true";
+
+    if (loggedIn) {
+      router.replace("/");
+      return;
+    }
+  }, []);
 
   const userData = useForm<registerUserType>({
     defaultValues: {
