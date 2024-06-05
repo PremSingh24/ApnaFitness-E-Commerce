@@ -21,15 +21,16 @@ import {
   List,
   ListItem,
   Paper,
+  Slide,
 } from "@mui/material";
 import useProductStore from "../store/productListing.store";
 import { productType } from "common";
-import useLoginStore from "../store/login.store";
 import useWishlistStore from "../store/wishlist.store";
 import useCartStore from "../store/cart.store";
 import logo from "../assets/logo.webp";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import useAuth from "../utils/auth";
 
 const theme = createTheme();
 
@@ -99,9 +100,7 @@ const NavBar = () => {
 
   const cart = useCartStore((state) => state.cart);
 
-  const loggedIn =
-    useLoginStore((state) => state.login) ||
-    document.cookie === "loggedIn=true";
+  const loggedIn = useAuth();
 
   useEffect(() => {
     const result =
@@ -290,7 +289,9 @@ const NavBar = () => {
               <SearchResults />
             </Search>
 
-            {loggedIn ? (
+            {loggedIn == undefined ? (
+              <></>
+            ) : loggedIn ? (
               <Box
                 sx={{
                   display: "flex",
@@ -311,11 +312,19 @@ const NavBar = () => {
                     marginLeft: { md: "2rem" },
                   }}
                 >
-                  <AccountCircle
-                    sx={{
-                      fontSize: { xs: "2rem", sm: "1.6rem", xl: "1.8rem" },
-                    }}
-                  />
+                  <Slide
+                    direction="left"
+                    in={true}
+                    mountOnEnter
+                    unmountOnExit
+                    style={{ transitionDelay: "200ms" }}
+                  >
+                    <AccountCircle
+                      sx={{
+                        fontSize: { xs: "2rem", sm: "1.6rem", xl: "1.8rem" },
+                      }}
+                    />
+                  </Slide>
                 </IconButton>
 
                 <IconButton
@@ -326,17 +335,25 @@ const NavBar = () => {
                     display: { xs: "none", sm: "flex", md: "flex" },
                     marginLeft: { xl: "1rem" },
                   }}
-                  onClick={() => router.push("/wishlist")}
+                  onClick={async () => router.push("/wishlist")}
                 >
                   <Badge
                     badgeContent={wishlist.length > 0 ? wishlist.length : null}
                     color="error"
                   >
-                    <FavoriteIcon
-                      sx={{
-                        fontSize: { xs: "2rem", sm: "1.6rem", xl: "1.8rem" },
-                      }}
-                    />
+                    <Slide
+                      direction="left"
+                      in={true}
+                      mountOnEnter
+                      unmountOnExit
+                      style={{ transitionDelay: "500ms" }}
+                    >
+                      <FavoriteIcon
+                        sx={{
+                          fontSize: { xs: "2rem", sm: "1.6rem", xl: "1.8rem" },
+                        }}
+                      />
+                    </Slide>
                   </Badge>
                 </IconButton>
 
@@ -353,11 +370,23 @@ const NavBar = () => {
                     badgeContent={cart.length > 0 ? cart.length : null}
                     color="error"
                   >
-                    <ShoppingCartIcon
-                      sx={{
-                        fontSize: { xs: "1.7rem", sm: "1.6rem", xl: "1.8rem" },
-                      }}
-                    />
+                    <Slide
+                      direction="left"
+                      in={true}
+                      mountOnEnter
+                      unmountOnExit
+                      style={{ transitionDelay: "800ms" }}
+                    >
+                      <ShoppingCartIcon
+                        sx={{
+                          fontSize: {
+                            xs: "1.7rem",
+                            sm: "1.6rem",
+                            xl: "1.8rem",
+                          },
+                        }}
+                      />
+                    </Slide>
                   </Badge>
                 </IconButton>
               </Box>
@@ -374,20 +403,22 @@ const NavBar = () => {
                 }}
               >
                 <Link href="/login">
-                  <Button
-                    variant="contained"
-                    color="error"
-                    sx={{
-                      background:
-                        "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+                  <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      sx={{
+                        background:
+                          "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
 
-                      minWidth: "max-content",
-                      marginRight: ".7rem",
-                      fontSize: { xs: "0.7rem", md: "0.85rem" },
-                    }}
-                  >
-                    Log In
-                  </Button>
+                        minWidth: "max-content",
+                        marginRight: ".7rem",
+                        fontSize: { xs: "0.7rem", md: "0.85rem" },
+                      }}
+                    >
+                      Log In
+                    </Button>
+                  </Slide>
                 </Link>
               </Box>
             )}
