@@ -21,7 +21,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
-    "react-router-dom": "^6.21.1",
     "sharp": "^0.33.4",
     "sonner": "^1.4.0",
     "zustand": "^4.4.7"
