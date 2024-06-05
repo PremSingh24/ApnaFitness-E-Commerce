@@ -6,14 +6,10 @@ import { Container, Toolbar } from "@mui/material";
 import Categories from "../components/category";
 import Banner from "../components/banner";
 import HomeProductCard from "../components/homeProductCard";
-import useFetchAllProducts from "../hooks/useProductFetch";
-import useFetchUserCartAndWishlist from "../hooks/useUserDataFetch";
 
 const theme = createTheme();
 
 const HomePage = () => {
-  useFetchAllProducts();
-  useFetchUserCartAndWishlist();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
