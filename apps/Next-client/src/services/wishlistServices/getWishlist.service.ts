@@ -1,6 +1,5 @@
 import axios from "axios";
 import refreshAccessTokenService from "../authServices/refreshAccessToken.service";
-axios.defaults.withCredentials = true;
 
 const getWishlistService = async (): Promise<any> => {
   try {
