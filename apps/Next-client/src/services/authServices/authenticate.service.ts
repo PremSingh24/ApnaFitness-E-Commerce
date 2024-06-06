@@ -1,5 +1,6 @@
 import axios from "axios";
 import refreshAccessTokenService from "./refreshAccessToken.service";
+axios.defaults.withCredentials = true;
 
 const authenticateService = async (): Promise<any> => {
   try {
