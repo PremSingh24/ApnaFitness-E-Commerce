@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon",
-    "build": "npx tsc",
+    "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --external:aws-sdk --external:nock --external:mock-aws-s3 --external:bcrypt --loader:.html=text && copy package.json dist\\ && copy .env dist\\",
     "dev": "nodemon"
   },
   "keywords": [
