@@ -33,7 +33,7 @@ const defaultTheme = createTheme();
 
 const SingleProductPage = ({ params }: { params: { productId: string } }) => {
   const [product, setProduct] = useState<productType>();
-  let loggedIn = useAuth();
+  const loggedIn = useAuth();
 
   const router = useRouter();
 
