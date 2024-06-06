@@ -1,5 +1,6 @@
 import axios from "axios";
 import refreshAccessTokenService from "../authServices/refreshAccessToken.service";
+axios.defaults.withCredentials = true;
 
 const getCartService = async (): Promise<any> => {
   try {
