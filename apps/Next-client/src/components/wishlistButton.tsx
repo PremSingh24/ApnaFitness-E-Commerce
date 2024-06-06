@@ -22,27 +22,29 @@ const WishlistButton = ({ product }: { product: productType }) => {
   );
 
   const addToWishlist = async (product: any, ProductId: any) => {
+    addToWishlistContext(product);
     const response = await addToWishlistService(ProductId);
     if (response.status === 201) {
-      addToWishlistContext(product);
       toast.success(response.data.message);
     } else if (response.status === 401) {
       await logOut();
       toast.error("Session Expired, Login Again!");
     } else {
+      removeFromWishlistContext(ProductId);
       toast.error(response?.message ? response.message : response.data.message);
     }
   };
 
-  const removeFromWishlist = async (ProductId: any) => {
+  const removeFromWishlist = async (product: any, ProductId: any) => {
+    removeFromWishlistContext(ProductId);
     const response = await removeFromWishlistService(ProductId);
     if (response.status === 201) {
-      removeFromWishlistContext(ProductId);
       toast.success(response.data.message);
     } else if (response.status === 401) {
       await logOut();
       toast.error("Session Expired, Login Again!");
     } else {
+      addToWishlistContext(product);
       toast.error(response?.message ? response.message : response.data.message);
     }
   };
@@ -60,7 +62,9 @@ const WishlistButton = ({ product }: { product: productType }) => {
           color="inherit"
           sx={{ position: "absolute", top: 0, right: 0 }}
           onClick={() =>
-            loggedIn ? removeFromWishlist(product._id) : router.push("/login")
+            loggedIn
+              ? removeFromWishlist(product, product._id)
+              : router.push("/login")
           }
         >
           <FavoriteIcon color="error" />
