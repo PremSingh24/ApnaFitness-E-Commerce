@@ -105,7 +105,7 @@ export const registerUserHandler = async (req: Request, res: Response) => {
           const cookieOptions = {
             httpOnly: true,
             secure: true,
-            SameSite: "None",
+            SameSite: "none",
           };
 
           res
