@@ -105,6 +105,7 @@ export const registerUserHandler = async (req: Request, res: Response) => {
           const cookieOptions = {
             httpOnly: true,
             secure: true,
+            samesite: "none",
           };
 
           res
@@ -134,6 +135,7 @@ export const registerUserHandler = async (req: Request, res: Response) => {
         const cookieOptions = {
           httpOnly: true,
           secure: true,
+          samesite: "none",
         };
         res
           .status(201)
@@ -190,6 +192,7 @@ export const loginUserHandler = async (req: Request, res: Response) => {
           const cookieOptions = {
             httpOnly: true,
             secure: true,
+            samesite: "none",
           };
 
           res
@@ -224,6 +227,7 @@ export const logOutHandler = async (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
     secure: true,
+    samesite: "none",
   };
   res
     .status(200)
@@ -264,6 +268,7 @@ export const refreshAccessTokenHandler = async (
     const cookieOptions = {
       httpOnly: true,
       secure: true,
+      samesite: "none",
     };
 
     const { accessToken, refreshToken } = await generateRefreshAndAccessToken(
