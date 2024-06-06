@@ -36,7 +36,7 @@ export const getOrderItemsHandler = async (req: Request, res: Response) => {
 };
 
 const instance = new Razorpay({
-  key_id: process.env.RazorPay_Key_Id || "",
+  key_id: String(process.env.RazorPay_Key_Id),
   key_secret: process.env.RazorPay_Key_Secret,
 });
 
