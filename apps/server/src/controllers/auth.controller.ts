@@ -111,7 +111,15 @@ export const registerUserHandler = async (req: Request, res: Response) => {
           res
             .status(201)
             .cookie("accessToken", accessToken, cookieOptions)
+            .setHeader(
+              "Set-Cookie",
+              `accessToken=${accessToken}; SameSite=None; Secure`
+            )
             .cookie("refreshToken", refreshToken, cookieOptions)
+            .setHeader(
+              "Set-Cookie",
+              `refreshToken=${refreshToken}; SameSite=None; Secure`
+            )
             .json({ message: "User Created successfully" });
         }
       } else {
