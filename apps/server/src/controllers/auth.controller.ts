@@ -207,6 +207,10 @@ export const loginUserHandler = async (req: Request, res: Response) => {
             .status(200)
             .cookie("accessToken", accessToken, cookieOptions)
             .cookie("refreshToken", refreshToken, cookieOptions)
+            .setHeader("Set-Cookie", [
+              `refreshToken=${refreshToken}; SameSite=None; Secure`,
+              `accessToken=${accessToken}; SameSite=None; Secure`,
+            ])
             .json({ message: "Logged in successfully" });
         } else {
           res.status(401).json({ message: "Incorrect Password" });
