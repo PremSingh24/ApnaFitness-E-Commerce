@@ -205,8 +205,6 @@ export const loginUserHandler = async (req: Request, res: Response) => {
 
           res
             .status(200)
-            .cookie("accessToken", accessToken, cookieOptions)
-            .cookie("refreshToken", refreshToken, cookieOptions)
             .setHeader("Set-Cookie", [
               `refreshToken=${refreshToken}; SameSite=None; Secure`,
               `accessToken=${accessToken}; SameSite=None; Secure`,
