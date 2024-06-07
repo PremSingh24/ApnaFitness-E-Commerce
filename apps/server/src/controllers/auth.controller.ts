@@ -197,18 +197,19 @@ export const loginUserHandler = async (req: Request, res: Response) => {
           const { accessToken, refreshToken } =
             await generateRefreshAndAccessToken(user._id);
 
-          const cookieOptions = {
-            httpOnly: true,
-            secure: true,
-            SameSite: "None",
-          };
+          // const cookieOptions = {
+          //   httpOnly: true,
+          //   secure: true,
+          //   SameSite: "None",
+          // };
+          const cookies = [
+            `refreshToken=${refreshToken}; HttpOnly; SameSite=None; Secure`,
+            `accessToken=${accessToken}; HttpOnly; SameSite=None; Secure`,
+          ];
 
           res
             .status(200)
-            .setHeader("Set-Cookie", [
-              `refreshToken=${refreshToken}; SameSite=None; Secure`,
-              `accessToken=${accessToken}; SameSite=None; Secure`,
-            ])
+            .setHeader("Set-Cookie", cookies)
             .json({ message: "Logged in successfully" });
         } else {
           res.status(401).json({ message: "Incorrect Password" });
