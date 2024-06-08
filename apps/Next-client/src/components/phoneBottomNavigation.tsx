@@ -21,6 +21,7 @@ const PhoneBottomNavigation = () => {
         position: "fixed",
         bottom: 0,
         display: { xs: "flex", sm: "none" },
+        zIndex: 1201,
       }}
       value={usePathname().includes("/user") ? currentPath : pathName}
       onChange={(_event, newValue) => {
