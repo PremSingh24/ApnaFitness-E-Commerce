@@ -345,7 +345,7 @@ const FilterOptions = ({
         <Button
           variant="contained"
           size="large"
-          sx={{ paddingBottom: "65px", fontSize: "1rem" }}
+          sx={{ marginBottom: "65px", fontSize: "1rem" }}
           onClick={() => {
             applyFilters();
           }}
