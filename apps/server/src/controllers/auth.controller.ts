@@ -110,16 +110,16 @@ export const registerUserHandler = async (req: Request, res: Response) => {
 
           res
             .status(201)
-            .cookie("accessToken", accessToken, cookieOptions)
-            .setHeader(
-              "Set-Cookie",
-              `accessToken=${accessToken}; SameSite=None; Secure`
-            )
-            .cookie("refreshToken", refreshToken, cookieOptions)
-            .setHeader(
-              "Set-Cookie",
-              `refreshToken=${refreshToken}; SameSite=None; Secure`
-            )
+            .cookie("accessToken", accessToken, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "none",
+            })
+            .cookie("refreshToken", refreshToken, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "none",
+            })
             .json({ message: "User Created successfully" });
         }
       } else {
@@ -140,15 +140,18 @@ export const registerUserHandler = async (req: Request, res: Response) => {
         newUser.refreshToken = refreshToken;
         await newUser.save();
 
-        const cookieOptions = {
-          httpOnly: true,
-          secure: true,
-          SameSite: "None",
-        };
         res
           .status(201)
-          .cookie("accessToken", accessToken, cookieOptions)
-          .cookie("refreshToken", refreshToken, cookieOptions)
+          .cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+          })
+          .cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+          })
           .json({ message: "User Created successfully" });
       }
     } catch (error: any) {
@@ -197,19 +200,18 @@ export const loginUserHandler = async (req: Request, res: Response) => {
           const { accessToken, refreshToken } =
             await generateRefreshAndAccessToken(user._id);
 
-          // const cookieOptions = {
-          //   httpOnly: true,
-          //   secure: true,
-          //   SameSite: "None",
-          // };
-          const cookies = [
-            `refreshToken=${refreshToken}; HttpOnly; SameSite=None; Secure`,
-            `accessToken=${accessToken}; HttpOnly; SameSite=None; Secure`,
-          ];
-
           res
             .status(200)
-            .setHeader("Set-Cookie", cookies)
+            .cookie("accessToken", accessToken, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "none",
+            })
+            .cookie("refreshToken", refreshToken, {
+              httpOnly: true,
+              secure: true,
+              sameSite: "none",
+            })
             .json({ message: "Logged in successfully" });
         } else {
           res.status(401).json({ message: "Incorrect Password" });
@@ -235,15 +237,18 @@ export const loginUserHandler = async (req: Request, res: Response) => {
  */
 
 export const logOutHandler = async (req: Request, res: Response) => {
-  const cookieOptions = {
-    httpOnly: true,
-    secure: true,
-    samesite: "none",
-  };
   res
     .status(200)
-    .clearCookie("accessToken", cookieOptions)
-    .clearCookie("refreshToken", cookieOptions)
+    .clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
+    .clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
     .json({ message: "logged Out Successfully" });
 };
 
@@ -276,20 +281,22 @@ export const refreshAccessTokenHandler = async (
       res.status(401).json("Refresh Token has Expired!").end();
     }
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: true,
-      samesite: "none",
-    };
-
     const { accessToken, refreshToken } = await generateRefreshAndAccessToken(
       user?._id
     );
 
     res
       .status(200)
-      .cookie("accessToken", accessToken, cookieOptions)
-      .cookie("refreshToken", refreshToken, cookieOptions)
+      .cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
       .json({ message: "Logged in successfully" });
   } catch (error: any) {
     if (error.message) {
