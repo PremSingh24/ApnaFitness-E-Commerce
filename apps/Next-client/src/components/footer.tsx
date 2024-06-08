@@ -8,7 +8,8 @@ const Footer = () => {
       component="footer"
       style={{ marginTop: "auto", flex: "1" }}
       sx={{
-        width: "100%",
+        bottom: 0,
+        width: { sm: "100%" },
         py: 3,
         px: 2,
         mt: "auto",
