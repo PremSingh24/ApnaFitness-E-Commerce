@@ -15,43 +15,19 @@ import {
 import Link from "next/link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { productType } from "common";
-import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import getTrendingProductService from "../services/productServices/getTrendingProducts.service";
-import getAllCategoriesService from "../services/categoryServices/getAllCategories.service";
-import useCategoryStore from "../store/category.store";
 import ProductSkeleton from "./homeProductSkeleton";
 import CartButton from "./cartButton";
 import WishlistButton from "./wishlistButton";
+import { use } from "react";
 
 const theme = createTheme();
 
+const dataPromise = getTrendingProductService();
+
 const skeletonArray: number[] = [0, 1, 2, 3];
 const HomeProductCard = () => {
-  const [products, setProducts] = useState<productType[]>([]);
-  const setCategories = useCategoryStore((state) => state.setCategories);
-
-  useEffect(() => {
-    (async () => {
-      //Getting All Trending Products
-      const productResponse = await getTrendingProductService();
-
-      if (productResponse.products) {
-        setProducts(productResponse.products);
-      } else {
-        toast.error("Could Not Fetch Trending Products!!");
-      }
-
-      //Getting ALl Categories
-      const categoryResponse = await getAllCategoriesService();
-
-      if (categoryResponse.status === 200) {
-        setCategories(categoryResponse.data.category);
-      } else {
-        toast.error("Categories not fetching!!");
-      }
-    })();
-  }, []);
+  const products = use(dataPromise);
 
   return (
     <ThemeProvider theme={theme}>

@@ -10,12 +10,21 @@ import {
 } from "@mui/material";
 
 import { useRouter } from "next/navigation";
-import useCategoryStore from "../store/category.store";
 import CategorySkeleton from "./categorySkeleton";
+import getAllCategoriesService from "../services/categoryServices/getAllCategories.service";
+import { use } from "react";
+
+type categoryType = {
+  _id: string;
+  name: string;
+  image: string;
+};
+
+const categoryPromise = getAllCategoriesService();
 
 const skeletonArray = [0, 1, 2, 3];
 const Categories = () => {
-  const categories = useCategoryStore((state) => state.categories);
+  const categories: categoryType[] = use(categoryPromise);
 
   const router = useRouter();
 
