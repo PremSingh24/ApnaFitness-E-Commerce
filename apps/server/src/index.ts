@@ -29,6 +29,10 @@ connectDB()
     console.log("Database Connection Error!!", err); //// remove this at the time of hosting
   });
 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server Working Properly" });
+});
+
 ///Routes Import
 
 import addressRouter from "./routes/address.routes";
