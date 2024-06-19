@@ -15,7 +15,7 @@ export default function Banner() {
     description:
       "Your One Stop Solution to All the Equipments, Supplements and Accessories At Best Price",
     image:
-      "https://res.cloudinary.com/dd3tuqnig/image/upload/v1717092964/banner_vhkeuw.webp",
+      "https://res.cloudinary.com/dd3tuqnig/image/upload/v1718828481/websiteBanner_udoimc.webp",
     imageText: "Apna Fitness Banner Image",
   };
 
@@ -29,8 +29,10 @@ export default function Banner() {
         mb: 4,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        backgroundPosition: { xs: "right center", md: "center top" },
         backgroundImage: `url(${post.image})`,
+        height: { xs: "auto", md: "450px" },
+        overflow: "hidden",
       }}
     >
       {/* Increase the priority of the hero background image */}
