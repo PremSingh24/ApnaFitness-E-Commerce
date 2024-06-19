@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon",
     "build": "esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --external:aws-sdk --external:nock --external:mock-aws-s3 --external:bcrypt --loader:.html=text && cp package.json dist\\",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "vercel-build": "echo hello"
   },
   "keywords": [
     "Typescript",
