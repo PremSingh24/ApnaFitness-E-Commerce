@@ -1,3 +1,4 @@
+"use client";
 import { IconButton } from "@mui/material";
 import useLogOut from "../hooks/useLogOut";
 import { useRouter } from "next/navigation";
