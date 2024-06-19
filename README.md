@@ -44,7 +44,7 @@
 
 ## About The Project
 
-![product-screenshot](./apps/Next-client/public/favicon.png)
+![product-screenshot](./assets/ApnaFitnessScreenRecording.gif)
 
 Apna Fitness Store is one stop shop for all your Fitness Supplements, Weights, Equipment and Accessory needs. Apna Fitness Store is User Friendly and very easy to use.
 
