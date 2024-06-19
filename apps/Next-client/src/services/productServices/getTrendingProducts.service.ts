@@ -13,7 +13,7 @@ const getTrendingProductService = async () => {
     }
 
     const data = await response.json();
-    return data;
+    return data.products;
   } catch (error) {
     return { message: "Something went wrong!" };
   }
