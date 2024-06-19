@@ -50,3 +50,5 @@ app.use("/api/v1/wishlist", wishlistRouter);
 app.use("/*", (req: Request, res: Response) => {
   res.status(404).json({ message: "Invalid Route" });
 });
+
+export default app;
