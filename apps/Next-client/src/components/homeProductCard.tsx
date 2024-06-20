@@ -35,7 +35,12 @@ const HomeProductCard = () => {
 
       <Container
         maxWidth="xl"
-        sx={{ position: "relative", paddingLeft: 0, paddingRight: 0 }}
+        sx={{
+          position: "relative",
+          paddingLeft: 0,
+          paddingRight: 0,
+          marginBottom: { xs: "2rem", sm: "auto" },
+        }}
       >
         <Grid container spacing={2} sx={{ marginTop: "20px" }}>
           {products.length > 0
