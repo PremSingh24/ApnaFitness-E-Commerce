@@ -129,7 +129,7 @@ const FilterOptions = ({
         open={filterOptionsOpen}
         onClose={() => setFilterOptions(false)}
       >
-        <Paper sx={{ height: "75vh", overflow: "auto" }}>
+        <Paper sx={{ height: "65vh", overflow: "auto" }}>
           <List
             sx={{
               display: "flex",
