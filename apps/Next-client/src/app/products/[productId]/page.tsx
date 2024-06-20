@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import useLogOut from "../../../hooks/useLogOut";
 import { useRouter } from "next/navigation";
 import useAuth from "../../../utils/auth";
+import Loader from "../../../components/loader";
 
 const defaultTheme = createTheme();
 
@@ -388,7 +389,12 @@ const SingleProductPage = ({ params }: { params: { productId: string } }) => {
             </Card>
           </Grid>
         </Container>
-      ) : null}
+      ) : (
+        <>
+          <Toolbar />
+          <Loader />
+        </>
+      )}
     </ThemeProvider>
   );
 };
