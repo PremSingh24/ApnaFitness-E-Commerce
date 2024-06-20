@@ -8,6 +8,10 @@ import FetchAllData from "./_app";
 const metadata: Metadata = {
   title: "ApnaFitness Online Store",
   description: "fitness and gym products platform",
+  verification: { google: "OK6p7AVoQrr833tUpShyCjWjGUhyw990oEAezjrhI3Y" },
+  other: {
+    "google-site-verification": "OK6p7AVoQrr833tUpShyCjWjGUhyw990oEAezjrhI3Y",
+  },
 };
 
 export default function RootLayout({
