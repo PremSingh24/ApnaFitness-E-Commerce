@@ -18,13 +18,13 @@ export const getAddressHandler = async (req: Request, res: Response) => {
   try {
     const user = await Users.findById(req.headers["user"]);
 
-    if (user) {
-      res.json({ address: user.address || [] });
-    } else {
-      res
+    if (!user) {
+      return res
         .status(404)
         .json({ message: "Something Went Wrong!, Try to Login Again" });
     }
+
+    res.json({ address: user.address || [] });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
@@ -43,36 +43,34 @@ export const getAddressHandler = async (req: Request, res: Response) => {
 export const addAddressHandler = async (req: Request, res: Response) => {
   const validAddress = addressValidation.safeParse(req.body);
 
-  if (validAddress.success) {
-    try {
-      const user = await Users.findById(req.headers["user"]);
+  if (!validAddress.success) {
+    return res.status(400).json(fromZodError(validAddress.error));
+  }
+  try {
+    const user = await Users.findById(req.headers["user"]);
 
-      if (user) {
-        if (user.address.length <= 4) {
-          user.address.push(validAddress.data);
-          await user.save();
-          const addressId = user.address[user.address.length - 1]._id;
-
-          res
-            .status(201)
-            .json({ message: "Address Saved Successfully", addressId });
-        } else {
-          res.status(405).json({ message: "You Can Only Add Upto 5 Address" });
-        }
-      } else {
-        res
-          .status(404)
-          .json({ message: "Something Went Wrong!, Try to Login Again" });
-      }
-    } catch (error: any) {
-      if (error.message) {
-        res.status(406).json({ message: error.message }).end();
-      } else {
-        res.status(500).json({ message: "Something Went Wrong" });
-      }
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Something Went Wrong!, Try to Login Again" });
     }
-  } else {
-    res.status(400).json(fromZodError(validAddress.error));
+
+    if (user.address.length >= 5) {
+      return res
+        .status(405)
+        .json({ message: "You Can Only Add Upto 5 Address" });
+    }
+    user.address.push(validAddress.data);
+    await user.save();
+    const addressId = user.address[user.address.length - 1]._id;
+
+    res.status(201).json({ message: "Address Saved Successfully", addressId });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -85,41 +83,41 @@ export const addAddressHandler = async (req: Request, res: Response) => {
 export const updateAddressHandler = async (req: Request, res: Response) => {
   const validAddress = addressValidation.safeParse(req.body);
 
-  if (validAddress.success) {
-    try {
-      const user = await Users.findById(req.headers["user"]);
+  if (!validAddress.success) {
+    return res.status(400).json(fromZodError(validAddress.error));
+  }
+  try {
+    const user = await Users.findById(req.headers["user"]);
 
-      if (user) {
-        // Updating Every Element Seperately to not let mongodb Generate a New Id for the Same Address
-
-        await user.updateOne(
-          {
-            $set: {
-              "address.$[item].name": validAddress.data.name,
-              "address.$[item].mobile": validAddress.data.mobile,
-              "address.$[item].street": validAddress.data.street,
-              "address.$[item].city": validAddress.data.city,
-              "address.$[item].state": validAddress.data.state,
-              "address.$[item].country": validAddress.data.country,
-              "address.$[item].pincode": validAddress.data.pincode,
-            },
-          },
-          { arrayFilters: [{ "item._id": req.params.AddressId }] }
-        );
-
-        res.status(200).json({ message: "Address Updated Successfully" });
-      } else {
-        res.status(404).json({ message: "User Not Found, Try to Login Again" });
-      }
-    } catch (error: any) {
-      if (error.message) {
-        res.status(406).json({ message: error.message }).end();
-      } else {
-        res.status(500).json({ message: "Something Went Wrong" });
-      }
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User Not Found, Try to Login Again" });
     }
-  } else {
-    res.status(400).json(fromZodError(validAddress.error));
+    // Updating Every Element Separately to not let mongodb Generate a New Id for the Same Address
+
+    await user.updateOne(
+      {
+        $set: {
+          "address.$[item].name": validAddress.data.name,
+          "address.$[item].mobile": validAddress.data.mobile,
+          "address.$[item].street": validAddress.data.street,
+          "address.$[item].city": validAddress.data.city,
+          "address.$[item].state": validAddress.data.state,
+          "address.$[item].country": validAddress.data.country,
+          "address.$[item].pincode": validAddress.data.pincode,
+        },
+      },
+      { arrayFilters: [{ "item._id": req.params.AddressId }] }
+    );
+
+    res.status(200).json({ message: "Address Updated Successfully" });
+  } catch (error: any) {
+    if (error.message) {
+      res.status(406).json({ message: error.message }).end();
+    } else {
+      res.status(500).json({ message: "Something Went Wrong" });
+    }
   }
 };
 
@@ -131,19 +129,21 @@ export const removeAddressHandler = async (req: Request, res: Response) => {
   try {
     const user = await Users.findById(req.headers["user"]);
 
-    if (user) {
-      const removeResponse = await user.updateOne({
-        $pull: { address: { _id: req.params.AddressId } },
-      });
-
-      if (removeResponse.modifiedCount) {
-        res.status(200).json({ message: "Address Removed Successfully" });
-      } else {
-        res.status(200).json({ message: "Address not Found" });
-      }
-    } else {
-      res.status(404).json({ message: "User Not Found, Try to Login Again" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User Not Found, Try to Login Again" });
     }
+
+    const removeResponse = await user.updateOne({
+      $pull: { address: { _id: req.params.AddressId } },
+    });
+
+    if (removeResponse.modifiedCount) {
+      return res.status(200).json({ message: "Address Removed Successfully" });
+    }
+
+    res.status(200).json({ message: "Address not Found" });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();

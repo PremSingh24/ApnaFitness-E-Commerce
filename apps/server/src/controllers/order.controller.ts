@@ -1,9 +1,8 @@
 import { Users } from "../models/user.model";
 import { Orders } from "../models/order.model";
 import { Request, Response } from "express";
-import { addressValidation, cartType, productType } from "common";
+import { addressValidation, cartType } from "common";
 import Razorpay from "razorpay";
-
 import crypto from "crypto";
 
 /*
@@ -21,11 +20,12 @@ export const getOrderItemsHandler = async (req: Request, res: Response) => {
   try {
     const user = await Users.findById(req.headers["user"]).populate("orders");
 
-    if (user) {
-      res.status(200).json({ orders: user.orders || [] });
-    } else {
-      res.status(404).json({ message: "User Not Found, Try to Login Again" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User Not Found, Try to Login Again" });
     }
+    res.status(200).json({ orders: user.orders || [] });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
@@ -49,57 +49,54 @@ export const verifyOrderHandler = async (req: Request, res: Response) => {
     const user = await Users.findById(req.headers["user"]).populate("cart.item"); // prettier-ignore
 
     if (!user) {
-      res.status(400).json({ message: "User Not Found" }).end();
-    } else {
-      const validAddress = addressValidation.safeParse(
-        req.body.deliveryAddress
-      );
-
-      if (validAddress.success) {
-        const userCart: cartType[] = req.body.cart;
-        let totalCartAmount = 0;
-        for (const cartItem of user.cart) {
-          const item: any = cartItem.item;
-          //Checking if ALl the Cart item matches with frontend
-          const foundCartItem = userCart.find(
-            (cart) => cart.item._id === item._id.toString()
-          );
-          if (!foundCartItem || foundCartItem.quantity !== cartItem.quantity) {
-            return res
-              .status(400)
-              .json({ message: "Cart verification failed" })
-              .end();
-          }
-
-          //Calculating Total Amount
-
-          totalCartAmount +=
-            item.currentPrice * cartItem.quantity + item.deliveryCharge;
-        }
-
-        if (totalCartAmount === req.body.amount) {
-          //Locking the User's Cart in user.lockedOrder for safety of order
-          user.lockedOrders = user.cart;
-          await user.save();
-          const options = {
-            amount: totalCartAmount * 100, // amount in the smallest currency unit
-            currency: "INR",
-          };
-          const order = await instance.orders.create(options);
-          if (order.status === "created") {
-            const key = process.env.RazorPay_Key_Id;
-
-            res.status(200).json({ key, order }).end();
-          } else {
-            res.status(406).json({ message: "Something Went Wrong" }).end();
-          }
-        } else {
-          res.status(400).json({ message: "Not" }).end();
-        }
-      } else {
-        res.status(400).json({ message: "Invalid Address Format" });
-      }
+      return res.status(400).json({ message: "User Not Found" }).end();
     }
+    const validAddress = addressValidation.safeParse(req.body.deliveryAddress);
+
+    if (!validAddress.success) {
+      return res.status(400).json({ message: "Invalid Address Format" });
+    }
+    const userCart: cartType[] = req.body.cart;
+    let totalCartAmount = 0;
+    for (const cart of user.cart) {
+      const item: any = cart.item;
+      //Checking if ALl the Cart item matches with frontend
+      const foundCartItem = userCart.find(
+        (cart) => cart.item._id === item._id.toString()
+      );
+      if (!foundCartItem || foundCartItem.quantity !== cart.quantity) {
+        return res
+          .status(400)
+          .json({ message: "Cart verification failed" })
+          .end();
+      }
+
+      //Calculating Total Amount
+
+      totalCartAmount +=
+        item.currentPrice * cart.quantity + item.deliveryCharge;
+    }
+
+    if (totalCartAmount !== req.body.amount) {
+      return res
+        .status(400)
+        .json({ message: "Order Amount did not match the actual amount" })
+        .end();
+    }
+    //Locking the User's Cart in user.lockedOrder for safety of order
+    user.lockedOrders = user.cart;
+    await user.save();
+    const options = {
+      amount: totalCartAmount * 100, // amount in the smallest currency unit
+      currency: "INR",
+    };
+    const order = await instance.orders.create(options);
+    if (order.status !== "created") {
+      return res.status(406).json({ message: "Something Went Wrong" }).end();
+    }
+    const key = process.env.RazorPay_Key_Id;
+
+    res.status(200).json({ key, order }).end();
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
@@ -127,46 +124,48 @@ export const verifyPaymentHandler = async (req: Request, res: Response) => {
     const hmac = crypto.createHmac("sha256", process.env.RazorPay_Key_Secret);
     hmac.update(data);
     const generated_signature = hmac.digest("hex");
-    if (generated_signature === razorpay_signature) {
-      const user = await Users.findById(req.headers["user"]).populate(
-        "lockedOrders.item"
-      );
-      if (user) {
-        user.lockedOrders.map(async (lockedOrder: any) => {
-          const order = new Orders({
-            orderedBy: {
-              name: user.firstName + " " + user.lastName,
-              mobile: user.mobile,
-            },
-            product: {
-              title: lockedOrder.item.title,
-              image: lockedOrder.item.image,
-              quantity: lockedOrder.quantity,
-              price: lockedOrder.item.currentPrice,
-              _id: lockedOrder.item._id,
-            },
-            deliveryAddress: req.body.deliveryAddress,
-            priceDetails: {
-              deliveryCharge: 45,
-              discount: 0,
-              totalAmount:
-                lockedOrder.item.currentPrice * lockedOrder.quantity + 45,
-            },
-            paymentId: razorpay_payment_id,
-          });
-          await order.save();
-
-          await user.updateOne({ $addToSet: { orders: order } });
-          await user.updateOne({ $pull: { cart: { _id: lockedOrder._id } } });
-        });
-      }
-
-      res.status(201).json({
-        message: "Order Placed Successful",
-      });
-    } else {
-      res.status(400).json({ message: "Transaction failed" });
+    if (generated_signature !== razorpay_signature) {
+      return res.status(400).json({ message: "Transaction failed" });
     }
+    const user = await Users.findById(req.headers["user"]).populate(
+      "lockedOrders.item"
+    );
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Invalid User, Try to Login Again" });
+    }
+    user.lockedOrders.map(async (lockedOrder: any) => {
+      const order = new Orders({
+        orderedBy: {
+          name: user.firstName + " " + user.lastName,
+          mobile: user.mobile,
+        },
+        product: {
+          title: lockedOrder.item.title,
+          image: lockedOrder.item.image,
+          quantity: lockedOrder.quantity,
+          price: lockedOrder.item.currentPrice,
+          _id: lockedOrder.item._id,
+        },
+        deliveryAddress: req.body.deliveryAddress,
+        priceDetails: {
+          deliveryCharge: 45,
+          discount: 0,
+          totalAmount:
+            lockedOrder.item.currentPrice * lockedOrder.quantity + 45,
+        },
+        paymentId: razorpay_payment_id,
+      });
+      await order.save();
+
+      await user.updateOne({ $addToSet: { orders: order } });
+      await user.updateOne({ $pull: { cart: { _id: lockedOrder._id } } });
+    });
+
+    res.status(201).json({
+      message: "Order Placed Successful",
+    });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();

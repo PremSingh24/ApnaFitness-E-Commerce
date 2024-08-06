@@ -17,11 +17,12 @@ export const getWishlistItemsHandler = async (req: Request, res: Response) => {
   try {
     const user = await Users.findById(req.headers["user"]).populate("wishlist");
 
-    if (user) {
-      res.status(200).json({ products: user.wishlist || [] });
-    } else {
-      res.status(404).json({ message: "Invalid User, Try to Login Again" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Invalid User, Try to Login Again" });
     }
+    res.status(200).json({ products: user.wishlist || [] });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
@@ -44,19 +45,19 @@ export const addItemsToWishlistHandler = async (
   try {
     const Product = await Products.findById(req.params.ProductId);
 
-    if (Product) {
-      const user = await Users.findById(req.headers["user"]);
-
-      if (user) {
-        await user.updateOne({ $addToSet: { wishlist: Product } }); //using $addToSet to store only unique values
-
-        res.status(201).json({ message: "Product Added to Wishlist" });
-      } else {
-        res.status(404).json({ message: "Invalid User, Ty to Login Again" });
-      }
-    } else {
-      res.status(404).json({ message: "Invalid Product" });
+    if (!Product) {
+      return res.status(404).json({ message: "Invalid Product" });
     }
+    const user = await Users.findById(req.headers["user"]);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Invalid User, Ty to Login Again" });
+    }
+    await user.updateOne({ $addToSet: { wishlist: Product } }); //using $addToSet to store only unique values
+
+    res.status(201).json({ message: "Product Added to Wishlist" });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
@@ -79,19 +80,19 @@ export const removeItemsFromWishlistHandler = async (
   try {
     const Product = await Products.findById(req.params.ProductId);
 
-    if (Product) {
-      var user = await Users.findById(req.headers["user"]);
-
-      if (user) {
-        await user.updateOne({ $pull: { wishlist: req.params.ProductId } });
-
-        res.status(201).json({ message: "Product Removed from Wishlist" });
-      } else {
-        res.status(404).json({ message: "Invalid User, Try to Login Again" });
-      }
-    } else {
-      res.status(404).json({ message: "Invalid Product" });
+    if (!Product) {
+      return res.status(404).json({ message: "Invalid Product" });
     }
+    var user = await Users.findById(req.headers["user"]);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Invalid User, Try to Login Again" });
+    }
+    await user.updateOne({ $pull: { wishlist: req.params.ProductId } });
+
+    res.status(201).json({ message: "Product Removed from Wishlist" });
   } catch (error: any) {
     if (error.message) {
       res.status(406).json({ message: error.message }).end();
